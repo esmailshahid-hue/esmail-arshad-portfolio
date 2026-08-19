@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.DS_Store
+.env
+.env.*
+
+# Private source material — never publish
+content/source/resumes/procurement.pdf
+content/source/resumes/logistics.pdf
+portfolio-inputs/
