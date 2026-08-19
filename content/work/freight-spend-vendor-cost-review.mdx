@@ -1,0 +1,119 @@
+---
+type: client-project
+title: Separating spend that looks wrong from spend that is wrong
+organization: Anonymized Client Project
+roleFocus: Freight spend and vendor cost review
+timeframe: 12 months of invoice history
+summary: A twelve-month freight and vendor invoice review that standardized messy vendor data, normalized currencies, built unit economics, and flagged 60 invoice lines for review — while keeping the line between flagged spend and recoverable savings explicit.
+capabilities:
+  - Logistics & Operations
+  - Analytics & Program Management
+tools:
+  - Advanced Excel
+scope:
+  - 421 invoice lines
+  - 11 vendors
+  - 12 months
+  - $695,475 reviewed spend
+headlineOutcome:
+  value: $137,615
+  label: flagged for review across 60 invoice lines
+  kind: finding
+supportingMetrics:
+  - value: $3,743
+    label: possible duplicate invoices
+    kind: finding
+  - value: '19'
+    label: invoices missing PO numbers
+    kind: finding
+  - value: 45.9%
+    label: of spend with the top 3 vendors
+    kind: finding
+  - value: 2,025
+    label: shipments covered
+    kind: scope
+rightsStatus: sanitized-recreation
+images:
+  - file: freight-dashboard.png
+    sheet: Dashboard
+    alt: Freight cost and vendor spend dashboard showing 421 invoices across 11 vendors, $695,475 total spend, 60 review items worth $137,615, vendor and cost-category breakdowns, and monthly spend trend charts.
+    caption: The reporting view — spend, vendor concentration, category mix, monthly trend and review flags on one screen.
+  - file: freight-anomaly-review.png
+    sheet: Anomaly_Review
+    alt: Anomaly review sheet listing flagged invoice lines with vendor, cost category, mode, gross amount, a review comment explaining why each line was flagged, and a recommended action.
+    caption: Every flagged line carries a reason and a recommended action. A flag a reviewer cannot act on is not worth raising.
+  - file: freight-vendor-mapping.png
+    sheet: Vendor_Mapping
+    alt: Vendor mapping lookup table showing raw vendor name variants such as FEDEX, FEDEX GROUND and FEDERAL EXPRESS all resolving to a single standardized vendor with an assigned vendor group.
+    caption: The lookup underneath the analysis. Eleven vendors were hiding behind dozens of raw spellings.
+featured: true
+published: true
+draft: false
+order: 5
+evidence:
+  - claim: 421 invoice lines, 11 vendors, $695,475 reviewed spend
+    source: workbook Dashboard + Cleaned_Data row count (421 data rows); Summary_Findings
+  - claim: 60 review items, $137,615.04 flagged
+    source: workbook Dashboard; Anomaly_Flag column = "Review" x60
+  - claim: $3,743.26 possible duplicate invoices across 4 lines
+    source: workbook Dashboard; Duplicate_Invoice_Flag = Yes x4
+  - claim: 19 invoices missing PO numbers
+    source: workbook Missing_PO_Flag = Yes x19; PO_No blank x19
+  - claim: top 3 vendor share 45.9%, top 5 70.6%
+    source: workbook Dashboard + Summary_Findings
+  - claim: 29 non-USD invoices normalized to USD
+    source: workbook Currency_Review_Flag = Yes x29
+  - claim: 10 high-cost outliers worth $59,941
+    source: workbook Dashboard Anomaly Review Summary; High_Cost_Flag = Yes x10
+  - claim: Linehaul Freight 79.7% of spend; peak month Jul 2025 at $78,603
+    source: workbook Dashboard category table and monthly trend
+  - claim: flagged spend is not recoverable savings
+    source: workbook Project_Overview assumption 3; Summary_Findings client notes
+---
+
+## Context
+
+A client asked for visibility into twelve months of logistics and vendor spend — $695,475 across 421 invoice lines, 2,025 shipments and 11 carriers spanning parcel, LTL, truckload, ocean and 3PL fulfilment.
+
+The invoice extract was raw. The same carrier appeared as `FEDEX`, `FEDEX GROUND`, `Fedex` and `FEDERAL EXPRESS`. Cost types were free text. Some invoices were in non-USD currencies. Some had no PO number at all, and one had no vendor name.
+
+## Problem
+
+You cannot review spend you cannot group. Before any question about rates, lanes or vendor concentration could be answered, the same vendor had to resolve to one vendor and the same cost type to one category — and the currency basis had to be consistent, or the largest invoices would simply be the ones denominated in the strongest currency.
+
+The second problem was narrower and more important: the client wanted a savings number. An invoice review does not produce one.
+
+## The analytical judgment
+
+**Flagged spend is spend requiring review — not recoverable savings.** That distinction is stated on the dashboard, in the findings sheet and in the workbook's assumptions, and it is the single most consequential decision in this project.
+
+$137,615 was flagged. None of it is savings until someone validates it against AP records and vendor statements. A possible duplicate invoice may be a legitimate re-bill. A high-cost outlier may be an expedited shipment that was expedited for a good reason. A missing PO number is a control gap, not an overcharge.
+
+Reporting the flagged figure as savings would have made the analysis look more valuable and made it wrong. The workbook instead routes each finding to a validation step, and the recommended actions say so explicitly: *validate invoice with vendor / AP before payment.*
+
+## Method
+
+1. **Standardized vendor names** through a lookup that resolves every raw spelling to one standardized vendor and vendor group. Dozens of raw variants collapsed into 11 vendors — one of which resolves to `Needs Review` rather than being silently dropped.
+2. **Normalized cost categories** from free-text invoice cost types into a consistent category and cost bucket.
+3. **Normalized currency to USD.** Gross amount local equals invoice amount plus fuel surcharge plus accessorial charge; gross amount USD applies the FX rate. 29 non-USD invoices were normalized and flagged for currency review so the conversion stays visible rather than buried.
+4. **Built unit economics** — cost per shipment, cost per kilogram and cost per mile — so vendors running different modes could be compared on something other than gross spend.
+5. **Applied four anomaly flags** across every line: possible duplicate, missing PO, currency review and high-cost outlier. Each flagged line received a written review comment and a recommended action.
+6. **Preserved the original raw data** as an untouched audit trail, so any figure can be traced back to the invoice it came from.
+
+## Findings
+
+- **60 invoice lines flagged, worth $137,615** — the review queue, not a savings estimate.
+- **$3,743 in possible duplicate invoices** across four lines, including one exact pair matching on vendor, invoice number, shipment ID and amount.
+- **19 invoices with no PO number**, worth $36,395 — a procurement control gap rather than a pricing problem.
+- **10 high-cost outliers worth $59,941**, priced well above peers in the same category and mode.
+- **Vendor concentration** — the top three vendors hold 45.9% of spend, the top five 70.6%. Worth reviewing against service levels and contract rates, in either direction.
+- **Linehaul freight is 79.7% of spend**, so accessorial and fuel optimization has a much smaller ceiling than it appears to.
+- Two further review types surfaced from the same pass: one credit / negative charge and one invoice with no vendor name at all.
+
+## Assumptions and limitations
+
+- Anomaly flags are directional. They are designed to produce a review queue, and every one requires validation against source invoices and AP records before any financial action.
+- Duplicate detection matches on invoice, vendor, shipment and amount. Genuine re-bills and split shipments can present the same way.
+- High-cost outliers are identified relative to peers in the same cost category and mode. A lane with unusual characteristics can be flagged without being mispriced.
+- FX rates are applied from a fixed table rather than at each invoice's transaction date.
+- The dataset is client-supplied test data, reviewed and sanitized. Figures are internally consistent within the workbook.

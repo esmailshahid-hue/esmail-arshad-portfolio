@@ -1,0 +1,19 @@
+---
+interface Props {
+  label: string;
+  href?: string;
+}
+const { label, href } = Astro.props;
+const cls =
+  'inline-block rounded-full border border-rule px-3 py-1 text-xs font-medium text-ink-soft no-underline';
+---
+
+{
+  href ? (
+    <a href={href} class={`${cls} transition-colors hover:border-slate hover:text-ink`}>
+      {label}
+    </a>
+  ) : (
+    <span class={cls}>{label}</span>
+  )
+}

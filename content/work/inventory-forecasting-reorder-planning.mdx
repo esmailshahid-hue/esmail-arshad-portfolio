@@ -1,0 +1,131 @@
+---
+type: client-project
+title: Letting demand behaviour choose the forecast method
+organization: Anonymized Client Project
+roleFocus: Inventory forecasting and reorder planning
+timeframe: 18 months of demand history
+summary: An SKU-level forecasting and replenishment model that classifies each item by how its demand actually behaves, selects a forecast method to match, and sizes safety stock and reorder points from service level and lead-time-scaled variability.
+capabilities:
+  - Planning & Inventory
+  - Analytics & Program Management
+tools:
+  - Advanced Excel
+scope:
+  - 24 SKUs
+  - 432 demand records
+  - 18 months of history (Jan 2024 – Jun 2025)
+headlineOutcome:
+  value: '15'
+  label: SKUs identified as stockout risks, against 1 carrying excess
+  kind: finding
+supportingMetrics:
+  - value: $43,685
+    label: suggested reorder value
+    kind: finding
+  - value: $78,354
+    label: current inventory value
+    kind: scope
+  - value: '8'
+    label: SKUs balanced
+    kind: finding
+  - value: '6'
+    label: demand behaviours classified across the range
+    kind: finding
+rightsStatus: sanitized-recreation
+images:
+  - file: inventory-dashboard.png
+    sheet: Dashboard
+    alt: Inventory forecasting and reorder planning dashboard showing 24 total SKUs, 15 stockout-risk SKUs, 1 excess-stock SKU, $43,685 suggested reorder value, $78,354 current inventory value, ABC class counts and an 18-month demand trend chart.
+    caption: The planning view — risk position, reorder value, ABC mix and eighteen months of demand on one screen.
+  - file: inventory-forecast-model.png
+    sheet: Forecast_Model
+    alt: Forecast model sheet listing all 24 SKUs with total and average demand over multiple horizons, standard deviation, coefficient of variation, trend, zero-demand months, classified demand behaviour, selected forecast method, forecast monthly demand, and ABC classification.
+    caption: Where the method gets chosen. Behaviour is classified first from the demand statistics; the forecast method follows from it.
+  - file: inventory-risk-review.png
+    sheet: Inventory_Risk_Review
+    alt: Inventory risk review sheet listing flagged SKUs with available quantity, forecast demand, reorder point, months of supply, risk type, a written reason for each flag, and a recommended action — plus a data-quality flag and a past-due purchase order flag.
+    caption: Each flag states its own reason. The last two rows are not stock risks at all — a dirty SKU identifier and a past-due PO.
+featured: true
+published: true
+draft: false
+order: 6
+evidence:
+  - claim: 24 SKUs
+    source: workbook SKU_Master (24 rows); Dashboard "Total SKUs 24"; Summary_Findings item 1
+  - claim: 432 demand records
+    source: workbook Raw_Data non-empty row count = 432 (23 SKUs x 18 months + 1 x 17 + 1 stray variant). Corrected from the brief's 500, which was the sheet's formatted max_row — confirmed by Esmail 2026-08-19
+  - claim: 18 months of history, Jan 2024 – Jun 2025
+    source: workbook Project_Overview; Dashboard monthly demand table (18 buckets)
+  - claim: 15 stockout-risk, 1 excess-stock, 8 balanced
+    source: workbook Reorder_Planning Risk_Status counts; Dashboard
+  - claim: $43,685 suggested reorder value, $78,354 current inventory value
+    source: workbook Dashboard ($43,684.50 and $78,354)
+  - claim: safety stock = Z x monthly sigma / SQRT(30) x SQRT(lead time days), Z = 1.65
+    source: workbook Assumptions sheet
+  - claim: reorder point = lead-time demand + safety stock
+    source: workbook Assumptions sheet
+  - claim: forecast method selected by demand behaviour
+    source: workbook Summary_Findings item 2; Forecast_Model Forecast_Method column
+  - claim: ABC split A14 / B7 / C3
+    source: workbook Reorder_Planning ABC_Class counts; Dashboard
+  - claim: MTO items modelled but held for planner validation
+    source: workbook Assumptions "MTO Assumption"; 4 of 24 SKUs are MTO in SKU_Master
+  - claim: data-quality flag on a lowercase SKU variant
+    source: workbook Inventory_Risk_Review final rows; confirmed sku-1014 present in Raw_Data
+---
+
+## Context
+
+A client needed a replenishment model for 24 SKUs — finished goods, components, spare parts, consumables and packaging — built from 432 demand records covering eighteen months, from January 2024 to June 2025, against a July 2025 planning snapshot.
+
+The range does not behave uniformly. Some items sell steadily every month. One spare part recorded demand in six of eighteen months and nothing in the rest. A packaging SKU moves in thousands of units; a battery module moves in tens at forty times the unit cost.
+
+## Problem
+
+A single forecast method applied across that range fails in both directions at once. A moving average over an intermittent spare part reports a fractional monthly demand for an item that actually arrives in occasional lumps, so the model under-stocks it. The same average over a growing SKU lags the trend and under-orders it too. Meanwhile a long average smooths a genuine decline into apparent stability and quietly builds excess.
+
+The planning question was not *what is the forecast*. It was *what kind of demand is this, and what does that kind of demand require*.
+
+## The analytical judgment
+
+**Forecast method is chosen by demand behaviour, not applied uniformly.** Each SKU is classified first — stable, growing, declining, intermittent, variable or lumpy — from its own demand statistics: total and average demand over three, six and twelve months, standard deviation, coefficient of variation, trend, and the count of zero-demand months.
+
+The method follows from the classification:
+
+- **Stable and variable** SKUs use a six-month moving average — enough history to damp noise.
+- **Growing** SKUs use a three-month moving average, which tracks the trend rather than lagging it.
+- **Lumpy and intermittent** SKUs use median-based logic, so occasional large orders do not inflate a baseline that is usually zero.
+
+Across the range that produced 11 stable, 4 intermittent, 3 growing, 3 variable, 2 lumpy and 1 declining SKU — six behaviours, three methods, one decision rule.
+
+## Method
+
+1. **Cleaned and structured the demand history**, resolving SKU identifier variants and deriving month, year and period fields so every record joins reliably to the SKU master.
+2. **Classified demand behaviour** per SKU from its own statistics, then selected the forecast method from the classification.
+3. **Sized safety stock** from the service-level Z-score and lead-time-scaled variability: Z of 1.65 against monthly demand standard deviation, converted to a daily basis and scaled by the square root of lead-time days — so a long-lead item carries more cover than a short-lead item with identical demand variability.
+4. **Set reorder points** as lead-time demand plus safety stock, and derived reorder quantity against MOQ and current position.
+5. **Classified SKUs A/B/C** on annual value — 14 A, 7 B, 3 C — so planner attention goes where the value is concentrated.
+6. **Typed the risk with a written reason per SKU**, rather than a bare status: each flag states the available quantity, the reorder point it breached and the recommended action.
+7. **Documented every assumption** — service level, lead times, MOQ, planning snapshot date and risk thresholds — on their own sheet, so the model can be challenged rather than trusted.
+
+Make-to-order items are modelled alongside everything else, but held back from automated reorder until a planner validates them. Four of the 24 SKUs are MTO, and their demand is a customer commitment rather than a forecast.
+
+## Findings
+
+- **15 SKUs at stockout risk** — available quantity at or below reorder point. Several are A-class finished goods.
+- **1 SKU carrying excess** — a stable packaging item at 7.1 months of supply against a six-month threshold.
+- **8 SKUs balanced.**
+- **$43,685 in suggested reorder value** against $78,354 of current inventory, sized from position, reorder point, MOQ and forecast demand.
+- **A data-quality flag rather than a stock flag** — the raw demand file contained a lowercase, trailing-space SKU variant that would have split one item into two during a live planning run.
+- **A past-due purchase order** whose expected receipt date precedes the planning snapshot, which inflates on-order quantity until it is confirmed with the buyer.
+
+The last two are not inventory risks. They are reasons a planning run would have produced the wrong answer, and they belong in the review queue for exactly that reason.
+
+## Assumptions and limitations
+
+- Service level is set at a 1.65 Z-score across all SKUs. Differentiating it by ABC class or item criticality would be a reasonable next step.
+- Lead times, MOQ and unit costs are taken from the SKU master as supplied and were not independently validated against supplier agreements.
+- Safety stock assumes demand variability is reasonably represented by the monthly standard deviation of eighteen months of history. For the intermittent and lumpy items this is the weakest assumption in the model, which is why those SKUs use median-based forecasting rather than an average.
+- Risk thresholds are explicit and adjustable: stockout risk at or below reorder point, excess above six months of supply, low cover below 1.5 months.
+- Suggested reorder values are planning recommendations for planner review, not purchase decisions.
+- The dataset is client-supplied test data, reviewed and sanitized.

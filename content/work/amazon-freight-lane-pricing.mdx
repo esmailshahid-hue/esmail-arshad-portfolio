@@ -1,0 +1,80 @@
+---
+type: operating-case-study
+title: Pricing freight lanes against how carriers actually behave
+organization: Amazon
+displayTitle: Supply Chain Program Manager (Contract)
+roleFocus: Middle-mile carrier performance and freight-pricing analytics
+timeframe: 2021 — 2022
+summary: Rebuilding pricing rules across the Amazon Freight program around lane-level demand, mileage, dwell time and lead time — pricing to the behaviour carriers actually exhibit rather than to a flat rate card, and cutting network costs by 8%.
+capabilities:
+  - Logistics & Operations
+  - Analytics & Program Management
+tools:
+  - Tableau
+  - Advanced Excel
+scope:
+  - ~100K weekly shipments
+  - Middle-mile network
+headlineOutcome:
+  value: 8%
+  label: freight network cost reduction
+  kind: outcome
+supportingMetrics:
+  - value: ~100K
+    label: weekly shipments analysed
+    kind: scope
+featured: true
+published: false
+draft: true
+order: 2
+evidence:
+  - claim: dynamic pricing rule adjustments across Amazon Freight using mileage, lead time, dwell time and lane-level demand; 8% network cost reduction
+    source: standardized résumé Amazon bullet 1; procurement bullet 2; logistics bullet 2
+  - claim: root-cause analysis on ~100K weekly shipments in Tableau and Excel — SEPARATE WORKSTREAM
+    source: standardized bullet 2; procurement bullet 1; logistics bullet 1
+  - claim: 98% on-time delivery sustained — belongs to the carrier-performance workstream, not the pricing result
+    source: all three résumés; kept out of the pricing narrative per §11
+  - claim: Amazon Freight is a public program name
+    source: §14 explicitly permits it
+openQuestions:
+  - What triggered the pricing-rule work — a margin problem, a capacity problem, or a specific lane-level failure?
+  - Where did you set the trade-off between carrier conversion and freight cost, and what were you willing to give up on one to get the other?
+  - Over what period was the 8% measured, and against what baseline?
+---
+
+## Context
+
+The Amazon Freight program moves middle-mile volume across a lane network where roughly 100,000 shipments a week are priced, tendered and covered. Pricing on that network is not a rate card applied uniformly. It is a set of rules that has to clear volume on thousands of lanes with different lengths, densities and carrier appetites.
+
+## Problem
+
+A price that is too low on a lane does not fail loudly. The load simply does not get covered at that rate, and the network pays more later through re-tendering, expedites and service recovery. A price that is too high covers the load and quietly overpays across every shipment on that lane for as long as the rule stands.
+
+Both failures look like normal operations from inside a single shipment. They are only visible in aggregate, at lane level, against how carriers actually respond.
+
+TODO — Esmail to supply: What triggered this work — a margin problem on specific lanes, a capacity or coverage problem, or a broader network cost target?
+
+## Decision and trade-off
+
+TODO — Esmail to supply: Pricing to improve carrier conversion and pricing to reduce freight cost pull against each other — paying more converts more loads. Where did you set that balance, and what was the reasoning? Was there a coverage or service floor you were unwilling to go below?
+
+## What I did
+
+1. **Analysed lane-level demand** to establish where volume was concentrated and where carrier appetite was thin, rather than treating the network as one pricing environment.
+2. **Brought carrier behaviour into the pricing inputs** — mileage, lead time and dwell time — so that lanes carrying real cost for a carrier were priced as such, and lanes that were cheap to run were not overpaid.
+3. **Adjusted pricing rules dynamically** against those inputs, so prices moved with lane conditions instead of holding static between rate-card cycles.
+4. **Measured the result at network level**, where the effect of a pricing rule is visible, rather than at the individual shipment level, where it is noise.
+
+## Result
+
+**8% reduction in freight network cost.**
+
+TODO — Esmail to supply: over what period, and against what baseline, was the 8% measured?
+
+The mechanism is capacity alignment rather than rate compression. Prices that reflect what a lane actually costs a carrier to run improve conversion on lanes that were previously hard to cover, and reduce overpayment on lanes that were easy — and the network cost falls out of both at once.
+
+## Related work
+
+A separate workstream in the same role ran root-cause analysis across roughly 100,000 weekly shipments in Tableau and Excel, examining carrier performance, shipment and service exceptions and SLA adherence, and initiating corrective actions — sustaining a 98% on-time delivery rate.
+
+The two workstreams share a network and a dataset. They are not presented as one initiative, and the service-performance work is not claimed as the cause of the pricing result.

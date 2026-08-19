@@ -1,0 +1,29 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  lede?: string;
+  /** Adds the hairline rule above the section. */
+  divided?: boolean;
+  class?: string;
+}
+const { id, eyebrow, heading, lede, divided = true, class: cls = '' } = Astro.props;
+---
+
+<section id={id} class={`${divided ? 'border-t border-rule-soft' : ''} py-16 md:py-24 ${cls}`}>
+  <div class="shell">
+    {
+      (eyebrow || heading) && (
+        <div class="mb-10 md:mb-14">
+          {eyebrow && <p class="eyebrow mb-4">{eyebrow}</p>}
+          {heading && (
+            <h2 class="max-w-3xl text-display text-ink">{heading}</h2>
+          )}
+          {lede && <p class="measure mt-4 text-lg text-ink-soft">{lede}</p>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>

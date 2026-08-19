@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm off-white ground, charcoal type, one restrained slate accent. */
+  --color-paper:      #faf8f4;
+  --color-paper-deep: #f3efe8;
+  --color-ink:        #23262b;
+  --color-ink-soft:   #4d535c;
+  --color-ink-mute:   #666d78;
+  --color-rule:       #ddd7cd;
+  --color-rule-soft:  #e9e4db;
+  --color-slate:      #3f5c73;
+  --color-slate-deep: #2c4257;
+
+  --font-display: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  --text-hero: clamp(2.5rem, 6vw, 4.5rem);
+  --text-display: clamp(1.85rem, 3.5vw, 2.7rem);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    line-height: 1.14;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+
+  /* Visible keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-slate);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Skip link — visible only on focus. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+  }
+
+  /* Small caps eyebrow used to label every major section. */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) { .shell { padding-inline: 2.5rem; } }
+  @media (min-width: 1280px) { .shell { padding-inline: 3.5rem; } }
+
+  .measure { max-width: 40rem; }
+
+  /* Editorial prose for case-study bodies. */
+  .prose-editorial { color: var(--color-ink-soft); }
+  .prose-editorial > * + * { margin-top: 1.15rem; }
+  .prose-editorial h2 {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-rule-soft);
+  }
+  .prose-editorial h3 {
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+    margin-top: 2rem;
+  }
+  .prose-editorial p { font-size: 1.0625rem; }
+  .prose-editorial strong { color: var(--color-ink); font-weight: 600; }
+  .prose-editorial ul {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+  .prose-editorial ul > li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 1.0625rem;
+  }
+  .prose-editorial ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--color-slate);
+  }
+  .prose-editorial ol {
+    counter-reset: step;
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .prose-editorial ol > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.25rem;
+    font-size: 1.0625rem;
+  }
+  .prose-editorial ol > li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-slate);
+  }
+  .prose-editorial a {
+    color: var(--color-slate);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}

@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import { meta, contact, confidentialityNote } from '@content/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute path, e.g. "/work/slug". Used for canonical + OG url. */
+  path?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title = meta.title,
+  description = meta.description,
+  path = '/',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site).href;
+const ogImage = new URL(meta.ogImage, Astro.site).href;
+const year = new Date().getFullYear();
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: meta.name,
+  jobTitle: meta.positioning,
+  description: meta.description,
+  url: new URL('/', Astro.site).href,
+  email: `mailto:${contact.email}`,
+  sameAs: [contact.linkedin, contact.github].filter(Boolean),
+  address: { '@type': 'PostalAddress', addressLocality: 'Lahore', addressCountry: 'PK' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Purdue University' },
+  knowsAbout: [
+    'Supply Chain Planning',
+    'Procurement and Strategic Sourcing',
+    'Logistics and Operations',
+    'Supply Chain Program Management',
+    'Operations Analytics',
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={meta.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+    />
+    <set:html value={`<script type="application/ld+json">${JSON.stringify(personSchema)}</script>`} />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="border-b border-rule">
+      <div class="shell flex items-center justify-between gap-6 py-5">
+        <a
+          href="/"
+          class="font-display text-lg font-semibold tracking-tight text-ink no-underline"
+        >
+          {meta.name}
+        </a>
+        <nav aria-label="Primary">
+          <ul class="flex list-none items-center gap-5 text-sm sm:gap-7">
+            <li><a class="nav-link" href="/#work">Work</a></li>
+            <li class="hidden sm:block"><a class="nav-link" href="/#experience">Experience</a></li>
+            <li>
+              <a class="nav-link" href={meta.resumePath}>Résumé</a>
+            </li>
+            <li><a class="nav-link" href="/#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="mt-24 border-t border-rule bg-paper-deep">
+      <div class="shell flex flex-col gap-6 py-10 md:flex-row md:items-start md:justify-between">
+        <p class="measure text-sm leading-relaxed text-ink-mute">
+          {confidentialityNote}
+        </p>
+        <p class="shrink-0 text-sm text-ink-mute">
+          © {year} {meta.name}
+        </p>
+      </div>
+    </footer>
+
+    <style>
+      .nav-link {
+        color: var(--color-ink-soft);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        padding-bottom: 2px;
+        transition: color 0.15s ease, border-color 0.15s ease;
+      }
+      .nav-link:hover {
+        color: var(--color-ink);
+        border-bottom-color: var(--color-slate);
+      }
+    </style>
+  </body>
+</html>
