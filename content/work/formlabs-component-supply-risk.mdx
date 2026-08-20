@@ -14,6 +14,16 @@ tools:
   - Advanced Excel
 scope:
   - 300+ SLA/SLS components
+atAGlance:
+  - label: Challenge
+    value: Late visibility
+    note: shortages surfaced when a build could not start
+  - label: Scope
+    value: 300+
+    note: SLA and SLS components tracked continuously
+  - label: Result
+    value: 20%
+    note: fewer late orders
 headlineOutcome:
   value: 20%
   label: fewer late orders
@@ -43,27 +53,23 @@ openQuestions:
   - Over what window were the 20% reduction in late orders and 6% OTIF improvement measured?
 ---
 
-## Context
+## Challenge
 
-Formlabs builds SLA and SLS 3D printing hardware. A single machine draws on hundreds of components across mechanical, optical and electronic categories, with supplier lead times running from weeks to months. My reporting covered more than 300 of them.
+A single Formlabs printer draws on hundreds of components across mechanical, optical and electronic categories, with supplier lead times running from weeks to months.
 
-## Problem
-
-The data needed to see a shortage coming — inventory coverage, open purchase orders, delivery exceptions — sat in three separate places. At 300+ components across two platforms, that is not something anyone reviews by hand each week, so shortages tended to surface when a build could not start.
+The three things you need in order to see a shortage coming — inventory coverage, open purchase orders, delivery exceptions — sat in three separate places. Across 300+ components on two platforms, nobody reviews that by hand each week, so shortages tended to surface when a build could not start.
 
 ## What I did
 
-- Pulled inventory coverage, open purchase orders and delivery exceptions into one query layer in SQL and BigQuery.
-- Built shortage and exception reporting across the 300+ SLA/SLS components, running against current data rather than a periodic manual extract.
-- Reported risk as an exception, so planner attention went to what had moved rather than the full component list.
-- Escalated flagged components to suppliers while there was still lead time to recover.
+1. **Pulled inventory coverage, open POs and delivery exceptions into one query layer** in SQL and BigQuery.
+2. **Built shortage and exception reporting** across the 300+ SLA and SLS components, running against current data rather than a periodic manual extract.
+3. **Reported risk as an exception**, so planner attention went to what had moved rather than to the full component list.
+4. **Escalated flagged components to suppliers** while there was still lead time left to recover.
 
-## Result
+## Decision
+
+> The reporting did not change a single supplier lead time. It moved the point at which a shortage became visible far enough forward that expediting, re-planning or escalating was still an option.
+
+## Outcome
 
 **Late orders down 20%**, with on-time in-full performance up 6%.
-
-The reporting did not change a single supplier lead time. It moved the point at which a shortage became visible far enough forward that expediting, re-planning or escalating was still an option.
-
-## Related work
-
-Two further workstreams ran in the same role. ABC analysis in Netstock across 1,200 SKUs segmented slow-moving, excess and at-risk inventory for disposition decisions, saving $50K in carrying costs. Separately, NetSuite spend and COGS reporting for SLS powders consolidated BOM costs and removed 80% of the manual reporting effort.

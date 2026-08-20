@@ -23,7 +23,7 @@ export const meta = {
 export const hero = {
   credential: 'Industrial engineer and Purdue Engineering Management graduate.',
   context:
-    'NPI sourcing at Tesla, freight pricing at Amazon, supply planning at Schneider Electric, supply-risk analytics at Formlabs, and operations leadership now at Jannat & Sadaf.',
+    'NPI sourcing at Tesla, freight cost analytics at Amazon, supply planning at Schneider Electric, supply-risk analytics at Formlabs, and operations leadership now at Jannat & Sadaf.',
   disciplines: [
     'Planning & Inventory',
     'Procurement & Sourcing',
@@ -90,7 +90,7 @@ export const experience = [
     displayTitle: 'Supply Chain Program Manager (Contract)',
     dates: '2021 — 2022',
     location: 'Bellevue, WA',
-    scope: 'Freight pricing and carrier analytics',
+    scope: 'Freight cost analytics and carrier performance',
   },
   {
     company: 'Cosmos Surfaces',

@@ -1,0 +1,131 @@
+---
+/**
+ * Native case-study diagrams. Rendered as real HTML text in the site's own type
+ * and colour tokens — selectable, searchable, translatable, screen-reader
+ * legible, responsive, and weightless. Deliberately not an imported PNG.
+ *
+ * Two shapes, added only where the shape itself says something the prose cannot:
+ *   narrowing — a search that eliminates ground at each step
+ *   recovery  — one quantity split into parts, then recombined with another
+ *
+ * Every figure that appears here also appears in the case study's own words, so
+ * the diagram supports the argument rather than carrying it alone.
+ */
+interface Step {
+  label: string;
+  note: string;
+}
+interface Part {
+  pct: number;
+  value: string;
+  label: string;
+  muted: boolean;
+}
+interface Props {
+  kind: 'narrowing' | 'recovery';
+  caption: string;
+  steps?: readonly Step[];
+  split?: { label: string; parts: readonly Part[] };
+  combine?: { sources: readonly string[]; output: string };
+}
+
+const { kind, caption, steps = [], split, combine } = Astro.props;
+
+// Each step of the search keeps a little more ground than the shape suggests;
+// the widths read as narrowing without implying a measured proportion.
+const widthAt = (i: number, total: number) =>
+  total < 2 ? 100 : Math.round(100 - (i / (total - 1)) * 42);
+---
+
+<figure class="border-y border-rule py-8 md:py-10">
+  {
+    kind === 'narrowing' && (
+      <ol class="mx-auto grid max-w-3xl list-none gap-2">
+        {steps.map((step, i) => (
+          <li
+            class="mx-auto flex w-full flex-col items-center"
+            style={`max-width:${widthAt(i, steps.length)}%`}
+          >
+            {i > 0 && (
+              <span aria-hidden="true" class="pb-2 text-sm leading-none text-ink-mute">
+                ↓
+              </span>
+            )}
+            <div class="w-full border border-rule bg-white px-4 py-3 text-center">
+              <p class="text-sm font-medium text-ink">{step.label}</p>
+              <p class="mt-0.5 text-sm text-ink-mute">{step.note}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+
+  {
+    kind === 'recovery' && (
+      <div class="mx-auto grid max-w-3xl gap-7">
+        {split && (
+          <div>
+            <p class="text-xs font-medium tracking-wide text-ink-mute uppercase">
+              {split.label}
+            </p>
+            <div class="mt-3 flex h-11 w-full overflow-hidden border border-rule">
+              {split.parts.map((part) => (
+                <div
+                  class={`flex items-center justify-center border-r border-rule last:border-r-0 ${
+                    part.muted ? 'bg-rule-soft' : 'bg-slate'
+                  }`}
+                  style={`width:${part.pct}%`}
+                >
+                  <span
+                    class={`px-2 text-sm font-medium ${
+                      part.muted ? 'text-ink-soft' : 'text-paper'
+                    }`}
+                  >
+                    {part.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <ul class="mt-2.5 flex list-none flex-wrap gap-x-6 gap-y-1">
+              {split.parts.map((part) => (
+                <li class="flex items-center gap-2 text-sm text-ink-soft">
+                  <span
+                    aria-hidden="true"
+                    class={`inline-block h-2.5 w-2.5 shrink-0 border border-rule ${
+                      part.muted ? 'bg-rule-soft' : 'bg-slate'
+                    }`}
+                  />
+                  {part.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {combine && (
+          <ul class="flex list-none flex-wrap items-center gap-x-3 gap-y-2 border-t border-rule-soft pt-6 text-sm">
+            {combine.sources.map((source, i) => (
+              <li class="flex items-center gap-3">
+                {i > 0 && (
+                  <span aria-hidden="true" class="text-ink-mute">
+                    +
+                  </span>
+                )}
+                <span class="border border-rule bg-white px-3 py-1.5 text-ink-soft">{source}</span>
+              </li>
+            ))}
+            <li class="flex items-center gap-3">
+              <span aria-hidden="true" class="text-slate">→</span>
+              <span class="border border-slate bg-white px-3 py-1.5 font-medium text-ink">
+                {combine.output}
+              </span>
+            </li>
+          </ul>
+        )}
+      </div>
+    )
+  }
+
+  <figcaption class="mx-auto mt-6 max-w-3xl text-sm text-ink-mute">{caption}</figcaption>
+</figure>

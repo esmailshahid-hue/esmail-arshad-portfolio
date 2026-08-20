@@ -22,6 +22,22 @@ const work = defineCollection({
     /** Scope = size of the environment or analysis (§16). Never an outcome. */
     scope: z.array(z.string()).default([]),
 
+    /**
+     * Employer case studies open with exactly three facts, not a metric band:
+     * the signal, the work, and what it came to. Each is one label + one fact.
+     * These figures are not repeated in large treatments further down the page.
+     */
+    atAGlance: z
+      .array(
+        z.object({
+          label: z.string(),
+          value: z.string(),
+          note: z.string(),
+        })
+      )
+      .length(3)
+      .optional(),
+
     /** The single principal result (§12). */
     headlineOutcome: z.object({
       value: z.string(),
@@ -61,6 +77,43 @@ const work = defineCollection({
         inputs: z.array(z.string()).min(2),
         output: z.string(),
         result: z.string(),
+      })
+      .optional(),
+
+    /**
+     * A native diagram, rendered from this data as real text in the page's own
+     * type and colour. Never an imported infographic: a picture of a paragraph
+     * cannot be selected, searched, translated or read aloud, and it does not
+     * reflow on a phone. Only added where the shape carries something the prose
+     * cannot — a narrowing search, a split of material — and every figure shown
+     * is one the case study states in words as well.
+     */
+    diagram: z
+      .object({
+        kind: z.enum(['narrowing', 'recovery']),
+        caption: z.string(),
+        /** `narrowing`: each step of the search, widest first. */
+        steps: z
+          .array(z.object({ label: z.string(), note: z.string() }))
+          .default([]),
+        /** `recovery`: one quantity divided into parts. Percentages must total 100. */
+        split: z
+          .object({
+            label: z.string(),
+            parts: z.array(
+              z.object({
+                pct: z.number().min(1).max(99),
+                value: z.string(),
+                label: z.string(),
+                muted: z.boolean().default(false),
+              })
+            ),
+          })
+          .optional(),
+        /** `recovery`: the sources that were combined, and what they produced. */
+        combine: z
+          .object({ sources: z.array(z.string()).min(2), output: z.string() })
+          .optional(),
       })
       .optional(),
 

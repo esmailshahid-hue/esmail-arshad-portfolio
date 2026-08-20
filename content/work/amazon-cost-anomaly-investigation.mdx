@@ -1,0 +1,89 @@
+---
+type: operating-case-study
+title: Tracing a hidden cost anomaly on a Southeast freight lane
+organization: Amazon
+displayTitle: Supply Chain Program Manager (Contract)
+roleFocus: Freight cost analytics and carrier performance
+timeframe: '2021 — 2022'
+summary: Daily monitoring exposed a cost pattern that weekly reporting had hidden, leading to a fraud investigation and preventing further losses.
+capabilities:
+  - Logistics & Operations
+  - Analytics
+tools:
+  - Tableau
+  - Advanced Excel
+  - Internal TMS
+scope:
+  - Southeast region freight
+atAGlance:
+  - label: Signal
+    value: ~10%
+    note: of Southeast shipments running at roughly 3× expected cost
+  - label: Investigation
+    value: 3 months
+    note: of shipment-level data reviewed
+  - label: Exposure
+    value: ~$360K
+    note: three-month financial exposure identified
+headlineOutcome:
+  value: ~$360K
+  label: exposure identified
+  kind: finding
+supportingMetrics: []
+diagram:
+  kind: narrowing
+  caption: A regional cost spike narrowed to one lane, one facility pair, and the same individuals.
+  steps:
+    - label: Southeast region shipments
+      note: ~100 shipments per week
+    - label: High-cost shipments
+      note: running at roughly 3× expected cost
+    - label: Atlanta–Miami lane
+      note: where the cost spikes concentrated
+    - label: One repeated facility pair
+      note: same origin and destination on each affected shipment
+    - label: Same receiver and driver
+      note: pattern confirmed across three months
+featured: true
+published: true
+draft: false
+order: 3
+evidence:
+  - claim: root-cause analysis across ~100K weekly shipments in Tableau and Excel covering carrier performance, shipment and service exceptions and SLA adherence
+    source: standardized résumé Amazon bullet 2; procurement bullet 1; logistics bullet 1. This investigation is the specific instance of that workstream.
+  - claim: Southeast cost anomaly, Atlanta–Miami lane, repeated facility pair / receiver / driver, fraud confirmed, ~$3K excess per shipment, ~$360K three-month exposure
+    source: CANDIDATE ACCOUNT — supplied by Esmail directly, not present in any résumé variant. Not independently documented.
+  - claim: ~$360K is exposure identified, never recovered or realized savings
+    source: explicit instruction, revision brief §2. Wording is load-bearing.
+  - claim: no individuals named; Atlanta–Miami is a public high-volume freight corridor, geography rather than identity
+    source: §23 confidentiality; confirmed with Esmail 2026-08-20
+  - claim: Amazon Freight is a public program name
+    source: §14 explicitly permits it
+  - claim: 8% network cost reduction from dynamic pricing rules — SEPARATE WORKSTREAM, deliberately not carried onto this page
+    source: Esmail's decision, 2026-08-20. Retained in the résumé PDF only.
+openQuestions:
+  - Was the daily monitoring added ahead of Prime Day (July) or the October peak event? The two source drafts disagree.
+  - Confirm ~120 affected shipments across the three months. $3K × 120 = $360K, so the arithmetic holds, but the count itself is stated in only one draft.
+---
+
+## Challenge
+
+Ahead of the peak period, Amazon Freight performance moved from weekly to daily monitoring. The weekly cost and delivery KPIs still looked healthy. The daily view did not: cost per mile in the Southeast was spiking, and roughly 10% of shipments in the region were running at about three times their expected cost.
+
+## What I did
+
+1. **Compared on-time against late shipments** to establish whether the cost variance tracked service failures or something else.
+2. **Broke the data down by lane, mileage and sortation facility** in Tableau and Excel, which narrowed the anomaly to the Atlanta–Miami lane.
+3. **Reviewed three months of shipment IDs, pricing rules and TMS notes**, moving from regional performance down to individual transactions.
+4. **Identified the same facility pair, receiver and driver** recurring across the affected shipments.
+5. **Compiled the evidence and escalated it through management** for investigation by the relevant teams.
+
+## Decision
+
+> Weekly performance was still inside target. I treated the daily cost spikes as a real signal rather than noise, and kept narrowing the data until the pattern was explainable.
+
+## Outcome
+
+The investigation confirmed fraudulent activity.
+
+Each affected shipment carried roughly **$3K of excess cost**, amounting to about **$360K of financial exposure over three months**. The activity was stopped and further losses were prevented.

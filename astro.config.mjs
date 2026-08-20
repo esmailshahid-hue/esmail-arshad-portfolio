@@ -7,6 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://esmail-arshad-portfolio.vercel.app',
   output: 'static',
+  redirects: {
+    // The Amazon pricing case study was replaced by the cost-anomaly
+    // investigation. Keep the old route alive for anything already linking to it.
+    '/work/amazon-freight-lane-pricing': '/work/amazon-cost-anomaly-investigation',
+  },
   integrations: [mdx(), sitemap()],
   vite: { plugins: [tailwindcss()] },
 });
