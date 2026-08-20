@@ -123,9 +123,7 @@ const headshot = images[`../../content/images/${about.headshot}`]?.default;
                 .map((w, i, arr) => (
                   <>
                     {w.data.published ? (
-                      <a class="text-link-quiet" href={`/work/${w.id}/`}>
-                        {w.data.organization}
-                      </a>
+                      <a class="text-link-quiet" href={`/work/${w.id}/`}>{w.data.organization}</a>
                     ) : (
                       <span>{w.data.organization}</span>
                     )}
