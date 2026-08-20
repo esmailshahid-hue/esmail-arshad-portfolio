@@ -3,12 +3,12 @@ type: operating-case-study
 title: Finding the shortages before they became late orders
 organization: Formlabs
 displayTitle: Supply Chain Analyst Intern
-roleFocus: Component supply-risk reporting across SLA and SLS hardware
+roleFocus: Inventory and supply-risk analytics
 timeframe: '2024'
-summary: Turning inventory coverage, open purchase orders and delivery exceptions across 300+ components into shortage and exception reporting in SQL and BigQuery — so supply risk surfaced early enough to act on, cutting late orders by 20%.
+summary: Built shortage and exception reporting in SQL and BigQuery across 300+ SLA and SLS components, pulling inventory coverage, open POs and delivery exceptions into one view.
 capabilities:
   - Planning & Inventory
-  - Analytics & Program Management
+  - Analytics
 tools:
   - SQL / BigQuery
   - Advanced Excel
@@ -16,18 +16,19 @@ scope:
   - 300+ SLA/SLS components
 headlineOutcome:
   value: 20%
-  label: reduction in late orders
+  label: fewer late orders
   kind: outcome
-supportingMetrics:
-  - value: 6%
-    label: improvement in on-time in-full performance
-    kind: outcome
-  - value: 300+
-    label: SLA/SLS components covered
-    kind: scope
+supportingMetrics: []
+method:
+  inputs:
+    - Inventory coverage
+    - Open POs
+    - Delivery exceptions
+  output: Supply-risk flag
+  result: Expedite, re-plan or escalate
 featured: true
-published: false
-draft: true
+published: true
+draft: false
 order: 4
 evidence:
   - claim: SQL/BigQuery reporting across 300+ SLA/SLS components tracking inventory coverage, open POs and delivery exceptions; late orders -20%, OTIF +6%
@@ -44,39 +45,25 @@ openQuestions:
 
 ## Context
 
-Formlabs builds SLA and SLS 3D printing hardware. A single machine draws on hundreds of components across mechanical, optical and electronic categories, sourced from suppliers with lead times ranging from weeks to months.
-
-The reporting covered more than 300 components across both platforms.
+Formlabs builds SLA and SLS 3D printing hardware. A single machine draws on hundreds of components across mechanical, optical and electronic categories, with supplier lead times running from weeks to months. My reporting covered more than 300 of them.
 
 ## Problem
 
-On a bill of materials that size, one late component stops a build as effectively as a hundred. The information needed to see that coming — what is on hand, what is on order, what is late, what is committed — exists in the system, but split across inventory balances, open purchase orders and delivery exception records.
-
-Nobody reads three hundred components across three data sources by hand every week. Shortages surface when a build cannot start.
-
-TODO — Esmail to supply: How were shortages actually being caught before this reporting existed — a manual pull, a planner's memory, or at the point the build stopped? How much warning did that give?
-
-## Decision and trade-off
-
-TODO — Esmail to supply: A supply-risk signal is only useful if it maps to an action. When a component flagged, what did the report drive — expedite the inbound PO, re-plan the build sequence, or escalate to the supplier? And how did you decide which components deserved a flag rather than being noise a planner would learn to ignore?
+The data needed to see a shortage coming — inventory coverage, open purchase orders, delivery exceptions — sat in three separate places. At 300+ components across two platforms, that is not something anyone reviews by hand each week, so shortages tended to surface when a build could not start.
 
 ## What I did
 
-1. **Brought inventory coverage, open purchase orders and delivery exceptions into one query layer** in SQL and BigQuery, so component risk was assessed against all three at once rather than one at a time.
-2. **Built shortage and exception reporting** across 300+ SLA/SLS components, running against current data rather than a periodic manual extract.
-3. **Surfaced supply risk as an exception**, so planner attention went to the components that had moved rather than the full component list.
-4. **Escalated to suppliers** on the components the reporting flagged, while there was still lead time available to recover.
+- Pulled inventory coverage, open purchase orders and delivery exceptions into one query layer in SQL and BigQuery.
+- Built shortage and exception reporting across the 300+ SLA/SLS components, running against current data rather than a periodic manual extract.
+- Reported risk as an exception, so planner attention went to what had moved rather than the full component list.
+- Escalated flagged components to suppliers while there was still lead time to recover.
 
 ## Result
 
-**20% reduction in late orders**, with on-time in-full performance improving by 6%.
+**Late orders down 20%**, with on-time in-full performance up 6%.
 
-TODO — Esmail to supply: over what window were these measured?
-
-The reporting did not shorten a single supplier lead time. It moved the moment a shortage became visible earlier — far enough forward that expediting, re-planning or escalating was still possible, which is the whole difference between a supply risk and a late order.
+The reporting did not change a single supplier lead time. It moved the point at which a shortage became visible far enough forward that expediting, re-planning or escalating was still an option.
 
 ## Related work
 
-Two further workstreams ran in the same role and are not part of this case. ABC analysis in Netstock across 1,200 SKUs segmented slow-moving, excess and at-risk inventory for disposition decisions, saving $50K in carrying costs. Separately, NetSuite spend and COGS reporting for SLS powders consolidated BOM costs and eliminated 80% of manual reporting, letting finance assess gross margin and product-group profitability faster.
-
-Neither is presented as connected to the supply-risk reporting above.
+Two further workstreams ran in the same role. ABC analysis in Netstock across 1,200 SKUs segmented slow-moving, excess and at-risk inventory for disposition decisions, saving $50K in carrying costs. Separately, NetSuite spend and COGS reporting for SLS powders consolidated BOM costs and removed 80% of the manual reporting effort.

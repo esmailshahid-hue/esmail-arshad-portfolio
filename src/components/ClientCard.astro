@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  /** Resolved from content/images by the calling page. */
+  thumb?: ImageMetadata;
+}
+const { entry, thumb } = Astro.props;
+const d = entry.data;
+---
+
+<a
+  href={`/work/${entry.id}/`}
+  class="group flex h-full flex-col no-underline"
+>
+  {/* The artifact is the message on client work, so it leads. */}
+  {
+    thumb && (
+      <div class="mb-5 overflow-hidden border border-rule bg-white">
+        <Image
+          src={thumb}
+          alt=""
+          widths={[560, 900]}
+          sizes="(min-width: 768px) 45vw, 92vw"
+          class="aspect-[2/1] w-full object-cover object-left-top transition-transform duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+
+  <p class="text-sm font-medium text-ink">
+    {d.organization} <span class="text-ink-mute">·</span> {d.roleFocus}
+  </p>
+
+  <h3
+    class="mt-2 font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate"
+  >
+    {d.title}
+  </h3>
+
+  <p class="mt-2 text-sm leading-relaxed text-ink-soft">{d.summary}</p>
+
+  <p class="mt-4 text-sm text-ink-mute">
+    {d.scope.join(' · ')}
+  </p>
+
+  <p class="mt-4 text-sm font-medium text-slate">
+    View project <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+  </p>
+</a>

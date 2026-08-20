@@ -30,7 +30,11 @@ const work = defineCollection({
       kind: z.enum(['outcome', 'finding']),
     }),
 
-    /** Supporting metrics from the same workstream only (§12). */
+    /**
+     * Supporting metrics from the same workstream only (§12). Kept in the schema
+     * but deliberately unused on the current pages: figures read better inside
+     * the prose, where they carry context, than stacked in a metric band.
+     */
     supportingMetrics: z
       .array(
         z.object({
@@ -40,6 +44,25 @@ const work = defineCollection({
         })
       )
       .default([]),
+
+    /**
+     * One sentence naming the judgment the project turned on. Rendered as a
+     * pull quote on client-project pages. Omit where there is no such call.
+     */
+    keyDecision: z.string().optional(),
+
+    /**
+     * A plain inputs -> output -> result line, used where an employer case study
+     * has no artifact to show. Explanatory only: never a recreation of an
+     * internal system (§23).
+     */
+    method: z
+      .object({
+        inputs: z.array(z.string()).min(2),
+        output: z.string(),
+        result: z.string(),
+      })
+      .optional(),
 
     rightsStatus: z.enum(['own-work', 'sanitized-recreation']).default('own-work'),
 
@@ -51,6 +74,8 @@ const work = defineCollection({
           sheet: z.string(),
           alt: z.string(),
           caption: z.string(),
+          /** Leads the page, and supplies the card thumbnail. One per project. */
+          primary: z.boolean().default(false),
         })
       )
       .default([]),
