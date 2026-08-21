@@ -7,12 +7,12 @@ import EmployerCard from '@components/EmployerCard.astro';
 import ClientCard from '@components/ClientCard.astro';
 import { meta, hero, experience, about, education, contact } from '@content/site';
 
-const work = (await getCollection('work'))
-  .filter((w) => w.data.published)
+// The homepage curates. Everything published lives on /work/.
+const featured = (await getCollection('work'))
+  .filter((w) => w.data.published && w.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 
-const employer = work.filter((w) => w.data.type === 'operating-case-study');
-const client = work.filter((w) => w.data.type === 'client-project');
+const total = (await getCollection('work')).filter((w) => w.data.published).length;
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '../../content/images/*.{jpg,jpeg,png}',
@@ -21,35 +21,37 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 const img = (file: string) => images[`../../content/images/${file}`]?.default;
 
 const headshot = img(about.headshot);
-const thumbOf = (entry: (typeof work)[number]) => {
+const thumbOf = (entry: (typeof featured)[number]) => {
   const primary = entry.data.images.find((i) => i.primary) ?? entry.data.images[0];
   return primary ? img(primary.file) : undefined;
 };
+
+const [lead, ...rest] = featured;
 ---
 
 <Base path="/">
   {/* ------------------------------------------------------------------ Hero */}
-  <section class="shell pt-14 pb-12 md:pt-20 md:pb-16">
-    <h1 class="max-w-4xl font-display text-hero font-semibold leading-[1.03] text-ink">
-      {meta.positioning}
-    </h1>
-
-    {/* Statement at full width; the specifics fill the column beside it rather
-        than stacking into a single grey wall below. */}
-    <div class="mt-8 grid gap-x-16 gap-y-9 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+  <section class="shell pt-12 pb-14 md:pt-16 md:pb-20">
+    <div
+      class="grid items-start gap-x-16 gap-y-10 md:grid-cols-[minmax(0,1fr)_16rem] lg:gap-x-20"
+    >
       <div>
-        <p class="text-lede leading-snug text-ink">{meta.proposition}</p>
+        <h1 class="max-w-3xl font-display text-hero font-semibold leading-[1.06] text-ink">
+          {hero.greeting}
+        </h1>
+
+        <p class="mt-7 max-w-2xl text-lede leading-snug text-ink-soft">{hero.intro}</p>
 
         <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft">
-          {hero.credential} {hero.context}
+          {hero.background}
         </p>
 
-        <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
           <a
             href="#work"
             class="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper no-underline transition-colors hover:bg-slate-deep"
           >
-            Selected Work
+            View case studies
           </a>
           <a
             href={meta.resumePath}
@@ -58,129 +60,110 @@ const thumbOf = (entry: (typeof work)[number]) => {
             Résumé
           </a>
         </div>
+
+        <p class="mt-7 text-sm text-ink-mute">{hero.mobility}</p>
       </div>
 
-      <dl class="grid gap-5 self-start border-t border-rule pt-6 lg:mt-1.5">
-        <div>
-          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Focus</dt>
-          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">
-            {hero.disciplines.join(' · ')}
-          </dd>
-        </div>
-        <div>
-          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Systems</dt>
-          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">
-            {hero.systems.join(' · ')}
-          </dd>
-        </div>
-        <div>
-          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Based</dt>
-          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">{hero.mobility}</dd>
-        </div>
-      </dl>
+      {
+        headshot && (
+          <Image
+            src={headshot}
+            alt={about.headshotAlt}
+            width={389}
+            height={389}
+            class="order-first w-40 rounded-sm object-cover sm:w-48 md:order-none md:w-full"
+            loading="eager"
+          />
+        )
+      }
     </div>
   </section>
 
-  {/* --------------------------------------------------------- Selected work */}
-  <Section id="work" heading="Selected work" divided>
-    <ul class="grid list-none gap-x-10 gap-y-11 sm:grid-cols-2 lg:grid-cols-4">
+  {/* -------------------------------------------------------- Case studies */}
+  <Section id="work" divided>
+    <p class="text-xs font-medium tracking-wide text-ink-mute uppercase">Case studies</p>
+    <h2 class="mt-3 mb-9 font-display text-section text-ink md:mb-11">
+      A few problems I’ve worked on
+    </h2>
+
+    <ul class="grid list-none gap-x-10 gap-y-11 md:grid-cols-2">
+      <li class="flex md:col-span-2">
+        <EmployerCard entry={lead} lead />
+      </li>
       {
-        employer.map((entry, i) => (
-          <li class={`flex ${i === 0 ? 'lg:col-span-2' : ''}`}>
-            <EmployerCard entry={entry} lead={i === 0} />
+        rest.map((entry) => (
+          <li class="flex">
+            {entry.data.type === 'client-project' ? (
+              <ClientCard entry={entry} thumb={thumbOf(entry)} />
+            ) : (
+              <EmployerCard entry={entry} />
+            )}
           </li>
         ))
       }
     </ul>
 
-    <ul class="mt-16 grid list-none gap-x-10 gap-y-12 md:grid-cols-2">
-      {
-        client.map((entry) => (
-          <li class="flex">
-            <ClientCard entry={entry} thumb={thumbOf(entry)} />
-          </li>
-        ))
-      }
-    </ul>
+    <p class="mt-11">
+      <a href="/work/" class="text-sm text-slate no-underline hover:underline">
+        View all {total} case studies <span aria-hidden="true">→</span>
+      </a>
+    </p>
   </Section>
 
-  {/* ------------------------------------------------------------ Experience */}
-  <Section id="experience" heading="Experience" density="tight" divided>
-    <ol class="list-none">
+  {/* --------------------------------------------------------------- About */}
+  <Section id="about" heading="About" density="tight" divided>
+    <div class="grid max-w-2xl gap-4">
+      {about.paragraphs.map((para) => <p class="text-base leading-relaxed text-ink-soft">{para}</p>)}
+    </div>
+  </Section>
+
+  {/* ---------------------------------------------------- Where I've worked */}
+  <Section id="experience" heading="Where I’ve worked" density="tight" divided>
+    <ol class="grid list-none gap-0">
       {
         experience.map((role) => (
-          <li class="grid grid-cols-[5.5rem_1fr] gap-x-5 border-t border-rule-soft py-3.5 sm:grid-cols-[7rem_1fr] md:grid-cols-[8rem_1fr_9rem]">
+          <li class="grid grid-cols-[6rem_1fr] gap-x-6 border-l border-rule py-3.5 pl-6 sm:grid-cols-[8rem_1fr]">
             <p class="text-sm text-ink-mute">{role.dates}</p>
             <div>
               <p class="text-[0.9375rem] font-medium text-ink">{role.company}</p>
-              <p class="mt-0.5 text-sm text-ink-soft">
-                {role.displayTitle} <span class="text-ink-mute">·</span> {role.scope}
-              </p>
+              <p class="mt-0.5 text-sm text-ink-soft">{role.displayTitle}</p>
             </div>
-            <p class="col-start-2 mt-1 text-sm text-ink-mute md:col-start-3 md:mt-0 md:text-right">
-              {role.location}
-            </p>
           </li>
         ))
       }
     </ol>
+    {/* Per-row locations made the timeline a résumé again, but US work history is
+        real signal for someone seeking international roles. One line keeps it. */}
+    <p class="mt-5 pl-6 text-sm text-ink-mute">Roles in the United States and Pakistan.</p>
   </Section>
 
-  {/* ------------------------------------------- About / Education / Contact */}
-  <Section id="about" density="tight" divided>
-    <div class="grid gap-10 md:grid-cols-3 md:gap-14">
-      <div class="md:col-span-2">
-        <div class="flex items-start gap-5">
+  {/* ------------------------------------------------ Education and contact */}
+  <Section density="tight" divided>
+    <div class="grid gap-10 sm:grid-cols-2 md:gap-16">
+      <div id="education">
+        <h2 class="text-sm font-semibold text-ink">Education</h2>
+        <p class="mt-2 text-sm text-ink">{education.institution}</p>
+        <ul class="mt-1 grid list-none gap-1">
           {
-            headshot && (
-              <Image
-                src={headshot}
-                alt={about.headshotAlt}
-                width={144}
-                height={144}
-                class="hidden h-18 w-18 shrink-0 rounded-sm object-cover sm:block"
-              />
-            )
+            education.degrees.map((d) => (
+              <li class="text-sm text-ink-soft">
+                {d.degree}, {d.year}
+                {d.detail && <span class="text-ink-mute"> · {d.detail}</span>}
+              </li>
+            ))
           }
-          <p class="text-base leading-relaxed text-ink-soft">{about.text}</p>
-        </div>
+        </ul>
       </div>
 
-      <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-1">
-        <div id="education">
-          <h2 class="text-sm font-semibold text-ink">Education</h2>
-          <p class="mt-2 text-sm text-ink">{education.institution}</p>
-          <ul class="mt-1 grid list-none gap-1">
-            {
-              education.degrees.map((d) => (
-                <li class="text-sm text-ink-soft">
-                  {d.degree}, {d.year}
-                  {d.detail && <span class="text-ink-mute"> · {d.detail}</span>}
-                </li>
-              ))
-            }
-            {
-              education.certifications.map((c) => (
-                <li class="mt-2 text-sm text-ink-soft">
-                  {c.name}
-                  {c.issuer && <span class="text-ink-mute"> · {c.issuer}</span>}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div id="contact">
-          <h2 class="text-sm font-semibold text-ink">Contact</h2>
-          <ul class="mt-2 grid list-none gap-1 text-sm">
-            <li><a class="text-link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
-            <li>
-              <a class="text-link" href={contact.linkedin} rel="me">{contact.linkedinLabel}</a>
-            </li>
-            <li><a class="text-link" href={meta.resumePath}>Résumé (PDF)</a></li>
-            {contact.github && <li><a class="text-link" href={contact.github}>GitHub</a></li>}
-          </ul>
-        </div>
+      <div id="contact">
+        <h2 class="text-sm font-semibold text-ink">Contact</h2>
+        <ul class="mt-2 grid list-none gap-1 text-sm">
+          <li><a class="text-link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li>
+            <a class="text-link" href={contact.linkedin} rel="me">{contact.linkedinLabel}</a>
+          </li>
+          <li><a class="text-link" href={meta.resumePath}>Résumé (PDF)</a></li>
+        </ul>
       </div>
     </div>
   </Section>
