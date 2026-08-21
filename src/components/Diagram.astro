@@ -91,7 +91,7 @@ const captionWidth =
             )}
             <div
               class:list={[
-                'w-full border bg-white px-4 py-3 text-center',
+                'w-full border bg-card px-4 py-3 text-center',
                 i === steps.length - 1 ? 'border-slate' : 'border-rule',
               ]}
             >
@@ -117,7 +117,7 @@ const captionWidth =
             )}
             <div
               class:list={[
-                'border bg-white px-4 py-3',
+                'border bg-card px-4 py-3',
                 i === levels.length - 1 ? 'border-slate' : 'border-rule',
               ]}
               style={`margin-left:${i * 1.5}rem`}
@@ -151,7 +151,7 @@ const captionWidth =
                         ↓
                       </span>
                     )}
-                    <div class="flex items-baseline gap-4 border border-rule bg-white px-4 py-3">
+                    <div class="flex items-baseline gap-4 border border-rule bg-card px-4 py-3">
                       <span class="shrink-0 font-display text-xs text-ink-mute">
                         {String(
                           phases.slice(0, p).reduce((n, ph) => n + ph.steps.length, 0) + i + 1
@@ -175,7 +175,7 @@ const captionWidth =
           </p>
         )}
         {outcome && (
-          <p class="mt-3 border border-slate bg-white px-4 py-3 text-sm font-medium text-ink">
+          <p class="mt-3 border border-slate bg-card px-4 py-3 text-sm font-medium text-ink">
             {outcome}
           </p>
         )}
@@ -265,12 +265,12 @@ const captionWidth =
                     +
                   </span>
                 )}
-                <span class="border border-rule bg-white px-3 py-1.5 text-ink-soft">{source}</span>
+                <span class="border border-rule bg-card px-3 py-1.5 text-ink-soft">{source}</span>
               </li>
             ))}
             <li class="flex items-center gap-3">
               <span aria-hidden="true" class="text-slate">→</span>
-              <span class="border border-slate bg-white px-3 py-1.5 font-medium text-ink">
+              <span class="border border-slate bg-card px-3 py-1.5 font-medium text-ink">
                 {combine.output}
               </span>
             </li>

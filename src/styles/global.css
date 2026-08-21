@@ -15,12 +15,46 @@
   --font-display: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
 
-  --text-hero: clamp(2.5rem, 6vw, 4.5rem);
-  --text-display: clamp(1.85rem, 3.5vw, 2.7rem);
+  /* Surface a diagram box sits on. Separate from --color-paper so it can lift
+     off the ground in dark mode, where plain white would glare. */
+  --color-card: #ffffff;
+
+  /* One continuous scale. The homepage previously ran 72 -> 30 with nothing
+     between, so it read as one large thing followed by many small ones.
+     --text-section adds the missing rung and strengthens the section headings.
+     Desktop: 68 / 44 / 36 / 32 / 24 / 20 / 17 / 16 / 14 / 12 / 11. */
+  --text-hero: clamp(2.75rem, 5.6vw, 4.25rem);
+  --text-display: clamp(2rem, 3.6vw, 2.75rem);
+  --text-section: clamp(1.75rem, 2.6vw, 2.25rem);
+  --text-lede: clamp(1.25rem, 1.6vw, 1.5rem);
+}
+
+/*
+ * Dark mode follows the operating system and nothing else. A manual toggle
+ * would mean shipping JavaScript, localStorage and flash-of-wrong-theme
+ * handling to this otherwise zero-JS site, for a preference the OS already
+ * knows. The palette is designed rather than inverted: the ground stays warm
+ * so the page still reads as paper, and type is off-white rather than pure
+ * white, which glares at these sizes.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper:      #17191c;
+    --color-paper-deep: #121417;
+    --color-card:       #1e2126;
+    --color-ink:        #ebe7e0;
+    --color-ink-soft:   #b5b0a7;
+    --color-ink-mute:   #979186;
+    --color-rule:       #383c42;
+    --color-rule-soft:  #2a2e33;
+    --color-slate:      #93b7d4;
+    --color-slate-deep: #b6d2e7;
+  }
 }
 
 @layer base {
   html {
+    color-scheme: light dark;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
