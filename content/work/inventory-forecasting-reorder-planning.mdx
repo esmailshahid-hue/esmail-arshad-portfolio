@@ -2,7 +2,7 @@
 type: client-project
 title: Letting demand behaviour choose the forecast method
 organization: Client work
-roleFocus: Inventory planning
+roleFocus: Demand & inventory planning
 timeframe: 18 months of demand history
 summary: An SKU-level forecasting and replenishment model that classifies each item by how its demand actually behaves, then sizes safety stock and reorder points to match.
 capabilities:
@@ -14,12 +14,20 @@ scope:
   - 24 SKUs
   - 432 demand records
   - 18 months (Jan 2024 – Jun 2025)
+atAGlance:
+  - label: Scope
+    value: 24 SKUs
+    note: 432 demand records across 18 months (Jan 2024 – Jun 2025)
+  - label: Method
+    value: Per-SKU forecasting
+    note: selected from trend, variability and intermittency
+  - label: Finding
+    value: 15 SKUs
+    note: at or below reorder point
 headlineOutcome:
   value: '15'
   label: SKUs at or below reorder point
   kind: finding
-supportingMetrics: []
-keyDecision: The forecast method is chosen per SKU from how its demand behaves, not applied uniformly across the range.
 rightsStatus: sanitized-recreation
 images:
   - file: inventory-dashboard.png
@@ -60,31 +68,34 @@ evidence:
     source: workbook Inventory_Risk_Review final rows; confirmed sku-1014 present in Raw_Data
 ---
 
-## Problem
+## Challenge
 
-Twenty-four SKUs covering finished goods, components, spare parts, consumables and packaging, with 432 demand records over eighteen months. The range does not behave uniformly: one spare part recorded demand in six months of eighteen, while a packaging SKU moves in thousands of units against a battery module moving in tens at forty times the unit cost.
+Twenty-four SKUs spanning finished goods, components, spare parts, consumables and packaging, with 432 demand records over eighteen months. The range does not behave alike: one spare part recorded demand in six months of eighteen, while a packaging SKU moves in thousands of units against a battery module moving in tens at forty times the unit cost.
 
-A single forecast method across that range under-stocks the intermittent items and lags the growing ones, while smoothing a real decline into apparent stability.
+One method across that range under-stocks the intermittent items, lags the growing ones, and smooths a real decline into apparent stability.
 
-## Method
+## What I did
 
-- **Classified each SKU's demand from its own statistics** — averages over three, six and twelve months, standard deviation, coefficient of variation, trend and count of zero-demand months — as stable, growing, declining, intermittent, variable or lumpy.
-- **Set the forecast method from that classification:** six-month moving average for stable and variable items, three-month for growing ones, median-based logic for lumpy and intermittent items so occasional large orders do not inflate a baseline that is usually zero.
-- **Sized safety stock** from a 1.65 service-level Z-score against demand variability scaled by the square root of lead-time days, so a long-lead item carries more cover than a short-lead item with identical variability. Reorder point is lead-time demand plus safety stock.
-- **Classified SKUs A/B/C on annual value** and gave every risk flag a written reason, with service level, lead times, MOQ and thresholds documented on their own sheet.
+1. **Classified each SKU's demand from its own statistics** — averages over three, six and twelve months, standard deviation, coefficient of variation, trend and count of zero-demand months — as stable, growing, declining, intermittent, variable or lumpy.
+2. **Set the forecast method from that classification**: six-month moving average for stable and variable items, three-month for growing ones, median-based logic for lumpy and intermittent items so occasional large orders do not inflate a baseline that is usually zero.
+3. **Sized safety stock** from a 1.65 service-level Z-score against variability scaled by the square root of lead-time days, so a long-lead item carries more cover than a short-lead item with identical variability. Reorder point is lead-time demand plus safety stock.
+4. **Held make-to-order items back from automated reorder.** Four of the 24 are MTO: modelled alongside everything else, but routed to a planner, since their demand is a customer commitment rather than a forecast.
+5. **Gave every flag a written reason**, with service level, lead times, MOQ and thresholds documented on their own sheet.
 
-Four of the 24 SKUs are make-to-order. They are modelled alongside everything else but held back from automated reorder until a planner validates them, since their demand is a customer commitment rather than a forecast.
+## Decision
 
-## What it surfaced
+> The forecast method is chosen per SKU from how its demand behaves, not applied uniformly across the range.
 
-- **15 SKUs at or below reorder point**, several of them A-class finished goods, against one packaging item sitting at 7.1 months of supply. Suggested reorder value is $43,685 against $78,354 of current inventory.
+## Key findings
+
+- **15 SKUs at or below reorder point**, several A-class finished goods, against one packaging item at 7.1 months of supply. Suggested reorder value is $43,685 against $78,354 of current inventory.
 - **A lowercase, trailing-space SKU variant** in the raw demand file, which would have split one item into two in a live planning run.
-- **A purchase order past its expected receipt date**, inflating on-order quantity until someone confirms it with the buyer.
+- **A purchase order past its expected receipt date**, inflating on-order quantity until a buyer confirms it.
 
 The last two are not inventory risks. They are reasons a planning run would have returned the wrong answer.
 
 ## Limitations
 
-- Service level is 1.65 across every SKU. Differentiating it by ABC class or item criticality would be a reasonable next step.
+- Service level is 1.65 across every SKU. Differentiating it by ABC class or criticality would be a reasonable next step.
 - Lead times, MOQ and unit costs come from the SKU master as supplied, and were not validated against supplier agreements.
-- Safety stock assumes monthly standard deviation represents variability well. That holds least for the intermittent and lumpy items, which is why those use median-based forecasting.
+- Safety stock assumes monthly standard deviation represents variability well. That holds least for intermittent and lumpy items, which is why those use median-based forecasting.

@@ -1,0 +1,100 @@
+---
+type: operating-case-study
+title: Rebuilding production scheduling around delivery risk
+organization: Jannat & Sadaf
+displayTitle: Operations Manager
+roleFocus: Production planning and capacity management
+timeframe: '2026 — Now'
+summary: Production ran off an informal queue that took little account of garment lead time, labour capacity or promised dates. I rebuilt the sequence around which orders were most at risk of missing their date, taking on-time delivery to 98.6%.
+capabilities:
+  - Planning & Inventory
+  - Logistics & Operations
+tools:
+  - Production planning
+  - Capacity management
+  - Order prioritization
+scope:
+  - Pret, Formal and Wedding lines
+atAGlance:
+  - label: Problem
+    value: Informal queue
+    note: little visibility into lead time, effort or available capacity
+  - label: Priority
+    value: Long-lead orders
+    note: wedding work sequenced around delivery risk
+  - label: Outcome
+    value: 98.6%
+    note: on-time delivery
+headlineOutcome:
+  value: 98.6%
+  label: on-time delivery
+  kind: outcome
+diagram:
+  kind: compare
+  caption: The change was which order goes first. Arrival order ignores the one fact that matters most — how little room a late start leaves to recover.
+  compare:
+    before:
+      label: Order of arrival
+      caption: Primarily FIFO, with capacity collisions late in the cycle
+      items:
+        - Promised delivery date not weighed against effort
+        - Garment lead time not consistently accounted for
+        - Production hours and labour availability unmodelled
+        - Late wedding orders and last-minute overtime
+    after:
+      label: Risk of missing the date
+      caption: Sequenced on due date, lead time, effort and capacity together
+      items:
+        - Long-lead wedding wear placed first where needed
+        - Remaining production effort assessed per open order
+        - Overlapping high-effort orders spread across the team
+        - Capacity pressure visible early enough to act on
+featured: true
+published: true
+draft: false
+order: 1
+evidence:
+  - claim: 98.6% on-time delivery from scheduling by due date, lead time and capacity
+    source: standardized résumé J&S bullet 1; procurement bullet 3; logistics bullet 1; js-bullet-bank Core Three #1
+  - claim: production previously managed through an informal, primarily FIFO queue; capacity collisions between long-lead wedding work and shorter Pret/Formal orders; last-minute overtime
+    source: CANDIDATE ACCOUNT — Esmail, Phase 2 brief. Supplies the "before" the résumé bullet never described.
+  - claim: 98.6% is tied specifically to the production-scheduling redesign
+    source: Phase 2 brief §6. The previous version of this page implied the sourcing and cost-tracking results came from the same work; they did not.
+  - claim: 93.5% spend traceability — SEPARATE WORKSTREAM (purchase-to-order cost tracking), deliberately not on this page
+    source: standardized bullet 2; js-bullet-bank Core Three #3. Phase 2 brief §6 keep-separate list.
+  - claim: 25% fabric cost reduction and rework under 5% of order value — SEPARATE WORKSTREAM (supplier base 4 → 12), deliberately not on this page
+    source: standardized bullet 3; js-bullet-bank Core Three #2. Phase 2 brief §6 keep-separate list.
+  - claim: no quantified overtime reduction claimed — no supporting data exists
+    source: explicit guardrail, Phase 2 brief §6
+  - claim: 16x revenue growth — CONTEXT ONLY, and dropped from this version to keep the page on one workstream
+    source: js-bullet-bank Swap B
+  - claim: PKR 3.0M capital plan DELIBERATELY EXCLUDED
+    source: js-bullet-bank Swap A; §14 excludes absolute PKR figures
+  - claim: no customer names or order details; no unsupported labour or capacity figures
+    source: §23 confidentiality; Phase 2 brief §6
+openQuestions: []
+---
+
+## Challenge
+
+Production was managed through an informal queue that leaned heavily on the order in which work arrived, without consistently weighing garment lead time, the effort still required, or the labour capacity actually available.
+
+That produced capacity collisions — most damagingly when long-lead wedding orders competed with shorter Pret and Formal work. The result was late deliveries and last-minute overtime.
+
+## What I did
+
+1. **Mapped the production requirements of open orders**, covering promised dates, garment type, expected lead time and the work still outstanding on each.
+2. **Replaced the arrival-order queue with a risk-based sequence**, prioritizing on due date, lead time and available capacity together.
+3. **Gave long-lead wedding wear additional priority**, since a delayed start there leaves far less room to recover before a date that cannot move.
+4. **Balanced work across the team**, using the queue to stop high-effort orders from overlapping and to surface capacity pressure earlier.
+5. **Used delivery performance to tune the sequence**, moving production management from last-minute recovery toward earlier intervention.
+
+## Decision
+
+> The earliest order in the queue was not always the one that needed attention first. I sequenced on the risk of missing the promised date, especially where a long production lead time left little room to recover later.
+
+## Outcome
+
+**On-time delivery reached 98.6%.**
+
+The process also reduced the reliance on last-minute recovery, because delivery risk surfaced early enough to be scheduled around rather than absorbed as overtime.

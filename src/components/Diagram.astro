@@ -4,16 +4,24 @@
  * and colour tokens — selectable, searchable, translatable, screen-reader
  * legible, responsive, and weightless. Deliberately not an imported PNG.
  *
- * Two shapes, added only where the shape itself says something the prose cannot:
+ * A shape is added only where it says something the prose cannot:
  *   narrowing — a search that eliminates ground at each step
  *   recovery  — one quantity split into parts, then recombined with another
+ *   hierarchy — a decomposition, where the fan-out is itself the point
+ *   sequence  — stages of a process, optionally one that recurs
+ *   compare   — a before/after contrast that is the case study's whole argument
  *
- * Every figure that appears here also appears in the case study's own words, so
- * the diagram supports the argument rather than carrying it alone.
+ * Every figure shown here also appears in the case study's own words, and no
+ * proportion is invented to make a shape look better than its data.
  */
 interface Step {
   label: string;
   note: string;
+}
+interface Level {
+  label: string;
+  note: string;
+  fan?: string;
 }
 interface Part {
   pct: number;
@@ -21,20 +29,50 @@ interface Part {
   label: string;
   muted: boolean;
 }
+interface Column {
+  label: string;
+  caption?: string;
+  items: readonly string[];
+}
+interface Phase {
+  label: string;
+  steps: readonly Step[];
+}
 interface Props {
-  kind: 'narrowing' | 'recovery';
+  kind: 'narrowing' | 'recovery' | 'hierarchy' | 'sequence' | 'compare';
   caption: string;
   steps?: readonly Step[];
+  phases?: readonly Phase[];
+  levels?: readonly Level[];
   split?: { label: string; parts: readonly Part[] };
   combine?: { sources: readonly string[]; output: string };
+  compare?: { before: Column; after: Column };
+  outcome?: string;
+  repeats?: string;
 }
 
-const { kind, caption, steps = [], split, combine } = Astro.props;
+const {
+  kind,
+  caption,
+  steps = [],
+  phases = [],
+  levels = [],
+  split,
+  combine,
+  compare,
+  outcome,
+  repeats,
+} = Astro.props;
 
-// Each step of the search keeps a little more ground than the shape suggests;
-// the widths read as narrowing without implying a measured proportion.
+// Each step keeps a little more ground than the shape suggests; the widths read
+// as narrowing without implying a measured proportion.
 const widthAt = (i: number, total: number) =>
   total < 2 ? 100 : Math.round(100 - (i / (total - 1)) * 42);
+
+// The caption tracks the width of the shape above it, so it reads as a note on
+// the diagram rather than a stray centred line.
+const captionWidth =
+  kind === 'compare' || kind === 'sequence' ? 'max-w-4xl' : 'max-w-3xl';
 ---
 
 <figure class="border-y border-rule py-8 md:py-10">
@@ -58,6 +96,113 @@ const widthAt = (i: number, total: number) =>
           </li>
         ))}
       </ol>
+    )
+  }
+
+  {
+    kind === 'hierarchy' && (
+      <ol class="mx-auto grid max-w-3xl list-none">
+        {levels.map((level, i) => (
+          <li>
+            {i > 0 && (
+              <p class="flex items-center gap-2.5 py-2 pl-6 text-sm text-ink-mute">
+                <span aria-hidden="true">↳</span>
+                {level.fan}
+              </p>
+            )}
+            <div
+              class="border border-rule bg-white px-4 py-3"
+              style={`margin-left:${i * 1.5}rem`}
+            >
+              <p class="text-sm font-medium text-ink">{level.label}</p>
+              <p class="mt-0.5 text-sm text-ink-mute">{level.note}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+
+  {
+    kind === 'sequence' && (
+      <div class="mx-auto max-w-4xl">
+        <div class="grid gap-8 md:grid-cols-2 md:gap-10">
+          {phases.map((phase, p) => (
+            <div>
+              <p class="border-t-2 border-rule pt-3 text-xs font-medium tracking-wide text-ink-mute uppercase">
+                {phase.label}
+              </p>
+              <ol class="mt-3.5 grid list-none gap-1.5">
+                {phase.steps.map((step, i) => (
+                  <li>
+                    {i > 0 && (
+                      <span
+                        aria-hidden="true"
+                        class="block py-1 pl-[1.1rem] text-sm leading-none text-ink-mute"
+                      >
+                        ↓
+                      </span>
+                    )}
+                    <div class="flex items-baseline gap-4 border border-rule bg-white px-4 py-3">
+                      <span class="shrink-0 font-display text-xs text-ink-mute">
+                        {String(
+                          phases.slice(0, p).reduce((n, ph) => n + ph.steps.length, 0) + i + 1
+                        ).padStart(2, '0')}
+                      </span>
+                      <span class="min-w-0">
+                        <span class="block text-sm font-medium text-ink">{step.label}</span>
+                        <span class="mt-0.5 block text-sm text-ink-mute">{step.note}</span>
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+        {repeats && (
+          <p class="mt-7 flex items-baseline gap-2.5 border-t border-rule-soft pt-4 text-sm text-ink-soft">
+            <span aria-hidden="true" class="text-slate">↻</span>
+            {repeats}
+          </p>
+        )}
+        {outcome && (
+          <p class="mt-3 border border-slate bg-white px-4 py-3 text-sm font-medium text-ink">
+            {outcome}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  {
+    kind === 'compare' && compare && (
+      <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2 md:gap-8">
+        {[compare.before, compare.after].map((col, i) => (
+          <div class={i === 1 ? 'border-t-2 border-slate pt-4' : 'border-t-2 border-rule pt-4'}>
+            <p class="text-xs font-medium tracking-wide text-ink-mute uppercase">
+              {i === 0 ? 'Before' : 'After'}
+            </p>
+            <p
+              class={`mt-2 font-display text-lg ${i === 1 ? 'text-ink' : 'text-ink-soft'}`}
+            >
+              {col.label}
+            </p>
+            {col.caption && <p class="mt-1 text-sm text-ink-mute">{col.caption}</p>}
+            <ul class="mt-3.5 grid list-none gap-1.5">
+              {col.items.map((item) => (
+                <li class="flex gap-2.5 text-sm text-ink-soft">
+                  <span
+                    aria-hidden="true"
+                    class={`mt-[0.6em] h-px w-2 shrink-0 ${i === 1 ? 'bg-slate' : 'bg-rule'}`}
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     )
   }
 
@@ -127,5 +272,5 @@ const widthAt = (i: number, total: number) =>
     )
   }
 
-  <figcaption class="mx-auto mt-6 max-w-3xl text-sm text-ink-mute">{caption}</figcaption>
+  <figcaption class={`mx-auto mt-6 text-sm text-ink-mute ${captionWidth}`}>{caption}</figcaption>
 </figure>

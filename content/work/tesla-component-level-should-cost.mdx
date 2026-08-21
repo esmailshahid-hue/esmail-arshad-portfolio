@@ -1,0 +1,94 @@
+---
+type: operating-case-study
+title: Breaking tooling quotes down to the component level
+organization: Tesla
+displayTitle: Global Supply Chain Manager Intern
+roleFocus: Should-costing and supplier benchmarking
+timeframe: '2024'
+summary: Supplier quotes for customized assembly equipment arrived at the station level, where nothing was comparable. I decomposed existing TLA lines to their lower-level components so similar equipment could be benchmarked across suppliers.
+capabilities:
+  - Procurement & Sourcing
+  - Analytics
+tools:
+  - Should-costing
+  - Supplier benchmarking
+  - Advanced Excel
+scope:
+  - 42 TLA lines
+atAGlance:
+  - label: Scope
+    value: 42 TLA lines
+    note: reviewed across existing assembly operations
+  - label: Benchmark
+    value: 8–10 suppliers
+    note: included in the cost and sourcing analysis
+  - label: Outcome
+    value: $150K
+    note: procurement savings
+headlineOutcome:
+  value: $150K
+  label: procurement savings
+  kind: outcome
+diagram:
+  kind: hierarchy
+  caption: Quotes arrived at the top of this structure. Comparable parts live at the bottom of it, which is where the benchmark had to be built.
+  levels:
+    - label: TLA line
+      note: customized per project — 42 reviewed
+    - label: Station
+      note: conveyors, AOI inspection, vision, robotics, dispensing, test
+      fan: 5–15 stations per line
+    - label: Equipment system
+      note: quoted as a single unit by most suppliers
+      fan: 4–8 major systems per station
+    - label: Tier 3 / Tier 4 components
+      note: where similar equipment shares enough common inputs to compare
+      fan: decomposed to component level where practical
+    - label: Cross-supplier cost benchmark
+      note: component, machining, material and labour costs compared side by side
+      fan: standardized across similar equipment types
+featured: true
+published: true
+draft: false
+order: 3
+evidence:
+  - claim: should-costing on TLA equipment benchmarking machining, material and labour inputs to challenge supplier quotes, identify negotiation levers and deliver $150K procurement savings
+    source: procurement résumé Tesla bullet 2 (richest); standardized bullet 1
+  - claim: 42 TLA lines reviewed; 5–15 stations per line; 4–8 major systems per station; decomposition to Tier 3/Tier 4; 8–10 suppliers benchmarked; supplier information and due-diligence deck produced
+    source: CANDIDATE ACCOUNT — Esmail, Phase 2 brief. Adds structural detail to the résumé-sourced result above.
+  - claim: findings included significant differences in standard-component pricing and unusually high machining charges in some quotations
+    source: candidate account. Stated at category level only — no supplier names, no quoted values.
+  - claim: Esmail identified and documented supplier alternatives; he did not conduct the later site visits or onboard the approved supplier base
+    source: explicit guardrail, Phase 2 brief §1. Load-bearing — the internship ended before that stage.
+  - claim: 3% CapEx reduction — SEPARATE WORKSTREAM (broader NPI sourcing and negotiation), deliberately not on this page
+    source: procurement bullet 1; logistics bullet 1. Phase 2 brief §1 keep-separate list.
+  - claim: $100M+ investment visibility — SEPARATE WORKSTREAM (CapEx and supplier reporting), deliberately not on this page
+    source: standardized bullet 2; procurement bullet 3. Phase 2 brief §1 keep-separate list.
+  - claim: no supplier names, no contract terms, no total equipment/component count (complexity varied substantially by line)
+    source: §23 confidentiality; Phase 2 brief §1 explicitly warns against estimating a total
+openQuestions: []
+---
+
+## Challenge
+
+TLA lines were customized by project, but supplier quotations generally arrived at the complete station or equipment level.
+
+That made direct comparison almost impossible. Two suppliers could quote materially different prices for equipment built from many of the same underlying components, and nothing in the quote showed where the difference came from.
+
+## What I did
+
+1. **Reviewed all 42 existing TLA lines**, breaking each down by station and documenting the major equipment used at every stage.
+2. **Decomposed major equipment into lower-level components**, working down to Tier 3 and Tier 4 where practical.
+3. **Standardized comparable components across similar equipment types**, despite differences in how individual lines and stations were configured.
+4. **Worked with contract manufacturers and Tier 1 and Tier 2 suppliers to obtain more granular pricing**, below the station-level quotation they normally provide.
+5. **Benchmarked component, machining, material and labour costs across 8–10 suppliers**, which surfaced significant differences in standard-component pricing and unusually high machining charges in some quotations.
+
+## Decision
+
+> Customized tooling could not be compared reliably as a complete unit. I moved the benchmark down to the component level, where similar equipment shared enough common inputs to support a real comparison.
+
+## Outcome
+
+The component-level benchmark gave the sourcing team evidence to challenge quotations line by line and to compare alternative sourcing options on the same basis. The work contributed to **$150K in procurement savings**.
+
+I also produced a supplier information and due-diligence deck identifying additional suppliers, for senior GSMs to take through their formal vetting and site-visit process.

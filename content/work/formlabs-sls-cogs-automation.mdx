@@ -1,0 +1,96 @@
+---
+type: operating-case-study
+title: Scaling SLS powder cost reporting beyond Excel
+organization: Formlabs
+displayTitle: Supply Chain Analyst Intern
+roleFocus: Product costing and scalable reporting
+timeframe: '2024'
+summary: Monthly COGS for SLS powders was calculated by hand in Excel. With the portfolio expected to grow from 8 to 25+ SKUs, I built a NetSuite reporting workflow that consolidated product, BOM and landed-cost inputs and cut manual reporting effort by 80%.
+capabilities:
+  - Analytics
+  - Procurement & Sourcing
+tools:
+  - NetSuite
+  - SQL
+  - Advanced Excel
+scope:
+  - SLS powder portfolio
+atAGlance:
+  - label: Starting point
+    value: 8 SKUs
+    note: costed manually each month in Excel
+  - label: Growth
+    value: 25+ planned
+    note: SKUs expected as the SLS portfolio expanded
+  - label: Outcome
+    value: 80%
+    note: reduction in manual reporting effort
+headlineOutcome:
+  value: 80%
+  label: less manual reporting effort
+  kind: outcome
+diagram:
+  kind: compare
+  caption: The spreadsheet was not automated as it stood. The logic was rebuilt around reusable source data so that adding a SKU did not add a month of work.
+  compare:
+    before:
+      label: Monthly Excel calculation
+      caption: Effort grew with every SKU added
+      items:
+        - Cost inputs gathered by hand each month
+        - Raw material, assembly, shipping, duties, packaging, FX
+        - Assumptions held inside the workflow itself
+        - Recalculated from scratch every cycle
+    after:
+      label: NetSuite reporting workflow
+      caption: Built for the portfolio that was coming
+      items:
+        - Source of truth mapped per cost driver
+        - SKU, BOM and cost-driver relationships defined once
+        - Assumptions maintained centrally
+        - Source-value changes flow through on a scheduled refresh
+featured: true
+published: true
+draft: false
+order: 4
+evidence:
+  - claim: NetSuite spend and COGS reporting for SLS powders consolidating BOM costs; 80% of manual reporting effort eliminated
+    source: procurement résumé Formlabs bullet 2
+  - claim: 8 SLS powder SKUs costed manually; 25+ SKUs planned; cost inputs spanned raw material, assembly/downpacking, transportation, duties, packaging and FX; raw-material and assembly costs sat on separate transaction lines from the finished SKU
+    source: CANDIDATE ACCOUNT — Esmail, Phase 2 brief. Adds structure to the résumé-sourced result above.
+  - claim: 80% refers to MANUAL REPORTING EFFORT, never to COGS or product cost
+    source: explicit guardrail, Phase 2 brief §3. Wording is load-bearing.
+  - claim: the workflow still requires human review; the 25+ SKUs were planned, not launched
+    source: explicit guardrails, Phase 2 brief §3
+  - claim: $50K carrying-cost reduction — SEPARATE WORKSTREAM (ABC analysis across ~1,200 SKUs in Netstock), deliberately not on this page
+    source: standardized bullet 2; logistics bullet 1. Phase 2 brief §3 keep-separate list.
+  - claim: 20% fewer late orders and 6% OTIF improvement — SEPARATE WORKSTREAM (SQL/BigQuery shortage and exception tracking across 300+ SLA/SLS components), deliberately not on this page
+    source: standardized bullet 1. This was the previous Formlabs case study; retired in favour of portfolio coverage. Retained in the résumé.
+  - claim: generic labels only — no real SKU codes, internal table names, pathway names, supplier costs or system screenshots
+    source: §23 confidentiality; Phase 2 brief §3
+openQuestions: []
+---
+
+## Challenge
+
+COGS for the SLS powder portfolio was calculated by hand in Excel every month. At roughly eight products that was tedious but manageable. The portfolio was expected to pass 25 SKUs.
+
+The cost data was also fragmented. Raw-material and assembly charges often sat on separate transaction records rather than on the finished powder SKU, so scaling the existing spreadsheet would have multiplied both the manual effort and the chance of two months using different cost assumptions.
+
+## What I did
+
+1. **Mapped the source of truth for every COGS input** — raw material, assembly and downpacking, transportation, duties, packaging, exchange rates and the remaining landed-cost components.
+2. **Linked related product records back to the correct powder SKU**, handling the cases where raw-material and assembly costs lived on separate transaction lines.
+3. **Built the reporting logic across SQL data sources and NetSuite**, consolidating the cost drivers into one repeatable monthly workflow.
+4. **Designed for SKUs that did not exist yet**, using available attributes and centrally maintained assumptions until final values arrived.
+5. **Automated the refresh and distribution**, so a change to a source value flowed through without rebuilding the calculation.
+
+## Decision
+
+> The goal was not to automate the spreadsheet as it stood. I built the logic around reusable source data and centrally held assumptions, so the process would still work at 25 SKUs without being rewritten.
+
+## Outcome
+
+**Manual monthly COGS reporting effort fell by 80%**, and the reporting structure was built to absorb the planned expansion of the SLS powder portfolio.
+
+Finance and program stakeholders could take refreshed cost information each month without anyone rebuilding the calculation first.

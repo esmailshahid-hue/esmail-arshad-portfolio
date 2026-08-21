@@ -14,12 +14,20 @@ scope:
   - 421 invoice lines
   - 11 vendors
   - $695,475 reviewed spend
+atAGlance:
+  - label: Scope
+    value: 421 lines
+    note: 11 vendors, $695,475 of reviewed spend over 12 months
+  - label: Method
+    value: 4 anomaly flags
+    note: duplicate, missing PO, currency review and high cost
+  - label: Finding
+    value: 60 lines
+    note: flagged for review, worth $137,615
 headlineOutcome:
   value: '60'
   label: invoice lines flagged for review
   kind: finding
-supportingMetrics: []
-keyDecision: Flagged spend is spend that needs review, not savings. The $137,615 flagged here is recoverable only where validation against AP records and vendor statements says it is.
 rightsStatus: sanitized-recreation
 images:
   - file: freight-dashboard.png
@@ -56,18 +64,22 @@ evidence:
     source: workbook Project_Overview assumption 3; Summary_Findings client notes
 ---
 
-## Problem
+## Challenge
 
 Twelve months of freight invoices arrived as a raw extract. The same carrier appeared as `FEDEX`, `FEDEX GROUND`, `Fedex` and `FEDERAL EXPRESS`. Cost types were free text, several invoices were in non-USD currencies, nineteen had no PO number, and one had no vendor name at all. Nothing could be grouped or compared until that was fixed.
 
-## Method
+## What I did
 
 - **Standardized vendor names** through a lookup resolving every raw spelling to one vendor and vendor group. Dozens of variants collapsed to 11 vendors; the unidentifiable invoice was left as `Needs Review` rather than quietly dropped.
 - **Normalized cost categories** from free-text invoice types, and converted everything to USD so the largest invoices were not simply the ones in the strongest currency. 29 non-USD invoices were flagged as normalized so the conversion stays visible.
 - **Built unit economics** — cost per shipment, per kilogram and per mile — so carriers running different modes could be compared on something other than gross spend.
 - **Applied four anomaly flags** across every line: possible duplicate, missing PO, currency review and high cost. Each flagged line carries a written comment and a recommended action, over raw data kept intact as an audit trail.
 
-## What it surfaced
+## Decision
+
+> Flagged spend is spend that needs review, not savings. The $137,615 flagged here is recoverable only where validation against AP records and vendor statements says it is.
+
+## Key findings
 
 - **60 invoice lines worth $137,615** for review, including $3,743 of possible duplicates across four lines — one an exact pair matching on vendor, invoice number, shipment ID and amount.
 - **19 invoices with no PO number**, worth $36,395. That is a procurement control gap rather than a pricing problem, and it is fixed in a different place.

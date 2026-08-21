@@ -1,0 +1,105 @@
+---
+type: operating-case-study
+title: Keeping high-risk orders on schedule
+organization: Schneider Electric
+displayTitle: Supply Chain Planning Intern
+roleFocus: Daily exception management and logistics coordination
+timeframe: '2025'
+summary: Built a daily exception-management process to find high-risk orders before pickup, clear the inventory and warehouse issues behind them, coordinate carrier execution, and feed root causes back through a shared Control Tower view.
+capabilities:
+  - Logistics & Operations
+  - Planning & Inventory
+tools:
+  - SAP
+  - Oracle
+  - Advanced Excel
+  - Control Tower
+scope:
+  - Daily high-risk order review
+atAGlance:
+  - label: Cadence
+    value: Daily
+    note: high-risk order review and pickup monitoring
+  - label: Measurement period
+    value: 1 quarter
+    note: of sustained exception management
+  - label: Outcome
+    value: 30%
+    note: improvement in on-time pickups
+headlineOutcome:
+  value: 30%
+  label: improvement in on-time pickups
+  kind: outcome
+diagram:
+  kind: sequence
+  caption: The last three steps are what made the first one work. Yesterday's misses set today's priorities.
+  repeats: Runs every morning, so each day's root causes reshape the next day's risk review.
+  outcome: 30% improvement in on-time pickups over one quarter
+  phases:
+    - label: Get ahead of the pickup window
+      steps:
+        - label: Morning risk review
+          note: scheduled pickup date and customer-facing urgency
+        - label: Validate inventory position
+          note: on hand, in transit, backorders and open POs across SAP and Oracle
+        - label: Prepare shipment
+          note: warehouse readiness, documentation, pickup cutoff
+        - label: Execute pickup
+          note: carrier coordination, including earlier international cutoffs
+    - label: Learn from what was missed
+      steps:
+        - label: Review prior-day misses
+          note: late and missed pickups from the previous run
+        - label: Identify root cause
+          note: inventory, warehouse readiness, documentation or ERP release
+        - label: Assign action and owner
+          note: corrective action with named stakeholder ownership
+        - label: Publish performance
+          note: Excel exception report into the Control Tower dashboard
+featured: true
+published: true
+draft: false
+order: 2
+evidence:
+  - claim: daily exception management across high-risk orders; inventory validation in SAP and Oracle; carrier coordination; root-cause reporting published to Control Tower; 30% improvement in on-time pickups
+    source: standardized résumé Schneider bullets; Phase 2 brief §2
+  - claim: 30% is an improvement in on-time pickups, NOT a 30-percentage-point increase
+    source: explicit guardrail, Phase 2 brief §2. Wording is load-bearing — no before/after baseline is presented.
+  - claim: measured over one full quarter
+    source: Phase 2 brief §2
+  - claim: root-cause categories were inventory/shipment completeness, warehouse readiness, documentation, and ERP order release
+    source: candidate account via Phase 2 brief. No percentages attached — none are supported by source data.
+  - claim: Esmail used the Control Tower dashboard; he did not build the platform
+    source: explicit guardrail, Phase 2 brief §2
+  - claim: 20% forecast accuracy improvement — SEPARATE WORKSTREAM (S&OE/S&OP forecasting in Baxter and Excel), deliberately not on this page
+    source: standardized bullet; Phase 2 brief §2 keep-separate list. Retained in the Experience row.
+  - claim: 15% repair lead-time reduction — SEPARATE WORKSTREAM (reverse logistics and RMA), deliberately not on this page
+    source: standardized bullet; Phase 2 brief §2 keep-separate list
+  - claim: no customer or order details; missed pickups are not framed as a carrier-only problem
+    source: §23 confidentiality; explicit guardrail, Phase 2 brief §2
+openQuestions: []
+---
+
+## Challenge
+
+High-priority shipments missed scheduled pickups for reasons that had little to do with carrier availability: incomplete orders, warehouse readiness, documentation requirements, late ERP releases.
+
+The pickup window is the constraint. Each of those causes had to be found early enough to act on it before the window closed — and the same causes kept recurring, so catching them once was not enough.
+
+## What I did
+
+1. **Prioritized high-risk orders each morning**, using scheduled pickup date and customer-facing urgency to decide where attention was needed.
+2. **Validated the real inventory position for each priority SKU**, checking stock on hand, in transit, backorders and open POs across SAP and Oracle.
+3. **Coordinated warehouse and carrier readiness**, making sure parts were picked and staged against the right cutoff — international pickups run earlier than domestic ones.
+4. **Reviewed the prior day's late and missed pickups** to identify what had actually caused each one.
+5. **Built an Excel exception and root-cause report** showing misses, causes, corrective actions and owners, and published it to the Control Tower dashboard for shared visibility.
+
+## Decision
+
+> A missed pickup was rarely just a carrier problem. I structured the day around finding the order-level risk early enough to resolve the inventory, warehouse, documentation or system issue behind it before the pickup window closed.
+
+## Outcome
+
+**On-time pickups improved 30% over one quarter.**
+
+The process also closed the loop between daily execution and root-cause review, giving warehouse, planning, operations and leadership teams one shared view of what had been missed, why, and who owned the fix.

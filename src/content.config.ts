@@ -46,39 +46,8 @@ const work = defineCollection({
       kind: z.enum(['outcome', 'finding']),
     }),
 
-    /**
-     * Supporting metrics from the same workstream only (§12). Kept in the schema
-     * but deliberately unused on the current pages: figures read better inside
-     * the prose, where they carry context, than stacked in a metric band.
-     */
-    supportingMetrics: z
-      .array(
-        z.object({
-          value: z.string(),
-          label: z.string(),
-          kind: z.enum(['outcome', 'scope', 'finding']),
-        })
-      )
-      .default([]),
 
-    /**
-     * One sentence naming the judgment the project turned on. Rendered as a
-     * pull quote on client-project pages. Omit where there is no such call.
-     */
-    keyDecision: z.string().optional(),
 
-    /**
-     * A plain inputs -> output -> result line, used where an employer case study
-     * has no artifact to show. Explanatory only: never a recreation of an
-     * internal system (§23).
-     */
-    method: z
-      .object({
-        inputs: z.array(z.string()).min(2),
-        output: z.string(),
-        result: z.string(),
-      })
-      .optional(),
 
     /**
      * A native diagram, rendered from this data as real text in the page's own
@@ -90,12 +59,50 @@ const work = defineCollection({
      */
     diagram: z
       .object({
-        kind: z.enum(['narrowing', 'recovery']),
+        kind: z.enum(['narrowing', 'recovery', 'hierarchy', 'sequence', 'compare']),
         caption: z.string(),
-        /** `narrowing`: each step of the search, widest first. */
+        /** `narrowing`: each step of the search, widest first.
+         *  `sequence`: each stage of a process, in order. */
         steps: z
           .array(z.object({ label: z.string(), note: z.string() }))
           .default([]),
+        /** `hierarchy`: each level of a decomposition. `fan` describes the
+         *  branching into that level, which is usually the reason the diagram
+         *  exists at all. */
+        levels: z
+          .array(
+            z.object({ label: z.string(), note: z.string(), fan: z.string().optional() })
+          )
+          .default([]),
+        /** `compare`: the contrast the case study turns on. */
+        compare: z
+          .object({
+            before: z.object({
+              label: z.string(),
+              caption: z.string().optional(),
+              items: z.array(z.string()).min(2),
+            }),
+            after: z.object({
+              label: z.string(),
+              caption: z.string().optional(),
+              items: z.array(z.string()).min(2),
+            }),
+          })
+          .optional(),
+        /** `sequence`: stages grouped into phases, rendered side by side so a
+         *  loop reads as a loop rather than a long column. Numbering runs
+         *  continuously across phases. */
+        phases: z
+          .array(
+            z.object({
+              label: z.string(),
+              steps: z.array(z.object({ label: z.string(), note: z.string() })).min(2),
+            })
+          )
+          .default([]),
+        /** `sequence`: what the process produces, and what makes it recur. */
+        outcome: z.string().optional(),
+        repeats: z.string().optional(),
         /** `recovery`: one quantity divided into parts. Percentages must total 100. */
         split: z
           .object({
