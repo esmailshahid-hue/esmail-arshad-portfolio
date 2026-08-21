@@ -34,43 +34,63 @@ const thumbOf = (entry: (typeof work)[number]) => {
       {meta.positioning}
     </h1>
 
-    <p class="measure mt-6 text-xl leading-snug text-ink md:text-2xl">
-      {meta.proposition}
-    </p>
+    {/* Statement at full width; the specifics fill the column beside it rather
+        than stacking into a single grey wall below. */}
+    <div class="mt-8 grid gap-x-16 gap-y-9 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+      <div>
+        <p class="text-xl leading-snug text-ink md:text-2xl">{meta.proposition}</p>
 
-    <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft">
-      {hero.credential} {hero.context}
-    </p>
+        <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft">
+          {hero.credential} {hero.context}
+        </p>
 
-    <p class="mt-7 max-w-2xl text-sm text-ink-soft">
-      {hero.disciplines.join(' · ')}
-    </p>
-    <p class="mt-2 max-w-2xl text-sm text-ink-mute">
-      {hero.systems.join(' · ')}
-    </p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+          <a
+            href="#work"
+            class="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper no-underline transition-colors hover:bg-slate-deep"
+          >
+            Selected Work
+          </a>
+          <a
+            href={meta.resumePath}
+            class="rounded-sm border border-ink px-5 py-2.5 text-sm font-medium text-ink no-underline transition-colors hover:border-slate hover:text-slate"
+          >
+            Résumé
+          </a>
+        </div>
+      </div>
 
-    <p class="mt-7 text-sm text-ink-mute">{hero.mobility}</p>
-
-    <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-      <a
-        href="#work"
-        class="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper no-underline transition-colors hover:bg-slate-deep"
-      >
-        Selected Work
-      </a>
-      <a
-        href={meta.resumePath}
-        class="rounded-sm border border-ink px-5 py-2.5 text-sm font-medium text-ink no-underline transition-colors hover:border-slate hover:text-slate"
-      >
-        Résumé
-      </a>
+      <dl class="grid gap-5 self-start border-t border-rule pt-6 lg:mt-1.5">
+        <div>
+          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Focus</dt>
+          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">
+            {hero.disciplines.join(' · ')}
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Systems</dt>
+          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">
+            {hero.systems.join(' · ')}
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium tracking-wide text-ink-mute uppercase">Based</dt>
+          <dd class="mt-1.5 text-sm leading-relaxed text-ink-soft">{hero.mobility}</dd>
+        </div>
+      </dl>
     </div>
   </section>
 
   {/* --------------------------------------------------------- Selected work */}
   <Section id="work" heading="Selected work" divided>
     <ul class="grid list-none gap-x-10 gap-y-11 sm:grid-cols-2 lg:grid-cols-4">
-      {employer.map((entry) => <li class="flex"><EmployerCard entry={entry} /></li>)}
+      {
+        employer.map((entry, i) => (
+          <li class={`flex ${i === 0 ? 'lg:col-span-2' : ''}`}>
+            <EmployerCard entry={entry} lead={i === 0} />
+          </li>
+        ))
+      }
     </ul>
 
     <ul class="mt-16 grid list-none gap-x-10 gap-y-12 md:grid-cols-2">

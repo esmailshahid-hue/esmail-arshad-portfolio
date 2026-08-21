@@ -78,7 +78,7 @@ const captionWidth =
 <figure class="border-y border-rule py-8 md:py-10">
   {
     kind === 'narrowing' && (
-      <ol class="mx-auto grid max-w-3xl list-none gap-2">
+      <ol class="grid max-w-3xl list-none gap-2">
         {steps.map((step, i) => (
           <li
             class="mx-auto flex w-full flex-col items-center"
@@ -89,7 +89,12 @@ const captionWidth =
                 ↓
               </span>
             )}
-            <div class="w-full border border-rule bg-white px-4 py-3 text-center">
+            <div
+              class:list={[
+                'w-full border bg-white px-4 py-3 text-center',
+                i === steps.length - 1 ? 'border-slate' : 'border-rule',
+              ]}
+            >
               <p class="text-sm font-medium text-ink">{step.label}</p>
               <p class="mt-0.5 text-sm text-ink-mute">{step.note}</p>
             </div>
@@ -101,7 +106,7 @@ const captionWidth =
 
   {
     kind === 'hierarchy' && (
-      <ol class="mx-auto grid max-w-3xl list-none">
+      <ol class="grid max-w-3xl list-none">
         {levels.map((level, i) => (
           <li>
             {i > 0 && (
@@ -111,7 +116,10 @@ const captionWidth =
               </p>
             )}
             <div
-              class="border border-rule bg-white px-4 py-3"
+              class:list={[
+                'border bg-white px-4 py-3',
+                i === levels.length - 1 ? 'border-slate' : 'border-rule',
+              ]}
               style={`margin-left:${i * 1.5}rem`}
             >
               <p class="text-sm font-medium text-ink">{level.label}</p>
@@ -125,7 +133,7 @@ const captionWidth =
 
   {
     kind === 'sequence' && (
-      <div class="mx-auto max-w-4xl">
+      <div class="max-w-4xl">
         <div class="grid gap-8 md:grid-cols-2 md:gap-10">
           {phases.map((phase, p) => (
             <div>
@@ -177,7 +185,7 @@ const captionWidth =
 
   {
     kind === 'compare' && compare && (
-      <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2 md:gap-8">
+      <div class="grid max-w-4xl gap-6 md:grid-cols-2 md:gap-8">
         {[compare.before, compare.after].map((col, i) => (
           <div class={i === 1 ? 'border-t-2 border-slate pt-4' : 'border-t-2 border-rule pt-4'}>
             <p class="text-xs font-medium tracking-wide text-ink-mute uppercase">
@@ -208,7 +216,7 @@ const captionWidth =
 
   {
     kind === 'recovery' && (
-      <div class="mx-auto grid max-w-3xl gap-7">
+      <div class="grid max-w-3xl gap-7">
         {split && (
           <div>
             <p class="text-xs font-medium tracking-wide text-ink-mute uppercase">
@@ -272,5 +280,5 @@ const captionWidth =
     )
   }
 
-  <figcaption class={`mx-auto mt-6 text-sm text-ink-mute ${captionWidth}`}>{caption}</figcaption>
+  <figcaption class={`mt-6 text-sm text-ink-mute ${captionWidth}`}>{caption}</figcaption>
 </figure>

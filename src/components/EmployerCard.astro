@@ -3,8 +3,10 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'work'>;
+  /** The lead card spans two columns, so its title can carry more weight. */
+  lead?: boolean;
 }
-const { entry } = Astro.props;
+const { entry, lead = false } = Astro.props;
 const d = entry.data;
 ---
 
@@ -15,20 +17,32 @@ const d = entry.data;
   <p class="text-sm font-medium text-ink">{d.organization}</p>
 
   <h3
-    class="mt-2 font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate"
+    class:list={[
+      'mt-2 font-display leading-snug text-ink transition-colors group-hover:text-slate',
+      lead ? 'text-2xl md:text-[1.75rem]' : 'text-xl',
+    ]}
   >
     {d.title}
   </h3>
 
-  <p class="mt-2 text-sm leading-relaxed text-ink-soft">{d.roleFocus}</p>
+  <p class:list={['mt-2 leading-relaxed text-ink-soft', lead ? 'text-base' : 'text-sm']}>
+    {d.roleFocus}
+  </p>
 
+  {/* The arrow trails the last word of the label. As separate flex children it
+      detached mid-wrap and stranded itself at the end of the first line. */}
   <p class="mt-5 flex items-baseline gap-2 text-base">
-    <span class="font-display text-lg font-semibold text-ink">
+    <span class="shrink-0 font-display text-lg font-semibold text-ink">
       {d.headlineOutcome.value}
     </span>
-    <span class="text-ink-soft">{d.headlineOutcome.label}</span>
-    <span aria-hidden="true" class="text-slate transition-transform group-hover:translate-x-0.5">
-      →
+    <span class="text-ink-soft">
+      {d.headlineOutcome.label}{' '}
+      <span
+        aria-hidden="true"
+        class="inline-block text-slate transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
     </span>
   </p>
 </a>
