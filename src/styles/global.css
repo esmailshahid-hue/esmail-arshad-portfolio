@@ -30,31 +30,61 @@
 }
 
 /*
- * Dark mode follows the operating system and nothing else. A manual toggle
- * would mean shipping JavaScript, localStorage and flash-of-wrong-theme
- * handling to this otherwise zero-JS site, for a preference the OS already
- * knows. The palette is designed rather than inverted: the ground stays warm
- * so the page still reads as paper, and type is off-white rather than pure
- * white, which glares at these sizes.
+ * Theme has three states: no choice (follow the OS), an explicit light choice,
+ * and an explicit dark choice. The dark values live in one place below and are
+ * mapped in twice — once for the OS preference, once for an explicit override —
+ * so the two paths can never drift apart.
+ *
+ * The palette is designed rather than inverted: the ground stays warm so the
+ * page still reads as paper, and type is off-white rather than pure white,
+ * which glares at these sizes.
  */
+:root {
+  --dk-paper:      #17191c;
+  --dk-paper-deep: #121417;
+  --dk-card:       #1e2126;
+  --dk-ink:        #ebe7e0;
+  --dk-ink-soft:   #b5b0a7;
+  --dk-ink-mute:   #979186;
+  --dk-rule:       #383c42;
+  --dk-rule-soft:  #2a2e33;
+  --dk-slate:      #93b7d4;
+  --dk-slate-deep: #b6d2e7;
+  color-scheme: light;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --color-paper:      #17191c;
-    --color-paper-deep: #121417;
-    --color-card:       #1e2126;
-    --color-ink:        #ebe7e0;
-    --color-ink-soft:   #b5b0a7;
-    --color-ink-mute:   #979186;
-    --color-rule:       #383c42;
-    --color-rule-soft:  #2a2e33;
-    --color-slate:      #93b7d4;
-    --color-slate-deep: #b6d2e7;
+  :root:not([data-theme="light"]) {
+    --color-paper:      var(--dk-paper);
+    --color-paper-deep: var(--dk-paper-deep);
+    --color-card:       var(--dk-card);
+    --color-ink:        var(--dk-ink);
+    --color-ink-soft:   var(--dk-ink-soft);
+    --color-ink-mute:   var(--dk-ink-mute);
+    --color-rule:       var(--dk-rule);
+    --color-rule-soft:  var(--dk-rule-soft);
+    --color-slate:      var(--dk-slate);
+    --color-slate-deep: var(--dk-slate-deep);
+    color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --color-paper:      var(--dk-paper);
+  --color-paper-deep: var(--dk-paper-deep);
+  --color-card:       var(--dk-card);
+  --color-ink:        var(--dk-ink);
+  --color-ink-soft:   var(--dk-ink-soft);
+  --color-ink-mute:   var(--dk-ink-mute);
+  --color-rule:       var(--dk-rule);
+  --color-rule-soft:  var(--dk-rule-soft);
+  --color-slate:      var(--dk-slate);
+  --color-slate-deep: var(--dk-slate-deep);
+  color-scheme: dark;
 }
 
 @layer base {
   html {
-    color-scheme: light dark;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
@@ -217,4 +247,31 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+}
+
+@layer components {
+  /* Show the icon for the theme a click would switch you TO. */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-right: -0.375rem;
+    border-radius: 2px;
+    color: var(--color-ink-mute);
+    cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--color-ink); }
+  .theme-toggle .to-light { display: none; }
+  .theme-toggle .to-dark { display: block; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .to-light { display: block; }
+    :root:not([data-theme="light"]) .theme-toggle .to-dark { display: none; }
+  }
+  :root[data-theme="dark"] .theme-toggle .to-light { display: block; }
+  :root[data-theme="dark"] .theme-toggle .to-dark { display: none; }
+  :root[data-theme="light"] .theme-toggle .to-light { display: none; }
+  :root[data-theme="light"] .theme-toggle .to-dark { display: block; }
 }
