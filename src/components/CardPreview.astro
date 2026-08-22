@@ -1,0 +1,49 @@
+---
+/**
+ * A miniature of the case's shape, for homepage cards. Without it the cards are
+ * text links, which is most of why the homepage read as a résumé.
+ *
+ * Deliberately NOT the case-study diagram scaled down: those carry far too much
+ * text to survive at card width. This shows three or four words — enough to
+ * signal what kind of problem it was before the visitor clicks.
+ */
+interface Props {
+  preview:
+    | { kind: 'chain'; steps: readonly string[] }
+    | { kind: 'contrast'; from: string; to: string };
+}
+const { preview } = Astro.props;
+---
+
+<div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-ink-mute">
+  {
+    preview.kind === 'chain' &&
+      preview.steps.map((step, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true" class="text-rule">→</span>}
+          <span
+            class:list={[
+              'border px-2 py-1',
+              i === preview.steps.length - 1
+                ? 'border-slate/45 text-ink-soft'
+                : 'border-rule',
+            ]}
+          >
+            {step}
+          </span>
+        </>
+      ))
+  }
+
+  {
+    preview.kind === 'contrast' && (
+      <>
+        <span class="border border-rule px-2 py-1 line-through decoration-rule">
+          {preview.from}
+        </span>
+        <span aria-hidden="true" class="text-rule">→</span>
+        <span class="border border-slate/45 px-2 py-1 text-ink-soft">{preview.to}</span>
+      </>
+    )
+  }
+</div>

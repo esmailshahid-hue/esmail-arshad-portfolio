@@ -1,7 +1,7 @@
 ---
 type: client-project
 title: Turning invoice data into a review queue
-organization: Client work
+organization: Independent client project
 roleFocus: Freight analytics
 timeframe: 12 months of invoice history
 summary: Standardized twelve months of messy freight invoices, normalized currencies, built unit economics, and produced a review queue that says what to check and why.
@@ -35,6 +35,10 @@ images:
     alt: Freight cost and vendor spend dashboard showing 421 invoices across 11 vendors, $695,475 total spend, 60 review items worth $137,615, vendor and cost-category breakdowns, and monthly spend trend charts.
     caption: Spend, vendor concentration, category mix and review flags on one screen.
     primary: true
+    thumb:
+      zoom: 2
+      x: 0
+      y: 0
   - file: freight-anomaly-review.png
     sheet: Anomaly_Review
     alt: Anomaly review sheet listing flagged invoice lines with vendor, cost category, mode, gross amount, a review comment explaining why each line was flagged, and a recommended action.
@@ -43,10 +47,10 @@ images:
     sheet: Vendor_Mapping
     alt: Vendor mapping lookup table showing raw vendor name variants such as FEDEX, FEDEX GROUND and FEDERAL EXPRESS all resolving to a single standardized vendor with an assigned vendor group.
     caption: Eleven vendors were hiding behind dozens of raw spellings.
-featured: true
+featured: false
 published: true
 draft: false
-order: 6
+order: 9
 evidence:
   - claim: 421 invoice lines, 11 vendors, $695,475 reviewed spend
     source: workbook Dashboard + Cleaned_Data row count (421 data rows); Summary_Findings

@@ -4,50 +4,67 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'work'>;
-  /** Resolved from content/images by the calling page. */
   thumb?: ImageMetadata;
+  compact?: boolean;
 }
-const { entry, thumb } = Astro.props;
+const { entry, thumb, compact = false } = Astro.props;
 const d = entry.data;
+
+// A whole dashboard scaled to card width is an unreadable block of blue. The
+// crop zooms into the part worth seeing; the full sanitized sheet is on the page.
+const primary = d.images.find((i) => i.primary) ?? d.images[0];
+const crop = primary?.thumb;
+const scope = d.scope.slice(0, 2).join(' · ');
 ---
 
 <a
   href={`/work/${entry.id}/`}
-  class="group flex h-full flex-col no-underline"
+  class="group flex h-full flex-col border-t border-rule pt-5 no-underline transition-colors hover:border-slate"
 >
-  {/* The artifact is the message on client work, so it leads. */}
   {
-    thumb && (
-      <div class="mb-5 overflow-hidden border border-rule bg-white" aria-hidden="true">
+    thumb && !compact && (
+      <div
+        class="relative mb-5 aspect-[16/10] overflow-hidden border border-rule bg-white"
+        aria-hidden="true"
+      >
         <Image
           src={thumb}
           alt=""
-          widths={[560, 900]}
+          widths={[700, 1100, 1600]}
           sizes="(min-width: 768px) 45vw, 92vw"
-          class="aspect-[2/1] w-full object-cover object-left-top transition-transform duration-300 group-hover:scale-[1.02]"
+          class="absolute max-w-none transition-transform duration-300 group-hover:scale-[1.02]"
+          style={`width:${(crop?.zoom ?? 1) * 100}%; left:${-(crop?.x ?? 0)}%; top:${-(crop?.y ?? 0)}%`}
           loading="lazy"
         />
       </div>
     )
   }
 
+  {/* "Client work" said nothing. This says what it is and what it covers. */}
   <p class="text-sm font-medium text-ink">
-    {d.organization} <span class="text-ink-mute">·</span> {d.roleFocus}
+    Independent client project
+    <span class="text-ink-soft"> · {d.roleFocus}</span>
   </p>
 
   <h3
-    class="mt-2 font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate"
+    class:list={[
+      'mt-2 font-display leading-snug text-ink transition-colors group-hover:text-slate',
+      compact ? 'text-lg' : 'text-xl',
+    ]}
   >
     {d.title}
   </h3>
 
-  <p class="mt-2 text-sm leading-relaxed text-ink-soft">{d.summary}</p>
-
-  <p class="mt-4 text-sm text-ink-mute">
-    {d.scope.join(' · ')}
-  </p>
-
-  <p class="mt-4 text-sm font-medium text-slate">
-    View project <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+  {/* Scope, not a summary paragraph. The methodology is on the page. */}
+  <p class="mt-5 flex items-baseline gap-2 text-base">
+    <span class="text-ink-soft">
+      {scope}{' '}
+      <span
+        aria-hidden="true"
+        class="inline-block text-slate transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
+    </span>
   </p>
 </a>

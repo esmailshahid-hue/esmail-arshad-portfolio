@@ -124,6 +124,19 @@ const work = defineCollection({
       })
       .optional(),
 
+    /**
+     * A miniature of the case's shape, for the homepage card only. Without it
+     * the cards are text links, which is most of why the homepage read as a
+     * résumé. Deliberately not the full diagram shrunk down — that has far too
+     * much text to survive at card size.
+     */
+    preview: z
+      .discriminatedUnion('kind', [
+        z.object({ kind: z.literal('chain'), steps: z.array(z.string()).min(3).max(4) }),
+        z.object({ kind: z.literal('contrast'), from: z.string(), to: z.string() }),
+      ])
+      .optional(),
+
     rightsStatus: z.enum(['own-work', 'sanitized-recreation']).default('own-work'),
 
     /** Client-project artefacts. `downloadable` is never true — see §0.3. */
@@ -136,6 +149,12 @@ const work = defineCollection({
           caption: z.string(),
           /** Leads the page, and supplies the card thumbnail. One per project. */
           primary: z.boolean().default(false),
+          /** Card-thumbnail crop, as a zoom factor and an offset in percent of
+           *  the container. A full dashboard scaled to card width is an
+           *  unreadable block; this zooms into the part worth seeing. */
+          thumb: z
+            .object({ zoom: z.number().min(1).max(4), x: z.number(), y: z.number() })
+            .optional(),
         })
       )
       .default([]),

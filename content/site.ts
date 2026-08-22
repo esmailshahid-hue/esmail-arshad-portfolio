@@ -21,33 +21,21 @@ export const meta = {
  * carries the reason it is named. Do not repeat the same list elsewhere.
  */
 export const hero = {
-  credential: 'Industrial engineer and Purdue Engineering Management graduate.',
-  context:
-    'NPI sourcing at Tesla, freight cost analytics at Amazon, supply planning at Schneider Electric, supply-risk analytics at Formlabs, and operations leadership now at Jannat & Sadaf.',
-  disciplines: [
-    'Planning & Inventory',
-    'Procurement & Sourcing',
-    'Logistics & Operations',
-    'Analytics',
-  ],
-  systems: [
-    'SAP',
-    'Oracle',
-    'NetSuite',
-    'Netstock',
-    'Baxter',
-    'Excel',
-    'SQL / BigQuery',
-    'Tableau',
-    'Power BI',
-  ],
+  /** The visible h1. `meta.positioning` still carries the category for <title>
+      and structured data, where a search engine needs it. */
+  greeting: "Hi, I'm Esmail. I work in supply chain and operations.",
+  intro:
+    'I like work where the problem is real and the answer has to hold up in practice — fixing a production schedule, challenging a supplier quote, or working out why shipments are going wrong.',
+  background:
+    'Over the past four years I’ve worked across planning, sourcing, logistics, inventory and process improvement, at companies including Tesla, Amazon, Schneider Electric and Formlabs.',
   mobility:
-    'Lahore, Pakistan · Relocation priority UAE and Saudi Arabia · Open to broader relocation and remote',
+    'Based in Lahore · Open to the UAE, Saudi Arabia and broader international opportunities',
 } as const;
 
 /**
- * §18 — reverse-chronological. Rendered as a dense list: no achievement
- * paragraphs, since the résumé and work pages carry the detail.
+ * Reverse-chronological, chronology only. The role-focus line was removed: it
+ * restated what the case studies already say, and repeating it here was a large
+ * part of why the page read as a résumé.
  */
 export const experience = [
   {
@@ -55,49 +43,42 @@ export const experience = [
     displayTitle: 'Operations Manager',
     dates: '2026 — Now',
     location: 'Lahore',
-    scope: 'Production planning, sourcing, cost control',
   },
   {
     company: 'Schneider Electric',
     displayTitle: 'Supply Chain Planning Intern',
     dates: '2025',
     location: 'Foxboro, MA',
-    scope: 'S&OP, shortages, reverse logistics',
   },
   {
     company: 'Formlabs',
     displayTitle: 'Supply Chain Analyst Intern',
     dates: '2024',
     location: 'Somerville, MA',
-    scope: 'Inventory and supply-risk analytics',
   },
   {
     company: 'Tesla',
     displayTitle: 'Global Supply Chain Manager Intern',
     dates: '2024',
     location: 'Palo Alto, CA',
-    scope: 'NPI sourcing and should-cost analysis',
   },
   {
     company: 'TLS Technology',
     displayTitle: 'Supply Chain Operations Manager',
     dates: '2023',
     location: 'Lahore',
-    scope: 'Global fulfilment and international expansion',
   },
   {
     company: 'Amazon',
     displayTitle: 'Supply Chain Program Manager (Contract)',
     dates: '2021 — 2022',
     location: 'Bellevue, WA',
-    scope: 'Freight cost analytics and carrier performance',
   },
   {
     company: 'Cosmos Surfaces',
     displayTitle: 'Supply Chain Analyst',
     dates: '2020 — 2021',
     location: 'Kent, WA',
-    scope: 'Inventory and warehouse operations',
   },
 ] as const;
 
@@ -105,14 +86,22 @@ export const experience = [
 export const about = {
   headshot: 'headshot.jpeg',
   headshotAlt: 'Esmail Arshad',
-  text: "I'm an industrial engineer who has worked across planning, procurement, logistics and operations in manufacturing, technology and consumer businesses. The work I do best puts operating judgment and structured analysis together — forecasting demand, challenging supplier costs, and finding supply risk early enough to act on.",
+  /** Deliberately does not restate the hero. The years, the disciplines and the
+      mobility line all live up there; repeating them here was the old version's
+      main flaw. */
+  paragraphs: [
+    "I’ve worked in both large global companies and much smaller operating environments, so I move between analysis and execution fairly comfortably — building a forecast, challenging a supplier quote, sorting out a fulfilment problem, or putting a better process in place.",
+    'What interests me most is where better planning, automation and operational discipline make a supply chain more reliable and easier to run.',
+  ],
 } as const;
 
-/** §20 — undergraduate GPA is deliberately not displayed. */
+/** Compact supporting block. GPA is deliberately not shown: it frames the
+ *  page toward a graduate candidate when four years of case studies should be
+ *  doing the selling. It remains on the résumé. */
 export const education = {
   institution: 'Purdue University',
   degrees: [
-    { degree: 'M.S. Engineering Management', year: '2025', detail: 'GPA 3.98' },
+    { degree: 'M.S. Engineering Management', year: '2025', detail: null },
     { degree: 'B.S. Industrial Engineering', year: '2019', detail: null },
   ],
   /**
@@ -136,4 +125,4 @@ export const contact = {
 
 /** §23 — footer disclosure. */
 export const confidentialityNote =
-  'Employer work is summarized without confidential internal detail. Client work is anonymized and shown as sanitized excerpts.';
+  'Employer work is summarized without confidential internal detail. Client work is shown through sanitized excerpts.';

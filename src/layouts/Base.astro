@@ -88,21 +88,24 @@ const personSchema = {
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="border-b border-rule">
-      <div class="shell flex items-center justify-between gap-6 py-5">
+      <div class="shell flex items-center justify-between gap-4 py-5 sm:gap-6">
         <a
           href="/"
-          class="font-display text-lg font-semibold tracking-tight whitespace-nowrap text-ink no-underline"
+          class="font-display text-base font-semibold tracking-tight whitespace-nowrap text-ink no-underline sm:text-lg"
         >
           {meta.name}
         </a>
         <nav aria-label="Primary">
-          <ul class="flex list-none items-center gap-5 text-sm sm:gap-7">
-            <li><a class="nav-link" href="/#work">Work</a></li>
-            <li class="hidden sm:block"><a class="nav-link" href="/#experience">Experience</a></li>
-            <li>
+          <ul class="flex list-none items-center gap-4 text-sm whitespace-nowrap sm:gap-6 lg:gap-7">
+            <li><a class="nav-link" href="/work/">Case Studies</a></li>
+            <li><a class="nav-link" href="/#about">About</a></li>
+            <li class="hidden md:block">
+              <a class="nav-link" href="/#experience">Experience</a>
+            </li>
+            <li class="hidden sm:block">
               <a class="nav-link" href={meta.resumePath}>Résumé</a>
             </li>
-            <li class="hidden sm:block"><a class="nav-link" href="/#contact">Contact</a></li>
+            <li class="hidden md:block"><a class="nav-link" href="/#contact">Contact</a></li>
             <li>
               <button
                 type="button"
@@ -152,13 +155,13 @@ const personSchema = {
       <slot />
     </main>
 
-    <footer class="mt-24 border-t border-rule bg-paper-deep">
-      <div class="shell flex flex-col gap-6 py-10 md:flex-row md:items-start md:justify-between">
-        <p class="measure text-sm leading-relaxed text-ink-mute">
+    <footer class="mt-20 border-t border-rule bg-paper-deep">
+      <div class="shell flex flex-col gap-4 py-8 md:flex-row md:items-start md:justify-between">
+        <p class="measure text-xs leading-relaxed text-ink-mute">
           {confidentialityNote}
         </p>
-        <p class="shrink-0 text-sm text-ink-mute">
-          © {year} {meta.name}
+        <p class="shrink-0 text-xs text-ink-mute">
+          {`© ${year} ${meta.name}`}
         </p>
       </div>
     </footer>

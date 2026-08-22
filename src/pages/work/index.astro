@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import Section from '@components/Section.astro';
+import EmployerCard from '@components/EmployerCard.astro';
+import ClientCard from '@components/ClientCard.astro';
+import { meta } from '@content/site';
+
+// The full archive. The homepage features five; everything published lives here,
+// split into the two kinds so a reader knows what they are looking at.
+const work = (await getCollection('work'))
+  .filter((w) => w.data.published)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const employer = work.filter((w) => w.data.type === 'operating-case-study');
+const client = work.filter((w) => w.data.type === 'client-project');
+---
+
+<Base
+  title={`Case studies | ${meta.name}`}
+  description="Supply chain and operations case studies across planning, procurement, logistics and analytics, plus independent client analysis projects."
+  path="/work/"
+>
+  <section class="shell pt-10 pb-8 md:pt-14 md:pb-10">
+    <a href="/" class="text-sm text-ink-mute no-underline hover:text-slate">
+      <span aria-hidden="true">←</span> Home
+    </a>
+    <h1 class="mt-7 max-w-3xl font-display text-display text-ink">Case studies</h1>
+    <p class="measure mt-4 text-lg leading-relaxed text-ink-soft">
+      Problems from seven roles and two independent client projects — what the situation was,
+      what I did, and what came of it.
+    </p>
+  </section>
+
+  <Section heading="Employer case studies" density="tight" divided>
+    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        employer.map((entry) => (
+          <li class="flex">
+            <EmployerCard entry={entry} compact />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section heading="Independent client projects" density="tight" divided>
+    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        client.map((entry) => (
+          <li class="flex">
+            <ClientCard entry={entry} compact />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-9 max-w-2xl text-sm leading-relaxed text-ink-mute">
+      Client identity is omitted. The data and artifacts shown are sanitized for portfolio use.
+    </p>
+  </Section>
+</Base>
