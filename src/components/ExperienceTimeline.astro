@@ -1,0 +1,121 @@
+---
+/**
+ * Wide (md+): a date-proportional horizontal band — year ticks and a dot per
+ * role — with role details in a matching left-to-right row beneath it.
+ * Narrow: the existing vertical rail list, extended with a result link.
+ *
+ * Deliberately not a pixel copy of the reference mockup's absolute-positioned,
+ * alternating-height labels: several roles here sit months apart (Tesla and
+ * Formlabs are four months apart out of a six-year span), and stacking fixed
+ * 8.5rem label cards directly on the track at real proportional positions
+ * collides at that spacing. Dots on the track can sit close together safely;
+ * fixed-width label cards cannot. The band still shows the real shape of the
+ * career — long roles read wide, internships read as a cluster — without the
+ * overlap risk.
+ */
+import { experience } from '@content/site';
+
+const monthIndex = (iso: string) => {
+  const [y, m] = iso.split('-').map(Number);
+  return y * 12 + m;
+};
+
+const oldest = experience[experience.length - 1];
+const newest = experience[0];
+const rangeStart = monthIndex(oldest.start);
+const rangeEnd = monthIndex(newest.start);
+const span = rangeEnd - rangeStart;
+
+const pct = (iso: string) => ((monthIndex(iso) - rangeStart) / span) * 100;
+
+const startYear = Number(oldest.start.slice(0, 4));
+const endYear = Number(newest.start.slice(0, 4));
+const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+
+// Chronological, oldest first, to read left-to-right with the band above it.
+const chronological = [...experience].reverse();
+---
+
+{/* Wide: date-proportional band + a matching chronological row beneath it. */}
+<div class="hidden md:block">
+  <div class="relative mt-8 h-14">
+    <div class="absolute inset-x-0 top-1/2 h-px bg-rule" />
+    {
+      years.map((year) => {
+        const left = pct(`${year}-01`);
+        return (
+          <div class="absolute top-0" style={`left:${left}%`}>
+            <p
+              class:list={[
+                'absolute -top-6 text-xs font-medium text-ink-mute',
+                left < 3 ? '' : left > 97 ? '-translate-x-full' : '-translate-x-1/2',
+              ]}
+            >
+              {year}
+            </p>
+          </div>
+        );
+      })
+    }
+    {
+      experience.map((role, i) => (
+        <div
+          class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper"
+          style={`left:${pct(role.start)}%; width:9px; height:9px; background:${i === 0 ? 'var(--color-slate)' : 'var(--color-ink-mute)'}`}
+          title={`${role.company}, ${role.dates}`}
+        />
+      ))
+    }
+  </div>
+
+  <div class="grid grid-cols-7 gap-4 pt-2">
+    {
+      chronological.map((role) => (
+        <a href={`/work/${role.slug}/`} class="group grid gap-0.5 no-underline">
+          <p class="text-[11px] tracking-wide text-ink-mute">{role.dates}</p>
+          <p class="mt-0.5 text-sm font-semibold leading-tight text-ink">{role.company}</p>
+          <p class="text-xs leading-snug text-ink-mute">{role.displayTitle}</p>
+          <p class="mt-1 text-xs leading-snug text-slate group-hover:underline">
+            {role.result} <span aria-hidden="true">→</span>
+          </p>
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+{/* Narrow: vertical rail, newest first. */}
+<ol class="mt-6 grid list-none gap-0 md:hidden">
+  {
+    experience.map((role, i) => (
+      <li class="grid grid-cols-[6rem_1fr] gap-x-6 py-3.5 sm:grid-cols-[8rem_1fr]">
+        <p class="text-sm text-ink-mute">{role.dates}</p>
+        <div class="relative pl-6">
+          <span
+            aria-hidden="true"
+            class:list={[
+              'absolute left-[0.21875rem] top-3 w-px bg-rule',
+              i === experience.length - 1 ? 'h-0' : '-bottom-3.5',
+            ]}
+          />
+          <span
+            aria-hidden="true"
+            class:list={[
+              'absolute left-0 top-[0.3125rem] h-2 w-2 rounded-full border-2 bg-paper',
+              i === 0 ? 'border-slate' : 'border-ink-mute',
+            ]}
+          />
+          <p class="text-[0.9375rem] font-medium text-ink">{role.company}</p>
+          <p class="mt-0.5 text-sm text-ink-soft">{role.displayTitle}</p>
+          <a
+            href={`/work/${role.slug}/`}
+            class="mt-1 inline-block text-sm text-slate no-underline hover:underline"
+          >
+            {role.result} <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+<p class="mt-5 text-sm text-ink-mute md:pl-0">Roles in the United States and Pakistan.</p>

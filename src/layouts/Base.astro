@@ -97,15 +97,16 @@ const personSchema = {
         </a>
         <nav aria-label="Primary">
           <ul class="flex list-none items-center gap-4 text-sm whitespace-nowrap sm:gap-6 lg:gap-7">
-            <li><a class="nav-link" href="/work/">Case Studies</a></li>
-            <li><a class="nav-link" href="/#about">About</a></li>
-            <li class="hidden md:block">
+            <li><a class="nav-link" href="/#projects">Projects</a></li>
+            <li class="hidden sm:block">
               <a class="nav-link" href="/#experience">Experience</a>
             </li>
-            <li class="hidden sm:block">
-              <a class="nav-link" href={meta.resumePath}>Résumé</a>
-            </li>
             <li class="hidden md:block"><a class="nav-link" href="/#contact">Contact</a></li>
+            <li>
+              <a class="resume-link" href={meta.resumePath}>
+                Résumé <span aria-hidden="true">↗</span>
+              </a>
+            </li>
             <li>
               <button
                 type="button"
@@ -176,6 +177,16 @@ const personSchema = {
       }
       .nav-link:hover {
         color: var(--color-ink);
+        border-bottom-color: var(--color-slate);
+      }
+      .resume-link {
+        color: var(--color-slate);
+        text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--color-slate) 45%, transparent);
+        padding-bottom: 2px;
+        transition: border-color 0.15s ease;
+      }
+      .resume-link:hover {
         border-bottom-color: var(--color-slate);
       }
     </style>

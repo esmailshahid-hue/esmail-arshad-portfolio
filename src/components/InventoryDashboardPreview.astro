@@ -1,0 +1,59 @@
+---
+/**
+ * Homepage preview body for the demand-planning card. Every figure here is
+ * read from the real sanitized workbook — see inventory-forecast-model.png /
+ * inventory-risk-review.png and the evidence block on the case-study page.
+ * Reorder points are the workbook's actual values, not an invented order
+ * quantity.
+ */
+const rows = [
+  { sku: 'SKU-1001', item: 'Resin Standard Grey', behavior: 'Stable', mos: 0.4, action: 'Reorder pt 185', risk: true },
+  { sku: 'SKU-1002', item: 'Tough 2000', behavior: 'Growing', mos: 0.9, action: 'Reorder pt 177', risk: true },
+  { sku: 'SKU-1018', item: 'Shipping Carton Large', behavior: 'Stable', mos: 7.1, action: 'Excess stock', risk: false },
+] as const;
+
+const barWidth = (mos: number) => Math.min(100, (mos / 8) * 100);
+---
+
+<div class="grid gap-3.5">
+  <div class="grid gap-0">
+    <div class="grid grid-cols-[minmax(0,1fr)_2.75rem_6rem] gap-2.5 pb-1.5">
+      <p class="text-[10px] font-semibold tracking-wide text-ink-mute uppercase">SKU</p>
+      <p class="text-right text-[10px] font-semibold tracking-wide text-ink-mute uppercase">MoS</p>
+      <p class="text-right text-[10px] font-semibold tracking-wide text-ink-mute uppercase">Action</p>
+    </div>
+    {
+      rows.map((row) => (
+        <div class="grid grid-cols-[minmax(0,1fr)_2.75rem_6rem] items-center gap-2.5 border-t border-rule-soft py-2">
+          <div class="min-w-0">
+            <p class="truncate text-[12.5px] font-semibold text-ink">{row.sku}</p>
+            <p class="truncate text-[11.5px] text-ink-mute">
+              {row.item} · {row.behavior}
+            </p>
+          </div>
+          <div class="grid gap-1 justify-items-end">
+            <p class="text-[12.5px] font-medium text-ink">{row.mos}</p>
+            <div class="h-[3px] w-full rounded-full bg-rule-soft">
+              <div
+                class:list={['h-[3px] rounded-full', row.risk ? 'bg-slate' : 'bg-rule']}
+                style={`width:${barWidth(row.mos)}%`}
+              />
+            </div>
+          </div>
+          <p class:list={['text-right text-[12.5px] font-medium', row.risk ? 'text-slate' : 'text-ink-mute']}>
+            {row.action}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="grid gap-1.5">
+    <div class="flex h-[5px] gap-px overflow-hidden rounded-full">
+      <div class="bg-slate" style="width:62.5%" />
+      <div class="bg-ink-mute/40" style="width:33.3%" />
+      <div class="bg-rule" style="width:4.2%" />
+    </div>
+    <p class="text-[11px] leading-snug text-ink-mute">15 stockout risk · 8 balanced · 1 excess</p>
+  </div>
+</div>

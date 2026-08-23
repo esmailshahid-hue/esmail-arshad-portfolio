@@ -21,15 +21,12 @@ export const meta = {
  * carries the reason it is named. Do not repeat the same list elsewhere.
  */
 export const hero = {
-  /** The visible h1. `meta.positioning` still carries the category for <title>
-      and structured data, where a search engine needs it. */
-  greeting: "Hi, I'm Esmail. I work in supply chain and operations.",
-  intro:
-    'I like work where the problem is real and the answer has to hold up in practice — fixing a production schedule, challenging a supplier quote, or working out why shipments are going wrong.',
-  background:
-    'Over the past four years I’ve worked across planning, sourcing, logistics, inventory and process improvement, at companies including Tesla, Amazon, Schneider Electric and Formlabs.',
-  mobility:
-    'Based in Lahore · Open to the UAE, Saudi Arabia and broader international opportunities',
+  greeting: "Hi, I'm Esmail.",
+  paragraph:
+    "Over the past four years, I've worked across planning, sourcing, logistics and inventory at Tesla, Amazon, Schneider Electric and Formlabs. Today I run factory operations in Lahore.",
+  core: 'Planning · Inventory · Procurement & Sourcing · Logistics · Operations · Analytics',
+  systems: 'SAP · Oracle · NetSuite · Excel · SQL · Tableau · Power BI',
+  based: 'Lahore · Open to UAE, Saudi Arabia & international roles',
 } as const;
 
 /**
@@ -41,44 +38,65 @@ export const experience = [
   {
     company: 'Jannat & Sadaf',
     displayTitle: 'Operations Manager',
-    dates: '2026 — Now',
-    location: 'Lahore',
+    dates: 'Jan 2026 – Present',
+    start: '2026-01-01',
+    end: null as string | null,
+    result: '98.6% on-time delivery',
+    slug: 'jannat-sadaf-production-scheduling',
   },
   {
     company: 'Schneider Electric',
     displayTitle: 'Supply Chain Planning Intern',
-    dates: '2025',
-    location: 'Foxboro, MA',
+    dates: 'Feb 2025 – Dec 2025',
+    start: '2025-02-01',
+    end: '2025-12-01',
+    result: '30% improvement in on-time pickups',
+    slug: 'schneider-high-risk-order-control',
   },
   {
     company: 'Formlabs',
-    displayTitle: 'Supply Chain Analyst Intern',
-    dates: '2024',
-    location: 'Somerville, MA',
+    displayTitle: 'Supply Chain Planning Intern',
+    dates: 'Sep 2024 – Dec 2024',
+    start: '2024-09-01',
+    end: '2024-12-01',
+    result: '80% less manual reporting effort',
+    slug: 'formlabs-sls-cogs-automation',
   },
   {
     company: 'Tesla',
     displayTitle: 'Global Supply Chain Manager Intern',
-    dates: '2024',
-    location: 'Palo Alto, CA',
+    dates: 'May 2024 – Aug 2024',
+    start: '2024-05-01',
+    end: '2024-08-01',
+    result: '$150K procurement savings',
+    slug: 'tesla-component-level-should-cost',
   },
   {
     company: 'TLS Technology',
     displayTitle: 'Supply Chain Operations Manager',
-    dates: '2023',
-    location: 'Lahore',
+    dates: 'May 2023 – Nov 2023',
+    start: '2023-05-01',
+    end: '2023-11-01',
+    result: '12% EMEA market-share growth',
+    slug: 'tls-emea-expansion-operating-model',
   },
   {
     company: 'Amazon',
     displayTitle: 'Supply Chain Program Manager (Contract)',
-    dates: '2021 — 2022',
-    location: 'Bellevue, WA',
+    dates: 'Nov 2021 – Nov 2022',
+    start: '2021-11-01',
+    end: '2022-11-01',
+    result: '~$360K exposure identified',
+    slug: 'amazon-cost-anomaly-investigation',
   },
   {
     company: 'Cosmos Surfaces',
     displayTitle: 'Supply Chain Analyst',
-    dates: '2020 — 2021',
-    location: 'Kent, WA',
+    dates: 'Jan 2020 – Nov 2021',
+    start: '2020-01-01',
+    end: '2021-11-01',
+    result: '~$50K installation completed on schedule',
+    slug: 'cosmos-brown-fantasy-recovery',
   },
 ] as const;
 
@@ -86,13 +104,6 @@ export const experience = [
 export const about = {
   headshot: 'headshot.jpeg',
   headshotAlt: 'Esmail Arshad',
-  /** Deliberately does not restate the hero. The years, the disciplines and the
-      mobility line all live up there; repeating them here was the old version's
-      main flaw. */
-  paragraphs: [
-    "I’ve worked in both large global companies and much smaller operating environments, so I move between analysis and execution fairly comfortably — building a forecast, challenging a supplier quote, sorting out a fulfilment problem, or putting a better process in place.",
-    'What interests me most is where better planning, automation and operational discipline make a supply chain more reliable and easier to run.',
-  ],
 } as const;
 
 /** Compact supporting block. GPA is deliberately not shown: it frames the
