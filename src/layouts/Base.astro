@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { meta, contact, confidentialityNote } from '@content/site';
+import { meta, contact } from '@content/site';
 
 interface Props {
   title?: string;
@@ -22,6 +22,19 @@ const {
 const canonical = new URL(path, Astro.site).href;
 const ogImage = new URL(meta.ogImage, Astro.site).href;
 const year = new Date().getFullYear();
+/**
+ * Interior pages still need a copyright line; the homepage folds its own into
+ * the closing Get in touch section, so no footer renders there. The
+ * confidentiality disclaimer is no longer shown anywhere — each client case
+ * study carries its own anonymity note where it is relevant.
+ *
+ * NOTE: this explanation lives here rather than as a {(slash-star)...(star-slash)}
+ * comment above the footer expression below. Astro 5.18.2 mis-parses a JSX
+ * comment immediately followed by an expression block in this position: the
+ * expression stops evaluating and renders as literal text. Same failure family
+ * as the `{year} {meta.name}` footer bug fixed earlier.
+ */
+const isHome = path === '/';
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -156,16 +169,15 @@ const personSchema = {
       <slot />
     </main>
 
-    <footer class="mt-20 border-t border-rule bg-paper-deep">
-      <div class="shell flex flex-col gap-4 py-8 md:flex-row md:items-start md:justify-between">
-        <p class="measure text-xs leading-relaxed text-ink-mute">
-          {confidentialityNote}
-        </p>
-        <p class="shrink-0 text-xs text-ink-mute">
-          {`© ${year} ${meta.name}`}
-        </p>
-      </div>
-    </footer>
+    {
+      !isHome && (
+        <footer class="mt-20 border-t border-rule-soft">
+          <div class="shell py-7">
+            <p class="text-xs text-ink-mute">{`© ${year} ${meta.name}`}</p>
+          </div>
+        </footer>
+      )
+    }
 
     <style>
       .nav-link {

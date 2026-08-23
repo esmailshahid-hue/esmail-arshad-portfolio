@@ -26,13 +26,17 @@ export const hero = {
     "Over the past four years, I've worked across planning, sourcing, logistics and inventory at Tesla, Amazon, Schneider Electric and Formlabs. Today I run factory operations in Lahore.",
   core: 'Planning · Inventory · Procurement & Sourcing · Logistics · Operations · Analytics',
   systems: 'SAP · Oracle · NetSuite · Excel · SQL · Tableau · Power BI',
-  based: 'Lahore · Open to UAE, Saudi Arabia & international roles',
+  /** `Lahore` is the anchor line; the rest is secondary. Rendered on separate
+      lines rather than as one long inline string. */
+  basedIn: 'Lahore',
+  basedNote: 'Open to UAE, Saudi Arabia & international roles',
 } as const;
 
 /**
- * Reverse-chronological, chronology only. The role-focus line was removed: it
- * restated what the case studies already say, and repeating it here was a large
- * part of why the page read as a résumé.
+ * Reverse-chronological, chronology only. `start`/`end` drive the proportional
+ * desktop timeline. Outcome metrics are deliberately not stored here: the
+ * Experience section answers where and when, and the linked case study answers
+ * what came of it.
  */
 export const experience = [
   {
@@ -41,7 +45,6 @@ export const experience = [
     dates: 'Jan 2026 – Present',
     start: '2026-01-01',
     end: null as string | null,
-    result: '98.6% on-time delivery',
     slug: 'jannat-sadaf-production-scheduling',
   },
   {
@@ -50,7 +53,6 @@ export const experience = [
     dates: 'Feb 2025 – Dec 2025',
     start: '2025-02-01',
     end: '2025-12-01',
-    result: '30% improvement in on-time pickups',
     slug: 'schneider-high-risk-order-control',
   },
   {
@@ -59,7 +61,6 @@ export const experience = [
     dates: 'Sep 2024 – Dec 2024',
     start: '2024-09-01',
     end: '2024-12-01',
-    result: '80% less manual reporting effort',
     slug: 'formlabs-sls-cogs-automation',
   },
   {
@@ -68,7 +69,6 @@ export const experience = [
     dates: 'May 2024 – Aug 2024',
     start: '2024-05-01',
     end: '2024-08-01',
-    result: '$150K procurement savings',
     slug: 'tesla-component-level-should-cost',
   },
   {
@@ -77,7 +77,6 @@ export const experience = [
     dates: 'May 2023 – Nov 2023',
     start: '2023-05-01',
     end: '2023-11-01',
-    result: '12% EMEA market-share growth',
     slug: 'tls-emea-expansion-operating-model',
   },
   {
@@ -86,7 +85,6 @@ export const experience = [
     dates: 'Nov 2021 – Nov 2022',
     start: '2021-11-01',
     end: '2022-11-01',
-    result: '~$360K exposure identified',
     slug: 'amazon-cost-anomaly-investigation',
   },
   {
@@ -95,7 +93,6 @@ export const experience = [
     dates: 'Jan 2020 – Nov 2021',
     start: '2020-01-01',
     end: '2021-11-01',
-    result: '~$50K installation completed on schedule',
     slug: 'cosmos-brown-fantasy-recovery',
   },
 ] as const;
@@ -134,6 +131,19 @@ export const contact = {
   github: null as string | null,
 } as const;
 
-/** §23 — footer disclosure. */
+/**
+ * Retained as internal documentation only — deliberately NOT rendered on the
+ * site. The standing rule still holds for authoring: employer work is written
+ * without confidential internal detail, and client work is shown through
+ * sanitized excerpts. Each client case-study page carries its own anonymity
+ * note where it is actually relevant.
+ */
 export const confidentialityNote =
   'Employer work is summarized without confidential internal detail. Client work is shown through sanitized excerpts.';
+
+/** Closing "Get in touch" section. */
+export const contactSection = {
+  heading: 'Get in touch',
+  supporting:
+    'For supply chain, planning, logistics or operations opportunities, email me or connect on LinkedIn.',
+} as const;

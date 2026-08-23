@@ -21,24 +21,25 @@ const fmt = (n: number) => `$${(n / 1000).toFixed(1)}K`;
   <div class="grid gap-2">
     {
       vendors.map((v, i) => (
-        <div class="grid grid-cols-[5.5rem_minmax(0,1fr)_5rem] items-center gap-2.5">
-          <p class="truncate text-[12px] text-ink-soft">{v.name}</p>
+        <div class="grid grid-cols-[5.25rem_minmax(0,1fr)_5.75rem] items-center gap-2.5">
+          <p class="truncate text-[12.5px] text-ink-soft">{v.name}</p>
           <div class="h-[9px] rounded-sm bg-rule-soft">
             <div
               class="h-[9px] rounded-sm bg-slate"
               style={`width:${(v.spend / top) * 100}%; opacity:${1 - i * 0.13}`}
             />
           </div>
-          <p class="text-right text-[12px] font-medium text-ink">
-            {fmt(v.spend)} <span class="text-[10.5px] font-normal text-ink-mute">{v.share}</span>
+          <p class="text-right text-[12.5px] font-medium whitespace-nowrap text-ink">
+            {fmt(v.spend)} <span class="text-[11px] font-normal text-ink-mute">{v.share}</span>
           </p>
         </div>
       ))
     }
   </div>
 
-  <div class="grid gap-0.5 border-t border-rule-soft pt-3">
-    <p class="text-[11.5px] text-ink-soft">Top 3 vendors = 45.9% of spend</p>
-    <p class="text-[11px] text-ink-mute">60 invoice lines flagged for review</p>
-  </div>
+  {/* Concentration is the one fact the bars imply but never state. The flagged
+      count is already in the KPI strip, so it is not repeated here. */}
+  <p class="border-t border-rule-soft pt-3 text-[12px] text-ink-soft">
+    Top 3 vendors = 45.9% of spend
+  </p>
 </div>

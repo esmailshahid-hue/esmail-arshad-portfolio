@@ -1,121 +1,178 @@
 ---
 /**
- * Wide (md+): a date-proportional horizontal band — year ticks and a dot per
- * role — with role details in a matching left-to-right row beneath it.
- * Narrow: the existing vertical rail list, extended with a result link.
+ * One integrated career timeline. Replaces the previous two-layer treatment (a
+ * date band with start-dots, plus a separate seven-column role grid beneath),
+ * which made the reader mentally join a dot above to a card below.
  *
- * Deliberately not a pixel copy of the reference mockup's absolute-positioned,
- * alternating-height labels: several roles here sit months apart (Tesla and
- * Formlabs are four months apart out of a six-year span), and stacking fixed
- * 8.5rem label cards directly on the track at real proportional positions
- * collides at that spacing. Dots on the track can sit close together safely;
- * fixed-width label cards cannot. The band still shows the real shape of the
- * career — long roles read wide, internships read as a cluster — without the
- * overlap risk.
+ * Desktop (xl+): a single chronological axis. Each role is a duration span
+ * positioned at its real start month and sized by its real length, with the
+ * annotation connected directly to it and alternating above/below the axis so
+ * neighbouring roles never share a lane.
+ *
+ * Faint full-height year gridlines carry the scale through the whole component.
+ * That is what lets the year labels live at the top without losing their
+ * association with the axis — and it keeps the area under the axis free, so
+ * below-axis connectors reach their spans without crossing a label strip.
+ *
+ * Below xl the horizontal form is dropped entirely rather than compressed. At
+ * 1024px the tightest pair (Tesla and Schneider) clears by only 14px — no
+ * overlap, but two annotation blocks that close read as a single mass. Measured
+ * in the browser rather than inferred; shrinking type to buy room would breach
+ * the 12px readability floor, so the vertical form takes over instead.
+ *
+ * Results/metrics are deliberately absent here — this section answers where and
+ * when; the case studies answer what came of it.
  */
 import { experience } from '@content/site';
 
 const monthIndex = (iso: string) => {
   const [y, m] = iso.split('-').map(Number);
-  return y * 12 + m;
+  return y * 12 + (m - 1);
 };
 
-const oldest = experience[experience.length - 1];
-const newest = experience[0];
-const rangeStart = monthIndex(oldest.start);
-const rangeEnd = monthIndex(newest.start);
-const span = rangeEnd - rangeStart;
+const now = new Date();
+const nowIndex = now.getFullYear() * 12 + now.getMonth();
 
-const pct = (iso: string) => ((monthIndex(iso) - rangeStart) / span) * 100;
+// Oldest first, so the timeline reads left to right.
+const roles = [...experience].reverse();
 
-const startYear = Number(oldest.start.slice(0, 4));
-const endYear = Number(newest.start.slice(0, 4));
-const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+const rangeStart = monthIndex(roles[0].start);
+const total = nowIndex - rangeStart;
+const pct = (index: number) => ((index - rangeStart) / total) * 100;
 
-// Chronological, oldest first, to read left-to-right with the band above it.
-const chronological = [...experience].reverse();
+/** Three-month internships would otherwise render as a hairline. */
+const MIN_SPAN = 2.6;
+
+const laid = roles.map((role, i) => {
+  const left = pct(monthIndex(role.start));
+  const rawEnd = role.end ? pct(monthIndex(role.end)) : 100;
+  const width = Math.max(rawEnd - left, MIN_SPAN);
+  const mid = left + width / 2;
+  return {
+    ...role,
+    left,
+    width,
+    mid,
+    above: i % 2 === 0,
+    // Clamp the outermost annotations so they cannot overhang the container.
+    align: mid < 9 ? 'start' : mid > 91 ? 'end' : ('center' as const),
+    current: role.end === null,
+  };
+});
+
+const years = Array.from(
+  { length: now.getFullYear() - Number(roles[0].start.slice(0, 4)) + 1 },
+  (_, i) => Number(roles[0].start.slice(0, 4)) + i
+);
+
+/** Geometry, in px, of the fixed-height desktop band. */
+const Y = { grid: 20, aboveBottom: 96, axis: 112, spanTop: 109, belowTop: 128, height: 200 };
+
+const offset = (a: (typeof laid)[number]) =>
+  a.align === 'start' ? 'left:0' : a.align === 'end' ? 'right:0' : `left:${a.mid}%;transform:translateX(-50%)`;
 ---
 
-{/* Wide: date-proportional band + a matching chronological row beneath it. */}
-<div class="hidden md:block">
-  <div class="relative mt-8 h-14">
-    <div class="absolute inset-x-0 top-1/2 h-px bg-rule" />
-    {
-      years.map((year) => {
-        const left = pct(`${year}-01`);
-        return (
-          <div class="absolute top-0" style={`left:${left}%`}>
-            <p
-              class:list={[
-                'absolute -top-6 text-xs font-medium text-ink-mute',
-                left < 3 ? '' : left > 97 ? '-translate-x-full' : '-translate-x-1/2',
-              ]}
-            >
-              {year}
-            </p>
-          </div>
-        );
-      })
-    }
-    {
-      experience.map((role, i) => (
-        <div
-          class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper"
-          style={`left:${pct(role.start)}%; width:9px; height:9px; background:${i === 0 ? 'var(--color-slate)' : 'var(--color-ink-mute)'}`}
-          title={`${role.company}, ${role.dates}`}
-        />
-      ))
-    }
-  </div>
-
-  <div class="grid grid-cols-7 gap-4 pt-2">
-    {
-      chronological.map((role) => (
-        <a href={`/work/${role.slug}/`} class="group grid gap-0.5 no-underline">
-          <p class="text-[11px] tracking-wide text-ink-mute">{role.dates}</p>
-          <p class="mt-0.5 text-sm font-semibold leading-tight text-ink">{role.company}</p>
-          <p class="text-xs leading-snug text-ink-mute">{role.displayTitle}</p>
-          <p class="mt-1 text-xs leading-snug text-slate group-hover:underline">
-            {role.result} <span aria-hidden="true">→</span>
+{/* ------------------------------------------------- Desktop: one integrated axis */}
+<div class="relative mt-6 hidden xl:block" style={`height:${Y.height}px`}>
+  {/* Year scale: labels at the top, carried down by faint gridlines. */}
+  {
+    years.map((year) => {
+      const left = pct(monthIndex(`${year}-01`));
+      return (
+        <>
+          <p
+            class:list={[
+              'absolute top-0 text-xs font-medium text-ink-mute',
+              left < 2 ? '' : left > 98 ? '-translate-x-full' : '-translate-x-1/2',
+            ]}
+            style={`left:${left}%`}
+          >
+            {year}
           </p>
+          <div
+            aria-hidden="true"
+            class="absolute w-px bg-rule-soft"
+            style={`left:${left}%;top:${Y.grid}px;bottom:0`}
+          />
+        </>
+      );
+    })
+  }
+
+  {/* The axis itself. */}
+  <div aria-hidden="true" class="absolute inset-x-0 h-px bg-rule" style={`top:${Y.axis}px`} />
+
+  {
+    laid.map((role) => (
+      <>
+        {/* Duration span — real start, real length. */}
+        <div
+          aria-hidden="true"
+          class:list={['absolute rounded-full', role.current ? 'bg-slate' : 'bg-ink-mute/55']}
+          style={`left:${role.left}%;width:${role.width}%;top:${Y.spanTop}px;height:6px`}
+        />
+        {/* Short quiet connector from span to annotation. */}
+        <div
+          aria-hidden="true"
+          class="absolute w-px bg-rule"
+          style={
+            role.above
+              ? `left:${role.mid}%;top:${Y.aboveBottom}px;height:${Y.spanTop - Y.aboveBottom}px`
+              : `left:${role.mid}%;top:${Y.spanTop + 6}px;height:${Y.belowTop - Y.spanTop - 6}px`
+          }
+        />
+        <a
+          href={`/work/${role.slug}/`}
+          class="group absolute w-[8.5rem] no-underline"
+          style={
+            role.above
+              ? `${offset(role)};bottom:${Y.height - Y.aboveBottom}px`
+              : `${offset(role)};top:${Y.belowTop}px`
+          }
+        >
+          <p class="text-[14.5px] leading-tight font-semibold text-ink group-hover:underline">
+            {role.company}
+          </p>
+          <p class="mt-0.5 text-[13px] leading-snug text-ink-soft">{role.displayTitle}</p>
+          <p class="mt-1 text-xs text-ink-mute">{role.dates}</p>
         </a>
-      ))
-    }
-  </div>
+      </>
+    ))
+  }
 </div>
 
-{/* Narrow: vertical rail, newest first. */}
-<ol class="mt-6 grid list-none gap-0 md:hidden">
+{/* ------------------------------------------ Narrow: compact vertical chronology */}
+<ol class="mt-6 grid list-none gap-0 xl:hidden">
   {
     experience.map((role, i) => (
-      <li class="grid grid-cols-[6rem_1fr] gap-x-6 py-3.5 sm:grid-cols-[8rem_1fr]">
-        <p class="text-sm text-ink-mute">{role.dates}</p>
-        <div class="relative pl-6">
-          <span
-            aria-hidden="true"
-            class:list={[
-              'absolute left-[0.21875rem] top-3 w-px bg-rule',
-              i === experience.length - 1 ? 'h-0' : '-bottom-3.5',
-            ]}
-          />
-          <span
-            aria-hidden="true"
-            class:list={[
-              'absolute left-0 top-[0.3125rem] h-2 w-2 rounded-full border-2 bg-paper',
-              i === 0 ? 'border-slate' : 'border-ink-mute',
-            ]}
-          />
-          <p class="text-[0.9375rem] font-medium text-ink">{role.company}</p>
-          <p class="mt-0.5 text-sm text-ink-soft">{role.displayTitle}</p>
-          <a
-            href={`/work/${role.slug}/`}
-            class="mt-1 inline-block text-sm text-slate no-underline hover:underline"
-          >
-            {role.result} <span aria-hidden="true">→</span>
-          </a>
-        </div>
+      <li>
+        <a
+          href={`/work/${role.slug}/`}
+          class="group grid grid-cols-[1fr] gap-x-6 py-3.5 no-underline sm:grid-cols-[9rem_1fr]"
+        >
+          <p class="order-2 text-xs text-ink-mute sm:order-none sm:mt-0.5 sm:text-[13px]">
+            {role.dates}
+          </p>
+          <div class="relative order-1 pl-6 sm:order-none">
+            <span
+              aria-hidden="true"
+              class:list={[
+                'absolute left-[0.21875rem] top-3 w-px bg-rule',
+                i === experience.length - 1 ? 'h-0' : '-bottom-3.5',
+              ]}
+            />
+            <span
+              aria-hidden="true"
+              class:list={[
+                'absolute left-0 top-[0.3125rem] h-2 w-2 rounded-full border-2 bg-paper',
+                i === 0 ? 'border-slate' : 'border-ink-mute',
+              ]}
+            />
+            <p class="text-[15px] font-semibold text-ink group-hover:underline">{role.company}</p>
+            <p class="mt-0.5 text-[13.5px] leading-snug text-ink-soft">{role.displayTitle}</p>
+          </div>
+        </a>
       </li>
     ))
   }
 </ol>
-<p class="mt-5 text-sm text-ink-mute md:pl-0">Roles in the United States and Pakistan.</p>

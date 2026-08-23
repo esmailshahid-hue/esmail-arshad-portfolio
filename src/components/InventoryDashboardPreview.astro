@@ -18,16 +18,16 @@ const barWidth = (mos: number) => Math.min(100, (mos / 8) * 100);
 <div class="grid gap-3.5">
   <div class="grid gap-0">
     <div class="grid grid-cols-[minmax(0,1fr)_2.75rem_6rem] gap-2.5 pb-1.5">
-      <p class="text-[10px] font-semibold tracking-wide text-ink-mute uppercase">SKU</p>
-      <p class="text-right text-[10px] font-semibold tracking-wide text-ink-mute uppercase">MoS</p>
-      <p class="text-right text-[10px] font-semibold tracking-wide text-ink-mute uppercase">Action</p>
+      <p class="text-[11px] font-semibold tracking-wide text-ink-mute uppercase">SKU</p>
+      <p class="text-right text-[11px] font-semibold tracking-wide text-ink-mute uppercase">MoS</p>
+      <p class="text-right text-[11px] font-semibold tracking-wide text-ink-mute uppercase">Action</p>
     </div>
     {
       rows.map((row) => (
         <div class="grid grid-cols-[minmax(0,1fr)_2.75rem_6rem] items-center gap-2.5 border-t border-rule-soft py-2">
           <div class="min-w-0">
             <p class="truncate text-[12.5px] font-semibold text-ink">{row.sku}</p>
-            <p class="truncate text-[11.5px] text-ink-mute">
+            <p class="text-[12px] leading-snug text-ink-mute">
               {row.item} · {row.behavior}
             </p>
           </div>
@@ -48,12 +48,11 @@ const barWidth = (mos: number) => Math.min(100, (mos / 8) * 100);
     }
   </div>
 
-  <div class="grid gap-1.5">
-    <div class="flex h-[5px] gap-px overflow-hidden rounded-full">
-      <div class="bg-slate" style="width:62.5%" />
-      <div class="bg-ink-mute/40" style="width:33.3%" />
-      <div class="bg-rule" style="width:4.2%" />
-    </div>
-    <p class="text-[11px] leading-snug text-ink-mute">15 stockout risk · 8 balanced · 1 excess</p>
+  {/* Segmented risk bar kept without its caption: the KPI strip already states
+      the counts, and the proportions still add structure the numbers do not. */}
+  <div aria-hidden="true" class="flex h-[5px] gap-px overflow-hidden rounded-full">
+    <div class="bg-slate" style="width:62.5%" />
+    <div class="bg-ink-mute/40" style="width:33.3%" />
+    <div class="bg-rule" style="width:4.2%" />
   </div>
 </div>
