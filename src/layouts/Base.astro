@@ -101,26 +101,27 @@ const personSchema = {
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="border-b border-rule">
-      <div class="shell flex items-center justify-between gap-4 py-5 sm:gap-6">
+      <div class="site-header-shell shell flex items-center justify-between gap-3 py-5 sm:gap-6">
         <a
           href="/"
-          class="font-display text-base font-semibold tracking-tight whitespace-nowrap text-ink no-underline sm:text-lg"
+          class="font-display text-sm font-semibold tracking-tight whitespace-nowrap text-ink no-underline sm:text-lg"
         >
           {meta.name}
         </a>
         <nav aria-label="Primary">
-          <ul class="flex list-none items-center gap-4 text-sm whitespace-nowrap sm:gap-6 lg:gap-7">
-            <li><a class="nav-link" href="/#projects">Projects</a></li>
+          <ul class="flex list-none items-center gap-3 text-[13px] whitespace-nowrap sm:gap-6 sm:text-sm lg:gap-7">
+            <li><a class="nav-link" href="/#about">About</a></li>
+            <li class="hidden sm:block"><a class="nav-link" href="/#projects">Projects</a></li>
             <li class="hidden sm:block">
               <a class="nav-link" href="/#experience">Experience</a>
             </li>
-            <li class="hidden md:block"><a class="nav-link" href="/#contact">Contact</a></li>
+            <li><a class="nav-link" href="/#contact">Contact</a></li>
             <li>
               <a class="resume-link" href={meta.resumePath}>
                 Résumé <span aria-hidden="true">↗</span>
               </a>
             </li>
-            <li>
+            <li class="hidden sm:block">
               <button
                 type="button"
                 class="theme-toggle"
@@ -200,6 +201,12 @@ const personSchema = {
       }
       .resume-link:hover {
         border-bottom-color: var(--color-slate);
+      }
+      @media (max-width: 639px) {
+        .site-header-shell {
+          width: 100vw;
+          max-width: 100vw;
+        }
       }
     </style>
     <script is:inline>

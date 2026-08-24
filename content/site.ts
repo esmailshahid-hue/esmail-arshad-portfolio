@@ -21,15 +21,26 @@ export const meta = {
  * carries the reason it is named. Do not repeat the same list elsewhere.
  */
 export const hero = {
-  greeting: "Hi, I'm Esmail.",
+  eyebrow: 'SUPPLY CHAIN · OPERATIONS · ANALYTICS',
+  headline: 'I improve how products are planned, sourced, moved and measured.',
   paragraph:
-    "Over the past four years, I've worked across planning, sourcing, logistics and inventory at Tesla, Amazon, Schneider Electric and Formlabs. Today I run factory operations in Lahore.",
-  core: 'Planning · Inventory · Procurement & Sourcing · Logistics · Operations · Analytics',
-  systems: 'SAP · Oracle · NetSuite · Excel · SQL · Tableau · Power BI',
+    'Supply chain and operations professional with 4+ years across Tesla, Amazon, Schneider Electric and Formlabs, spanning planning, sourcing, logistics, inventory and operational analytics. Today I run factory operations in Lahore.',
+  capabilities: [
+    'Supply Chain Planning',
+    'Procurement & Sourcing',
+    'Inventory Management',
+    'Logistics & Fulfillment',
+    'Operations & Process Improvement',
+  ],
+  tools: [
+    { label: 'ERP', items: 'SAP, Oracle, NetSuite' },
+    { label: 'Planning', items: 'Baxter, Netstock' },
+    { label: 'Analytics', items: 'Excel, SQL, Tableau, Power BI' },
+  ],
   /** `Lahore` is the anchor line; the rest is secondary. Rendered on separate
       lines rather than as one long inline string. */
-  basedIn: 'Lahore',
-  basedNote: 'Open to UAE, Saudi Arabia & international roles',
+  basedIn: 'Lahore, Pakistan',
+  basedNote: 'Open to relocation across GCC, Europe & North America',
 } as const;
 
 /**
