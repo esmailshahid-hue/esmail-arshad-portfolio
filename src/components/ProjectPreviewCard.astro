@@ -1,13 +1,19 @@
 ---
 /**
- * Homepage card for the two independent client projects. Chrome (border, KPI
- * strip, title, subtitle) is shared; the middle visual is bespoke per project
- * — a small SKU table for the inventory model, a vendor-spend bar chart for
- * freight — passed in via the default slot, since the two dashboards don't
- * share a shape worth abstracting over just two cases.
+ * Homepage card for the two independent client projects.
  *
- * Every number in a slotted body must trace to the real workbook. See the
- * `evidence` block on the corresponding case-study page for sourcing.
+ * Order matters here: category, then title, then what was built, and only then
+ * the evidence. The previous version led with the KPI strip, so the reader met
+ * "$695K / 421 / 60" before knowing what the project was.
+ *
+ * `built` states the deliverable; `methods` names the tools and disciplines as
+ * a quiet inline list rather than chips, matching the Core/Systems convention
+ * in the hero. Neither repeats the KPI values.
+ *
+ * The bespoke visual arrives via the default slot — the two dashboards don't
+ * share a shape worth abstracting over just two cases. Every number in a
+ * slotted body traces to the real workbook; see the `evidence` block on the
+ * corresponding case-study page.
  */
 interface Kpi {
   value: string;
@@ -16,18 +22,29 @@ interface Kpi {
 interface Props {
   href: string;
   eyebrow: string;
-  kpis: readonly Kpi[];
   title: string;
-  subtitle: string;
+  built: string;
+  kpis: readonly Kpi[];
+  methods: readonly string[];
 }
-const { href, eyebrow, kpis, title, subtitle } = Astro.props;
+const { href, eyebrow, title, built, kpis, methods } = Astro.props;
 ---
 
 <a href={href} class="group flex h-full flex-col no-underline">
-  <p class="mb-2.5 text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
+  <p class="text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
+
+  {/* Fixed block so both previews start at the same y side by side. Measured:
+      at 1024 the first title wraps to two lines and the second does not, so
+      without this they misalign by 28px. Tighter at xl, where both fit one line. */}
+  <div class="mt-2.5 lg:min-h-[7.5rem] xl:min-h-[6rem]">
+    <h3 class="font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate">
+      {title} <span aria-hidden="true" class="text-slate">→</span>
+    </h3>
+    <p class="mt-2 text-[15px] leading-relaxed text-ink-soft">{built}</p>
+  </div>
 
   <div
-    class="flex flex-1 flex-col justify-between gap-4 border border-rule bg-card p-5 transition-colors group-hover:border-ink-mute"
+    class="mt-4 flex flex-1 flex-col justify-between gap-4 border border-rule bg-card p-5 transition-colors group-hover:border-ink-mute"
     style="container-type:inline-size"
   >
     <dl class="grid grid-cols-4 gap-x-2.5 gap-y-3.5">
@@ -52,8 +69,5 @@ const { href, eyebrow, kpis, title, subtitle } = Astro.props;
     <slot />
   </div>
 
-  <h3 class="mt-3.5 min-h-[2.4em] font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate">
-    {title} <span aria-hidden="true" class="text-slate">→</span>
-  </h3>
-  <p class="mt-1.5 text-sm text-ink-mute">{subtitle}</p>
+  <p class="mt-3 text-[13px] text-ink-mute">{methods.join(' · ')}</p>
 </a>

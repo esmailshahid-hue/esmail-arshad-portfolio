@@ -33,10 +33,19 @@ export const hero = {
 } as const;
 
 /**
- * Reverse-chronological, chronology only. `start`/`end` drive the proportional
- * desktop timeline. Outcome metrics are deliberately not stored here: the
- * Experience section answers where and when, and the linked case study answers
- * what came of it.
+ * Reverse-chronological. Each role carries one line of scope and exactly one
+ * metric — the single most impactful result, not a résumé dump.
+ *
+ * Tools are named inside the scope sentence (Baxter, SAP, Oracle, SQL,
+ * BigQuery, Tableau, WMS, SAP ECC) rather than listed separately. They read as
+ * natural prose where they are actually relevant, and still land as keywords,
+ * without adding a third layer of chrome to every row.
+ *
+ * Each metric is the result its own scope line most directly supports, so
+ * sentence and number stay coherent. Amazon's 8% and Cosmos's 95% appear
+ * nowhere else on the site — their case studies cover different workstreams.
+ *
+ * Every sentence and figure traces to Esmail_Arshad_Resume.pdf.
  */
 export const experience = [
   {
@@ -45,6 +54,9 @@ export const experience = [
     dates: 'Jan 2026 – Present',
     start: '2026-01-01',
     end: null as string | null,
+    scope:
+      'Own production planning, sourcing and cost control across three made-to-order apparel lines.',
+    metric: { value: '98.6%', label: 'on-time delivery' },
     slug: 'jannat-sadaf-production-scheduling',
   },
   {
@@ -53,6 +65,9 @@ export const experience = [
     dates: 'Feb 2025 – Dec 2025',
     start: '2025-02-01',
     end: '2025-12-01',
+    scope:
+      'Generated S&OE/S&OP forecasts in Baxter and ran daily exception management on high-risk orders across SAP and Oracle.',
+    metric: { value: '30%', label: 'better on-time pickups' },
     slug: 'schneider-high-risk-order-control',
   },
   {
@@ -61,6 +76,9 @@ export const experience = [
     dates: 'Sep 2024 – Dec 2024',
     start: '2024-09-01',
     end: '2024-12-01',
+    scope:
+      'Built shortage and exception reporting in SQL and BigQuery across 300+ SLA and SLS components.',
+    metric: { value: '20%', label: 'fewer late orders' },
     slug: 'formlabs-sls-cogs-automation',
   },
   {
@@ -69,6 +87,9 @@ export const experience = [
     dates: 'May 2024 – Aug 2024',
     start: '2024-05-01',
     end: '2024-08-01',
+    scope:
+      'Should-costed top-level assembly tooling against machining, material and labour inputs to challenge supplier quotes.',
+    metric: { value: '$150K', label: 'procurement savings' },
     slug: 'tesla-component-level-should-cost',
   },
   {
@@ -77,6 +98,9 @@ export const experience = [
     dates: 'May 2023 – Nov 2023',
     start: '2023-05-01',
     end: '2023-11-01',
+    scope:
+      'Led a ten-person team building the importer-of-record, customs and compliance model for EMEA market entry.',
+    metric: { value: '12%', label: 'EMEA market-share growth' },
     slug: 'tls-emea-expansion-operating-model',
   },
   {
@@ -85,6 +109,9 @@ export const experience = [
     dates: 'Nov 2021 – Nov 2022',
     start: '2021-11-01',
     end: '2022-11-01',
+    scope:
+      'Ran root-cause analysis across ~100K weekly shipments in Tableau and Excel, and rebuilt lane-level freight pricing rules.',
+    metric: { value: '8%', label: 'lower network cost' },
     slug: 'amazon-cost-anomaly-investigation',
   },
   {
@@ -93,6 +120,9 @@ export const experience = [
     dates: 'Jan 2020 – Nov 2021',
     start: '2020-01-01',
     end: '2021-11-01',
+    scope:
+      'Integrated WMS with SAP ECC for real-time inventory accuracy and reworked dock scheduling with 3PL partners.',
+    metric: { value: '95%', label: 'order fulfillment' },
     slug: 'cosmos-brown-fantasy-recovery',
   },
 ] as const;

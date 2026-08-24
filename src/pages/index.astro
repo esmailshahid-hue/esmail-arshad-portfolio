@@ -132,14 +132,15 @@ const iconAttrs = {
         <ProjectPreviewCard
           href="/work/inventory-forecasting-reorder-planning/"
           eyebrow="Demand & inventory planning"
+          title="Matching forecast methods to SKU demand behavior"
+          built="Built an Excel planning model linking demand behaviour, safety stock and reorder decisions."
           kpis={[
             { value: '24', label: 'SKUs' },
             { value: '15', label: 'Stockout risk' },
             { value: '1', label: 'Excess stock' },
             { value: '$43.7K', label: 'Suggested reorder' },
           ]}
-          title="Matching forecast methods to SKU demand behavior"
-          subtitle="Demand classification, forecasting, safety stock and reorder logic"
+          methods={['Excel', 'Forecasting', 'Reorder planning']}
         >
           <InventoryDashboardPreview />
         </ProjectPreviewCard>
@@ -148,14 +149,15 @@ const iconAttrs = {
         <ProjectPreviewCard
           href="/work/freight-spend-vendor-cost-review/"
           eyebrow="Freight spend & vendor cost analysis"
+          title="Turning freight spend into a review queue"
+          built="Built an Excel spend model to normalize freight costs and surface review exceptions."
           kpis={[
             { value: '$695K', label: 'Reviewed spend' },
             { value: '421', label: 'Invoice lines' },
             { value: '60', label: 'Review flags' },
             { value: '$137.6K', label: 'Flagged spend' },
           ]}
-          title="Turning freight spend into a review queue"
-          subtitle="Vendor concentration, spend normalization and anomaly review"
+          methods={['Excel', 'Spend analytics', 'Anomaly review']}
         >
           <FreightDashboardPreview />
         </ProjectPreviewCard>
