@@ -14,6 +14,9 @@ const d = entry.data;
 // crop zooms into the part worth seeing; the full sanitized sheet is on the page.
 const primary = d.images.find((i) => i.primary) ?? d.images[0];
 const crop = primary?.thumb;
+const titleBreak = d.title.lastIndexOf(' ');
+const titleLead = titleBreak > 0 ? d.title.slice(0, titleBreak) : '';
+const titleEnd = titleBreak > 0 ? d.title.slice(titleBreak + 1) : d.title;
 ---
 
 <a
@@ -47,12 +50,14 @@ const crop = primary?.thumb;
       compact ? 'text-lg' : 'text-xl',
     ]}
   >
-    {d.title}{' '}
-    <span
-      aria-hidden="true"
-      class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
-    >
-      →
+    {titleLead && <>{titleLead}{' '}</>}
+    <span class="whitespace-nowrap">
+      {titleEnd}{' '}<span
+        aria-hidden="true"
+        class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
     </span>
   </h3>
 

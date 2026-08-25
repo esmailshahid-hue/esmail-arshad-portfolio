@@ -23,7 +23,7 @@ const work = defineCollection({
     scope: z.array(z.string()).default([]),
 
     /**
-     * Employer case studies open with exactly three facts, not a metric band:
+     * Career case studies open with exactly three facts, not a metric band:
      * the signal, the work, and what it came to. Each is one label + one fact.
      * These figures are not repeated in large treatments further down the page.
      */

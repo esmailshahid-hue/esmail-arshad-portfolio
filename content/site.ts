@@ -2,7 +2,7 @@
  * Site data. All professional content lives here or in `content/work/*.mdx`.
  * Components render this data; they never hardcode it.
  *
- * Every fact below is traceable to content/source/. See docs/step1-content-audit.md.
+ * Every fact below is traceable to content/source/.
  */
 
 export const meta = {

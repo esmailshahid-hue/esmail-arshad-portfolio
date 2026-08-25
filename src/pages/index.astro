@@ -177,11 +177,14 @@ const iconAttrs = {
   {/* -------------------------------------------------------------- Experience */}
   <Section id="experience" heading="Career" density="tight" divided>
     <ExperienceTimeline />
-    <p class="mt-5 sm:ml-[calc(20%+1.5rem)] md:ml-[calc(20%+2rem)]">
-      <a class="text-sm text-slate underline underline-offset-4" href="/work/">
-        View all case studies
-      </a>
-    </p>
+    <div class="mt-5 grid gap-x-6 sm:grid-cols-[minmax(8.5rem,20%)_minmax(0,1fr)] md:gap-x-8">
+      <span class="hidden sm:block" aria-hidden="true"></span>
+      <p>
+        <a class="text-sm text-slate underline underline-offset-4" href="/work/">
+          View all case studies
+        </a>
+      </p>
+    </div>
   </Section>
 
   {/* ----------------------------------------------------------- Get in touch */}

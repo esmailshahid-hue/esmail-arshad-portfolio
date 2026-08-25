@@ -11,6 +11,9 @@ interface Props {
 }
 const { entry, lead = false, compact = false } = Astro.props;
 const d = entry.data;
+const titleBreak = d.title.lastIndexOf(' ');
+const titleLead = titleBreak > 0 ? d.title.slice(0, titleBreak) : '';
+const titleEnd = titleBreak > 0 ? d.title.slice(titleBreak + 1) : d.title;
 ---
 
 {/* Company, title, one result. The role-focus line was removed: on a page of
@@ -28,12 +31,14 @@ const d = entry.data;
       lead ? 'text-2xl md:text-[2rem]' : compact ? 'text-lg' : 'text-xl',
     ]}
   >
-    {d.title}{' '}
-    <span
-      aria-hidden="true"
-      class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
-    >
-      →
+    {titleLead && <>{titleLead}{' '}</>}
+    <span class="whitespace-nowrap">
+      {titleEnd}{' '}<span
+        aria-hidden="true"
+        class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
     </span>
   </h3>
 
