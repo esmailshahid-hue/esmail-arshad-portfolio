@@ -6,9 +6,7 @@
  * the evidence. The previous version led with the KPI strip, so the reader met
  * "$695K / 421 / 60" before knowing what the project was.
  *
- * `built` states the deliverable; `methods` names the tools and disciplines as
- * a quiet inline list rather than chips, matching the Core/Systems convention
- * in the hero. Neither repeats the KPI values.
+ * `built` states the deliverable without repeating the KPI values.
  *
  * The bespoke visual arrives via the default slot — the two dashboards don't
  * share a shape worth abstracting over just two cases. Every number in a
@@ -25,18 +23,16 @@ interface Props {
   title: string;
   built: string;
   kpis: readonly Kpi[];
-  methods: readonly string[];
 }
-const { href, eyebrow, title, built, kpis, methods } = Astro.props;
+const { href, eyebrow, title, built, kpis } = Astro.props;
 ---
 
 <a href={href} class="group flex h-full flex-col no-underline">
   <p class="text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
 
-  {/* Fixed block so both previews start at the same y side by side. Measured:
-      at 1024 the first title wraps to two lines and the second does not, so
-      without this they misalign by 28px. Tighter at xl, where both fit one line. */}
-  <div class="mt-2.5 lg:min-h-[7.5rem] xl:min-h-[6rem]">
+  {/* The approved copy occupies matching line counts at the two-column
+      breakpoints, so the previews can align without a fixed-height spacer. */}
+  <div class="mt-2.5">
     <h3 class="font-display text-xl leading-snug text-ink transition-colors group-hover:text-slate">
       {title} <span aria-hidden="true" class="text-slate">→</span>
     </h3>
@@ -44,7 +40,7 @@ const { href, eyebrow, title, built, kpis, methods } = Astro.props;
   </div>
 
   <div
-    class="mt-4 flex flex-1 flex-col justify-between gap-4 border border-rule bg-card p-5 transition-colors group-hover:border-ink-mute"
+    class="mt-4 flex flex-col gap-4 border border-rule bg-card p-5 transition-colors group-hover:border-ink-mute lg:flex-1"
     style="container-type:inline-size"
   >
     <dl class="grid grid-cols-4 gap-x-2.5 gap-y-3.5">
@@ -58,7 +54,7 @@ const { href, eyebrow, title, built, kpis, methods } = Astro.props;
             >
               {kpi.value}
             </dd>
-            <p class="mt-0.5 text-[11px] font-semibold tracking-wide text-ink-mute uppercase">
+            <p class="mt-0.5 text-[11px] font-semibold leading-snug text-ink-soft uppercase">
               {kpi.label}
             </p>
           </div>
@@ -66,8 +62,8 @@ const { href, eyebrow, title, built, kpis, methods } = Astro.props;
       }
     </dl>
 
-    <slot />
+    <div class="lg:flex-1">
+      <slot />
+    </div>
   </div>
-
-  <p class="mt-3 text-[13px] text-ink-mute">{methods.join(' · ')}</p>
 </a>

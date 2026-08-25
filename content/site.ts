@@ -43,97 +43,119 @@ export const hero = {
   basedNote: 'Open to relocation across GCC, Europe & North America',
 } as const;
 
-/**
- * Reverse-chronological. Each role carries one line of scope and exactly one
- * metric — the single most impactful result, not a résumé dump.
- *
- * Tools are named inside the scope sentence (Baxter, SAP, Oracle, SQL,
- * BigQuery, Tableau, WMS, SAP ECC) rather than listed separately. They read as
- * natural prose where they are actually relevant, and still land as keywords,
- * without adding a third layer of chrome to every row.
- *
- * Each metric is the result its own scope line most directly supports, so
- * sentence and number stay coherent. Amazon's 8% and Cosmos's 95% appear
- * nowhere else on the site — their case studies cover different workstreams.
- *
- * Every sentence and figure traces to Esmail_Arshad_Resume.pdf.
- */
+/** Reverse-chronological career history. Summaries describe operating scope;
+ * compact metrics carry the quantitative evidence separately. */
 export const experience = [
   {
     company: 'Jannat & Sadaf',
     displayTitle: 'Operations Manager',
     dates: 'Jan 2026 – Present',
+    location: 'Lahore, Pakistan',
     start: '2026-01-01',
     end: null as string | null,
     scope:
-      'Own production planning, sourcing and cost control across three made-to-order apparel lines.',
-    metric: { value: '98.6%', label: 'on-time delivery' },
+      'Own end-to-end production and supply operations for a made-to-order apparel business, spanning order scheduling, capacity planning, sourcing, material procurement, cost control, and fulfillment across Pret, Formal, and Wedding lines.',
+    metrics: [
+      '98.6% on-time delivery',
+      '93.5% spend traceability',
+      '↓25% fabric cost',
+    ],
     slug: 'jannat-sadaf-production-scheduling',
   },
   {
     company: 'Schneider Electric',
-    displayTitle: 'Supply Chain Planning Intern',
+    displayTitle: 'Supply Chain Planner',
     dates: 'Feb 2025 – Dec 2025',
+    location: 'Foxborough, Massachusetts',
     start: '2025-02-01',
     end: '2025-12-01',
     scope:
-      'Generated S&OE/S&OP forecasts in Baxter and ran daily exception management on high-risk orders across SAP and Oracle.',
-    metric: { value: '30%', label: 'better on-time pickups' },
+      'Managed spare-parts planning and order execution for data-center power products, spanning S&OP/S&OE forecasting, inventory and shortage management, supplier and warehouse coordination, outbound logistics, and reverse-logistics/RMA workflows.',
+    metrics: [
+      '↑20% forecast accuracy',
+      '↑30% on-time pickups',
+      '↓15% repair lead time',
+    ],
     slug: 'schneider-high-risk-order-control',
   },
   {
     company: 'Formlabs',
-    displayTitle: 'Supply Chain Planning Intern',
+    displayTitle: 'Supply Chain Planner',
     dates: 'Sep 2024 – Dec 2024',
+    location: 'Boston, Massachusetts',
     start: '2024-09-01',
     end: '2024-12-01',
     scope:
-      'Built shortage and exception reporting in SQL and BigQuery across 300+ SLA and SLS components.',
-    metric: { value: '20%', label: 'fewer late orders' },
+      'Supported supply planning and inventory control across SLA and SLS product lines, covering material-risk monitoring, inventory segmentation and disposition, and cost/reporting automation across planning, operations, and finance.',
+    metrics: [
+      '↑6% OTIF',
+      '↓$50K carrying costs',
+      '↓80% COGS reporting time',
+    ],
     slug: 'formlabs-sls-cogs-automation',
   },
   {
     company: 'Tesla',
-    displayTitle: 'Global Supply Chain Manager Intern',
+    displayTitle: 'Global Supply Manager',
     dates: 'May 2024 – Aug 2024',
+    location: 'Palo Alto, California',
     start: '2024-05-01',
     end: '2024-08-01',
     scope:
-      'Should-costed top-level assembly tooling against machining, material and labour inputs to challenge supplier quotes.',
-    metric: { value: '$150K', label: 'procurement savings' },
+      'Managed supplier sourcing and commercial analysis for NPI manufacturing equipment in electronics assembly, covering supplier negotiations, capacity and DFM reviews, should-costing, Capex governance, and cross-functional support for engineering, manufacturing, and finance.',
+    metrics: [
+      '↓3% Capex spend',
+      '$150K procurement savings',
+      '$100M+ Capex tracked',
+    ],
     slug: 'tesla-component-level-should-cost',
   },
   {
     company: 'TLS Technology',
-    displayTitle: 'Supply Chain Operations Manager',
+    displayTitle: 'Operations Manager',
     dates: 'May 2023 – Nov 2023',
+    location: 'Lahore, Pakistan',
     start: '2023-05-01',
     end: '2023-11-01',
     scope:
-      'Led a ten-person team building the importer-of-record, customs and compliance model for EMEA market entry.',
-    metric: { value: '12%', label: 'EMEA market-share growth' },
+      'Led cross-border technology fulfillment and market expansion across EMEA and APAC, overseeing a 10-person operations team, IOR/EOR vendor networks, order processing, compliance processes, and regional delivery execution.',
+    metrics: [
+      '↓18% delivery lead time',
+      '↑12% market share',
+      '5 IOR vendors/qtr',
+    ],
     slug: 'tls-emea-expansion-operating-model',
   },
   {
     company: 'Amazon',
-    displayTitle: 'Supply Chain Program Manager (Contract)',
+    displayTitle: 'Program Manager',
     dates: 'Nov 2021 – Nov 2022',
+    location: 'Greater Seattle Area',
     start: '2021-11-01',
     end: '2022-11-01',
     scope:
-      'Ran root-cause analysis across ~100K weekly shipments in Tableau and Excel, and rebuilt lane-level freight pricing rules.',
-    metric: { value: '8%', label: 'lower network cost' },
+      'Managed cost and service performance across Amazon Freight’s middle-mile network, using pricing, lane, shipment, and carrier data to improve capacity alignment, resolve operational exceptions, and strengthen performance visibility for planning and operations teams.',
+    metrics: [
+      '↓8% network cost',
+      '98% on-time delivery',
+      '↓20 labor hrs/week',
+    ],
     slug: 'amazon-cost-anomaly-investigation',
   },
   {
     company: 'Cosmos Surfaces',
-    displayTitle: 'Supply Chain Analyst',
+    displayTitle: 'Operations Engineer',
     dates: 'Jan 2020 – Nov 2021',
+    location: 'Greater Seattle Area',
     start: '2020-01-01',
     end: '2021-11-01',
     scope:
-      'Integrated WMS with SAP ECC for real-time inventory accuracy and reworked dock scheduling with 3PL partners.',
-    metric: { value: '95%', label: 'order fulfillment' },
+      'Managed warehouse and distribution operations for imported stone products, spanning inventory control, WMS/SAP execution, 3PL coordination, dock operations, warehouse flow, and outbound fulfillment across the Greater Seattle area.',
+    metrics: [
+      '95% order fulfillment',
+      '↓50% truck turnaround',
+      '↑20% warehouse capacity',
+    ],
     slug: 'cosmos-brown-fantasy-recovery',
   },
 ] as const;

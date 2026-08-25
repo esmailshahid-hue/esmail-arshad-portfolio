@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '@layouts/Base.astro';
 import Section from '@components/Section.astro';
@@ -8,8 +7,6 @@ import InventoryDashboardPreview from '@components/InventoryDashboardPreview.ast
 import FreightDashboardPreview from '@components/FreightDashboardPreview.astro';
 import ExperienceTimeline from '@components/ExperienceTimeline.astro';
 import { meta, hero, about, education, contact, contactSection } from '@content/site';
-
-const totalPublished = (await getCollection('work')).filter((w) => w.data.published).length;
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '../../content/images/*.{jpg,jpeg,png}',
@@ -143,16 +140,15 @@ const iconAttrs = {
       <li class="flex">
         <ProjectPreviewCard
           href="/work/inventory-forecasting-reorder-planning/"
-          eyebrow="Demand & inventory planning"
-          title="Matching forecast methods to SKU demand behavior"
-          built="Built an Excel planning model linking demand behaviour, safety stock and reorder decisions."
+          eyebrow="INVENTORY PLANNING"
+          title="Demand Forecasting & Reorder Planning"
+          built="Forecasted 24 SKUs and set safety stock and reorder levels from 18 months of demand."
           kpis={[
             { value: '24', label: 'SKUs' },
-            { value: '15', label: 'Stockout risk' },
-            { value: '1', label: 'Excess stock' },
+            { value: '18', label: 'Months' },
+            { value: '$78.4K', label: 'Inventory value' },
             { value: '$43.7K', label: 'Suggested reorder' },
           ]}
-          methods={['Excel', 'Forecasting', 'Reorder planning']}
         >
           <InventoryDashboardPreview />
         </ProjectPreviewCard>
@@ -160,31 +156,25 @@ const iconAttrs = {
       <li class="flex">
         <ProjectPreviewCard
           href="/work/freight-spend-vendor-cost-review/"
-          eyebrow="Freight spend & vendor cost analysis"
-          title="Turning freight spend into a review queue"
-          built="Built an Excel spend model to normalize freight costs and surface review exceptions."
+          eyebrow="FREIGHT COST ANALYSIS"
+          title="Freight Cost & Invoice Review"
+          built="Reviewed 12 months of freight invoices, compared vendor costs and flagged lines that needed checking."
           kpis={[
             { value: '$695K', label: 'Reviewed spend' },
             { value: '421', label: 'Invoice lines' },
-            { value: '60', label: 'Review flags' },
-            { value: '$137.6K', label: 'Flagged spend' },
+            { value: '60', label: 'Lines to review' },
+            { value: '$137.6K', label: 'Spend to review' },
           ]}
-          methods={['Excel', 'Spend analytics', 'Anomaly review']}
         >
           <FreightDashboardPreview />
         </ProjectPreviewCard>
       </li>
     </ul>
 
-    <p class="mt-10">
-      <a href="/work/" class="text-sm text-slate no-underline hover:underline">
-        View all {totalPublished} projects <span aria-hidden="true">→</span>
-      </a>
-    </p>
   </Section>
 
   {/* -------------------------------------------------------------- Experience */}
-  <Section id="experience" heading="Experience" density="tight" divided>
+  <Section id="experience" heading="Career" density="tight" divided>
     <ExperienceTimeline />
   </Section>
 

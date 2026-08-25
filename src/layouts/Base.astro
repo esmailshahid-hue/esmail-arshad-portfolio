@@ -62,6 +62,7 @@ const personSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/og.png" type="image/png" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -210,15 +211,17 @@ const personSchema = {
       }
     </style>
     <script is:inline>
-      document.querySelector('[data-theme-toggle]').addEventListener('click', function () {
-        var root = document.documentElement;
-        var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var showing = root.dataset.theme || (systemDark ? 'dark' : 'light');
-        var next = showing === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
-        try {
-          localStorage.setItem('theme', next);
-        } catch (e) {}
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('[data-theme-toggle]')?.addEventListener('click', function () {
+          var root = document.documentElement;
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var showing = root.dataset.theme || (systemDark ? 'dark' : 'light');
+          var next = showing === 'dark' ? 'light' : 'dark';
+          root.dataset.theme = next;
+          try {
+            localStorage.setItem('theme', next);
+          } catch (e) {}
+        });
       });
     </script>
   </body>

@@ -1,45 +1,64 @@
 ---
-/**
- * Homepage preview body for the freight card. Vendor names and spend figures
- * are read directly from the real sanitized dashboard (freight-dashboard.png)
- * — vendor identity here is not confidential, only the client's is. Bar widths
- * are computed from the real spend figures, not laid in by hand.
- */
-const vendors = [
-  { name: 'FedEx', spend: 118589, share: '17.1%' },
-  { name: 'DHL Express', spend: 103308, share: '14.9%' },
-  { name: 'XPO Logistics', spend: 97353, share: '14.0%' },
-  { name: 'J.B. Hunt', spend: 95339, share: '13.7%' },
-  { name: 'UPS', spend: 76320, share: '11.0%' },
+/** Verified in the sanitized workbook Dashboard. */
+const invoiceLines = 421;
+const linesToReview = 60;
+const reviewedSpend = 695475.29;
+const spendToReview = 137615.04;
+
+const coverage = [
+  { label: 'of invoice lines', percentage: (linesToReview / invoiceLines) * 100 },
+  { label: 'of spend', percentage: (spendToReview / reviewedSpend) * 100 },
 ] as const;
 
-const top = vendors[0].spend;
-const fmt = (n: number) => `$${(n / 1000).toFixed(1)}K`;
+const reasons = [
+  { label: 'Non-USD invoices', count: 29 },
+  { label: 'Missing PO', count: 19 },
+  { label: 'High-cost', count: 10 },
+  { label: 'Possible duplicate', count: 4 },
+] as const;
+const maxReasonCount = Math.max(...reasons.map((reason) => reason.count));
 ---
 
-<div class="grid gap-3.5">
-  <div class="grid gap-2">
-    {
-      vendors.map((v, i) => (
-        <div class="grid grid-cols-[5.25rem_minmax(0,1fr)_5.75rem] items-center gap-2.5">
-          <p class="truncate text-[12.5px] text-ink-soft">{v.name}</p>
-          <div class="h-[9px] rounded-sm bg-rule-soft">
-            <div
-              class="h-[9px] rounded-sm bg-slate"
-              style={`width:${(v.spend / top) * 100}%; opacity:${1 - i * 0.13}`}
-            />
+<div class="grid gap-4">
+  <div>
+    <p class="text-[12px] font-medium text-ink-soft">Review coverage</p>
+    <div class="mt-2.5 grid gap-2">
+      {
+        coverage.map((item) => (
+          <div class="grid grid-cols-[6.5rem_minmax(0,1fr)_2.75rem] items-center gap-2.5">
+            <p class="text-[12px] text-ink-soft">{item.label}</p>
+            <div class="h-[8px] rounded-sm bg-rule-soft">
+              <div class="h-[8px] rounded-sm bg-slate" style={`width:${item.percentage}%`} />
+            </div>
+            <p class="text-right text-[12.5px] font-semibold tabular-nums text-ink">
+              {item.percentage.toFixed(1)}%
+            </p>
           </div>
-          <p class="text-right text-[12.5px] font-medium whitespace-nowrap text-ink">
-            {fmt(v.spend)} <span class="text-[11px] font-normal text-ink-mute">{v.share}</span>
-          </p>
-        </div>
-      ))
-    }
+        ))
+      }
+    </div>
   </div>
 
-  {/* Concentration is the one fact the bars imply but never state. The flagged
-      count is already in the KPI strip, so it is not repeated here. */}
-  <p class="border-t border-rule-soft pt-3 text-[12px] text-ink-soft">
-    Top 3 vendors = 45.9% of spend
-  </p>
+  <div>
+    <p class="text-[12px] font-medium text-ink-soft">Reasons for review</p>
+    <p class="mt-0.5 text-[11.5px] leading-relaxed italic text-ink-mute">
+      Some lines triggered more than one check.
+    </p>
+    <div class="mt-2.5 grid gap-2">
+      {
+        reasons.map((reason) => (
+          <div class="grid grid-cols-[7.25rem_minmax(0,1fr)_2rem] items-center gap-2.5">
+            <p class="text-[12px] leading-snug text-ink-soft">{reason.label}</p>
+            <div class="h-[8px]">
+              <div
+                class="h-[8px] rounded-sm bg-slate"
+                style={`width:${(reason.count / maxReasonCount) * 100}%`}
+              />
+            </div>
+            <p class="text-right text-[12px] font-medium tabular-nums text-ink">{reason.count}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </div>
