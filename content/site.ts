@@ -64,7 +64,7 @@ export const experience = [
   },
   {
     company: 'Schneider Electric',
-    displayTitle: 'Supply Chain Planner',
+    displayTitle: 'Supply Chain Planning Intern',
     dates: 'Feb 2025 – Dec 2025',
     location: 'Foxborough, Massachusetts',
     start: '2025-02-01',
@@ -80,7 +80,7 @@ export const experience = [
   },
   {
     company: 'Formlabs',
-    displayTitle: 'Supply Chain Planner',
+    displayTitle: 'Supply Chain Planning Intern',
     dates: 'Sep 2024 – Dec 2024',
     location: 'Boston, Massachusetts',
     start: '2024-09-01',
@@ -96,7 +96,7 @@ export const experience = [
   },
   {
     company: 'Tesla',
-    displayTitle: 'Global Supply Manager',
+    displayTitle: 'Global Supply Manager Intern',
     dates: 'May 2024 – Aug 2024',
     location: 'Palo Alto, California',
     start: '2024-05-01',
@@ -112,7 +112,7 @@ export const experience = [
   },
   {
     company: 'TLS Technology',
-    displayTitle: 'Operations Manager',
+    displayTitle: 'Supply Chain Operations Manager',
     dates: 'May 2023 – Nov 2023',
     location: 'Lahore, Pakistan',
     start: '2023-05-01',
@@ -128,7 +128,7 @@ export const experience = [
   },
   {
     company: 'Amazon',
-    displayTitle: 'Program Manager',
+    displayTitle: 'Supply Chain Program Manager',
     dates: 'Nov 2021 – Nov 2022',
     location: 'Greater Seattle Area',
     start: '2021-11-01',
@@ -144,7 +144,7 @@ export const experience = [
   },
   {
     company: 'Cosmos Surfaces',
-    displayTitle: 'Operations Engineer',
+    displayTitle: 'Supply Chain Analyst',
     dates: 'Jan 2020 – Nov 2021',
     location: 'Greater Seattle Area',
     start: '2020-01-01',
@@ -183,15 +183,12 @@ export const education = {
   certifications: [] as { name: string; issuer: string | null }[],
 } as const;
 
-/**
- * §21 — GitHub is intentionally absent from Contact: the repository holds this
- * portfolio's own source rather than portfolio-relevant supply chain work.
- */
+/** Contact destinations. GitHub is reserved for the homepage footer. */
 export const contact = {
   email: 'esmailshahid@gmail.com',
   linkedin: 'https://www.linkedin.com/in/esmailarshad/',
   linkedinLabel: 'linkedin.com/in/esmailarshad',
-  github: null as string | null,
+  github: 'https://github.com/esmailshahid-hue',
 } as const;
 
 /**
@@ -208,5 +205,5 @@ export const confidentialityNote =
 export const contactSection = {
   heading: 'Get in touch',
   supporting:
-    'For supply chain, planning, logistics or operations opportunities, email me or connect on LinkedIn.',
+    'Open to conversations around supply chain, planning, logistics and operations opportunities.',
 } as const;

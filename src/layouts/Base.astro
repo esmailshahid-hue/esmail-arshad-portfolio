@@ -86,7 +86,7 @@ const personSchema = {
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
     />
-    <set:html value={`<script type="application/ld+json">${JSON.stringify(personSchema)}</script>`} />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />
 
     {/* Runs before first paint: without it an explicit choice flashes the other
         theme while the document parses. The only blocking script on the site. */}
@@ -98,7 +98,7 @@ const personSchema = {
     </script>
   </head>
 
-  <body>
+  <body id="top">
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="border-b border-rule">
@@ -114,7 +114,7 @@ const personSchema = {
             <li><a class="nav-link" href="/#about">About</a></li>
             <li class="hidden sm:block"><a class="nav-link" href="/#projects">Projects</a></li>
             <li class="hidden sm:block">
-              <a class="nav-link" href="/#experience">Experience</a>
+              <a class="nav-link" href="/#experience">Career</a>
             </li>
             <li><a class="nav-link" href="/#contact">Contact</a></li>
             <li>
