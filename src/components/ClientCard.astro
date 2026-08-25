@@ -14,7 +14,6 @@ const d = entry.data;
 // crop zooms into the part worth seeing; the full sanitized sheet is on the page.
 const primary = d.images.find((i) => i.primary) ?? d.images[0];
 const crop = primary?.thumb;
-const scope = d.scope.slice(0, 2).join(' · ');
 ---
 
 <a
@@ -40,11 +39,7 @@ const scope = d.scope.slice(0, 2).join(' · ');
     )
   }
 
-  {/* "Client work" said nothing. This says what it is and what it covers. */}
-  <p class="text-sm font-medium text-ink">
-    Independent client project
-    <span class="text-ink-soft"> · {d.roleFocus}</span>
-  </p>
+  <p class="text-sm font-medium text-ink">{d.roleFocus}</p>
 
   <h3
     class:list={[
@@ -52,19 +47,19 @@ const scope = d.scope.slice(0, 2).join(' · ');
       compact ? 'text-lg' : 'text-xl',
     ]}
   >
-    {d.title}
+    {d.title}{' '}
+    <span
+      aria-hidden="true"
+      class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
+    >
+      →
+    </span>
   </h3>
 
-  {/* Scope, not a summary paragraph. The methodology is on the page. */}
   <p class="mt-5 flex items-baseline gap-2 text-base">
-    <span class="text-ink-soft">
-      {scope}{' '}
-      <span
-        aria-hidden="true"
-        class="inline-block text-slate transition-transform group-hover:translate-x-0.5"
-      >
-        →
-      </span>
+    <span class="shrink-0 font-display text-lg font-semibold text-ink">
+      {d.headlineOutcome.value}
     </span>
+    <span class="text-ink-soft">{d.headlineOutcome.label}</span>
   </p>
 </a>

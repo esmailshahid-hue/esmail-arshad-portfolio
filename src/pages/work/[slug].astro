@@ -53,10 +53,20 @@ const isClient = d.type === 'client-project';
       </a>
 
       <p class="mt-7 text-sm font-medium text-ink">
-        {d.organization}
-        {d.displayTitle && <span class="text-ink-soft"> · {d.displayTitle}</span>}
-        {isClient && <span class="text-ink-soft"> · {d.roleFocus}</span>}
-        <span class="text-ink-mute"> · {d.timeframe}</span>
+        {
+          isClient ? (
+            <>
+              Client project<span class="text-ink-soft"> · {d.roleFocus}</span>
+              <span class="text-ink-mute"> · {d.timeframe}</span>
+            </>
+          ) : (
+            <>
+              {d.organization}
+              {d.displayTitle && <span class="text-ink-soft"> · {d.displayTitle}</span>}
+              <span class="text-ink-mute"> · {d.timeframe}</span>
+            </>
+          )
+        }
       </p>
 
       <h1 class="mt-3 max-w-3xl font-display text-display text-ink">{d.title}</h1>
@@ -161,8 +171,7 @@ const isClient = d.type === 'client-project';
       {
         isClient && (
           <p class="mt-12 max-w-2xl border-t border-rule pt-5 text-sm leading-relaxed text-ink-mute">
-            Client identity omitted. The data and artifacts shown here have been sanitized for
-            portfolio use, and the workbook itself is not distributed.
+            Client identity is withheld. Data and screenshots are sanitized, and the workbook is not shared.
           </p>
         )
       }

@@ -6,8 +6,7 @@ import EmployerCard from '@components/EmployerCard.astro';
 import ClientCard from '@components/ClientCard.astro';
 import { meta } from '@content/site';
 
-// The full archive. The homepage features five; everything published lives here,
-// split into the two kinds so a reader knows what they are looking at.
+// One combined archive, split by work type for context.
 const work = (await getCollection('work'))
   .filter((w) => w.data.published)
   .sort((a, b) => a.data.order - b.data.order);
@@ -17,23 +16,23 @@ const client = work.filter((w) => w.data.type === 'client-project');
 ---
 
 <Base
-  title={`Projects | ${meta.name}`}
-  description="Supply chain and operations case studies across planning, procurement, logistics and analytics, plus independent client analysis projects."
+  title={`Case Studies | ${meta.name}`}
+  description="Selected case studies across supply chain planning, sourcing, logistics, operations and analytics, including sanitized client work."
   path="/work/"
 >
   <section class="shell pt-10 pb-8 md:pt-14 md:pb-10">
     <a href="/" class="text-sm text-ink-mute no-underline hover:text-slate">
       <span aria-hidden="true">←</span> Home
     </a>
-    <h1 class="mt-7 max-w-3xl font-display text-display text-ink">Projects</h1>
+    <h1 class="mt-7 max-w-3xl font-display text-display text-ink">Case Studies</h1>
     <p class="measure mt-4 text-lg leading-relaxed text-ink-soft">
-      Problems from seven roles and two independent client projects — what the situation was,
-      what I did, and what came of it.
+      Selected case studies from my work in planning, sourcing, logistics and operations, focused
+      on the decisions behind the results.
     </p>
   </section>
 
-  <Section heading="Employer case studies" density="tight" divided>
-    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+  <Section heading="Career Case Studies" density="tight" divided>
+    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 xl:grid-cols-3">
       {
         employer.map((entry) => (
           <li class="flex">
@@ -44,8 +43,8 @@ const client = work.filter((w) => w.data.type === 'client-project');
     </ul>
   </Section>
 
-  <Section heading="Independent client projects" density="tight" divided>
-    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+  <Section heading="Client Projects" density="tight" divided>
+    <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 xl:grid-cols-3">
       {
         client.map((entry) => (
           <li class="flex">
@@ -55,7 +54,7 @@ const client = work.filter((w) => w.data.type === 'client-project');
       }
     </ul>
     <p class="mt-9 max-w-2xl text-sm leading-relaxed text-ink-mute">
-      Client identity is omitted. The data and artifacts shown are sanitized for portfolio use.
+      Client identities are withheld. Data and screenshots are sanitized for portfolio use.
     </p>
   </Section>
 </Base>

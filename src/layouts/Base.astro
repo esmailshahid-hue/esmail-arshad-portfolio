@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import FooterRow from '@components/FooterRow.astro';
 import { meta, contact } from '@content/site';
 
 interface Props {
@@ -21,12 +22,9 @@ const {
 
 const canonical = new URL(path, Astro.site).href;
 const ogImage = new URL(meta.ogImage, Astro.site).href;
-const year = new Date().getFullYear();
 /**
- * Interior pages still need a copyright line; the homepage folds its own into
- * the closing Get in touch section, so no footer renders there. The
- * confidentiality disclaimer is no longer shown anywhere — each client case
- * study carries its own anonymity note where it is relevant.
+ * The homepage folds its footer row into Get in touch. Interior pages render
+ * the same compact utilities below their content.
  *
  * NOTE: this explanation lives here rather than as a {(slash-star)...(star-slash)}
  * comment above the footer expression below. Astro 5.18.2 mis-parses a JSX
@@ -173,11 +171,7 @@ const personSchema = {
 
     {
       !isHome && (
-        <footer class="mt-20 border-t border-rule-soft">
-          <div class="shell py-7">
-            <p class="text-xs text-ink-mute">{`© ${year} ${meta.name}`}</p>
-          </div>
-        </footer>
+        <FooterRow class="shell mt-20 border-t border-rule pt-5 pb-7" />
       )
     }
 
@@ -211,17 +205,15 @@ const personSchema = {
       }
     </style>
     <script is:inline>
-      document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('[data-theme-toggle]')?.addEventListener('click', function () {
-          var root = document.documentElement;
-          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var showing = root.dataset.theme || (systemDark ? 'dark' : 'light');
-          var next = showing === 'dark' ? 'light' : 'dark';
-          root.dataset.theme = next;
-          try {
-            localStorage.setItem('theme', next);
-          } catch (e) {}
-        });
+      document.querySelector('[data-theme-toggle]')?.addEventListener('click', function () {
+        var root = document.documentElement;
+        var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var showing = root.dataset.theme || (systemDark ? 'dark' : 'light');
+        var next = showing === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try {
+          localStorage.setItem('theme', next);
+        } catch (e) {}
       });
     </script>
   </body>

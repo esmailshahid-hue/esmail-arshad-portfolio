@@ -28,7 +28,13 @@ const d = entry.data;
       lead ? 'text-2xl md:text-[2rem]' : compact ? 'text-lg' : 'text-xl',
     ]}
   >
-    {d.title}
+    {d.title}{' '}
+    <span
+      aria-hidden="true"
+      class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
+    >
+      →
+    </span>
   </h3>
 
   {
@@ -43,14 +49,6 @@ const d = entry.data;
     <span class="shrink-0 font-display text-lg font-semibold text-ink">
       {d.headlineOutcome.value}
     </span>
-    <span class="text-ink-soft">
-      {d.headlineOutcome.label}{' '}
-      <span
-        aria-hidden="true"
-        class="inline-block text-slate transition-transform group-hover:translate-x-0.5"
-      >
-        →
-      </span>
-    </span>
+    <span class="text-ink-soft">{d.headlineOutcome.label}</span>
   </p>
 </a>
