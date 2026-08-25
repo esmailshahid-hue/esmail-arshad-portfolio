@@ -153,7 +153,7 @@ export const experience = [
       'Managed warehouse and distribution operations for imported stone products, spanning inventory control, WMS/SAP execution, 3PL coordination, dock operations, warehouse flow, and outbound fulfillment across the Greater Seattle area.',
     metrics: [
       '95% order fulfillment',
-      '↓50% truck turnaround',
+      '↓50% truck turnaround time',
       '↑20% warehouse capacity',
     ],
     slug: 'cosmos-brown-fantasy-recovery',
