@@ -19,6 +19,19 @@ const work = defineCollection({
     capabilities: z.array(z.string()).min(1),
     tools: z.array(z.string()).default([]),
 
+    /**
+     * External destinations for entries that have a public artefact of their own
+     * — a live tool, a repository. Case studies leave this empty and nothing
+     * renders. Kept structured rather than hardcoded in MDX so the template
+     * controls the wording and the link treatment.
+     */
+    links: z
+      .object({
+        live: z.string().url().optional(),
+        github: z.string().url().optional(),
+      })
+      .optional(),
+
     /** Scope = size of the environment or analysis (§16). Never an outcome. */
     scope: z.array(z.string()).default([]),
 
@@ -38,13 +51,19 @@ const work = defineCollection({
       .length(3)
       .optional(),
 
-    /** The single principal result (§12). */
-    headlineOutcome: z.object({
-      value: z.string(),
-      label: z.string(),
-      /** 'outcome' = the work changed it. 'finding' = the analysis identified it. */
-      kind: z.enum(['outcome', 'finding']),
-    }),
+    /**
+     * The single principal result (§12). Required in practice for case studies,
+     * which is every entry that reaches a card. Optional at the schema level so
+     * a tool — which has a product, not a result — is not forced to invent one.
+     */
+    headlineOutcome: z
+      .object({
+        value: z.string(),
+        label: z.string(),
+        /** 'outcome' = the work changed it. 'finding' = the analysis identified it. */
+        kind: z.enum(['outcome', 'finding']),
+      })
+      .optional(),
 
 
 

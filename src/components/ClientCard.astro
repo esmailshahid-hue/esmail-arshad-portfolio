@@ -61,10 +61,14 @@ const titleEnd = titleBreak > 0 ? d.title.slice(titleBreak + 1) : d.title;
     </span>
   </h3>
 
-  <p class="mt-5 flex items-baseline gap-2 text-base">
-    <span class="shrink-0 font-display text-lg font-semibold text-ink">
-      {d.headlineOutcome.value}
-    </span>
-    <span class="text-ink-soft">{d.headlineOutcome.label}</span>
-  </p>
+  {
+    d.headlineOutcome && (
+      <p class="mt-5 flex items-baseline gap-2 text-base">
+        <span class="shrink-0 font-display text-lg font-semibold text-ink">
+          {d.headlineOutcome.value}
+        </span>
+        <span class="text-ink-soft">{d.headlineOutcome.label}</span>
+      </p>
+    )
+  }
 </a>

@@ -1,0 +1,84 @@
+---
+type: tool
+title: Supply Chain AI Toolkit
+organization: Independent Project
+displayTitle: AI-assisted development
+roleFocus: Supply Chain Analytics Tool
+timeframe: '2026'
+summary: Built an interactive toolkit that turns common supply-chain CSV exports into decision-ready inventory, freight and supplier analysis.
+capabilities:
+  - Inventory Planning
+  - Logistics Analytics
+  - Supplier Performance
+  - Workflow Automation
+tools:
+  - JavaScript
+  - CSV
+  - AI-assisted development
+links:
+  live: https://esmail-supply-chain-ai-toolkit-blond.vercel.app/
+  github: https://github.com/esmailshahid-hue/supply-chain-ai-toolkit
+atAGlance:
+  - label: Workflows
+    value: '3'
+    note: inventory, freight and supplier analysis
+  - label: Data input
+    value: Flexible CSV
+    note: automatic + manual column mapping
+  - label: Architecture
+    value: Browser-based
+    note: calculations run without a database
+rightsStatus: own-work
+# A screenshot of the running app belongs here once one exists: save it to
+# content/images/ (e.g. supply-chain-ai-toolkit.png) and add an entry with
+# primary: true, a sheet label such as "Inventory Planner", an alt description
+# of what is on screen, and a caption. Left empty deliberately — no placeholder
+# graphic stands in for the live app.
+images: []
+featured: false
+published: true
+draft: false
+order: 8
+---
+
+## What I built
+
+The same three analyses kept recurring across planning, freight and sourcing work, and each
+time they were rebuilt by hand in a spreadsheet against whatever export was available. This
+toolkit turns them into reusable browser workflows: load the CSV you already have, map the
+columns once, and get the calculation back in a form you can filter, sort and export.
+
+## Three workflows
+
+### Inventory Planner
+
+Calculates days of cover, lead-time demand, reorder points, inventory position and
+MOQ-rounded order recommendations.
+
+### Freight Exceptions
+
+Benchmarks cost per mile by lane and flags high-cost, late and critical shipments.
+
+### Supplier Scorecard
+
+Scores suppliers across delivery, quality, cost and service using editable weights.
+
+## How it works
+
+Upload CSV → map columns → analyze → filter/sort → export results
+
+You do not need exact header names. Common variants of each field are matched automatically,
+so a file that calls a column `On Hand`, `on_hand` or `Qty Available` resolves the same way.
+Anything left unresolved is mapped by hand before the analysis runs, and the mapping is shown
+so you can see what was matched to what.
+
+## Build approach
+
+- **The calculations are deterministic.** The same file and the same settings produce the same
+  numbers every time — the arithmetic is written out in code, not generated.
+- **Uploaded CSV processing happens in the browser.** No database is required, and nothing is
+  stored between sessions.
+- **The optional AI Brief writes up results that already exist.** It summarizes the calculated
+  output in plain language; it does not perform the calculation and cannot change it.
+- **Raw uploaded CSV files are not sent to the AI endpoint.** Only the calculated results the
+  brief describes are.

@@ -37,6 +37,7 @@ const lead = resolved.find((i) => i.primary) ?? resolved[0];
 const supporting = resolved.filter((i) => i !== lead);
 
 const isClient = d.type === 'client-project';
+const isTool = d.type === 'tool';
 ---
 
 <Base
@@ -59,6 +60,14 @@ const isClient = d.type === 'client-project';
               Client project<span class="text-ink-soft"> · {d.roleFocus}</span>
               <span class="text-ink-mute"> · {d.timeframe}</span>
             </>
+          ) : isTool ? (
+            /* `organization` is not an employer here, so it is not set in the
+               emphasized position an employer name occupies above. */
+            <>
+              Independent project
+              {d.displayTitle && <span class="text-ink-soft"> · {d.displayTitle}</span>}
+              <span class="text-ink-mute"> · {d.timeframe}</span>
+            </>
           ) : (
             <>
               {d.organization}
@@ -76,6 +85,35 @@ const isClient = d.type === 'client-project';
       {
         d.tools.length > 0 && (
           <p class="mt-4 text-sm text-ink-mute">{d.tools.join(' · ')}</p>
+        )
+      }
+
+      {/* Where the work has a public artefact of its own, it is reachable from
+          here as editorial text — not a CTA. Live demo carries the weight. */}
+      {
+        (d.links?.live || d.links?.github) && (
+          <p class="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
+            {d.links.live && (
+              <a
+                href={d.links.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-medium text-slate underline underline-offset-4 hover:text-slate-deep"
+              >
+                Live Demo <span aria-hidden="true">↗</span>
+              </a>
+            )}
+            {d.links.github && (
+              <a
+                href={d.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-ink-mute no-underline hover:text-slate hover:underline hover:underline-offset-4"
+              >
+                GitHub <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </p>
         )
       }
 
