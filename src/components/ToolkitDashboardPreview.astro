@@ -1,0 +1,71 @@
+---
+/**
+ * Homepage preview for the Supply Chain AI Toolkit.
+ *
+ * A miniature product overview, not an architecture diagram: the three
+ * workflows the toolkit actually contains, then the path a file takes through
+ * it. The two client previews visualize findings because those projects
+ * produced findings; this one has a product instead, so it shows the parts.
+ *
+ * Deliberately carries no figures. The toolkit runs on whatever CSV is loaded,
+ * so any number here would be invented — the modules name what each workflow
+ * computes and stop there.
+ */
+const modules = [
+  { name: 'Inventory Planner', does: 'Reorder risk + MOQ' },
+  { name: 'Freight Exceptions', does: 'Cost + delivery flags' },
+  { name: 'Supplier Scorecard', does: 'Weighted performance' },
+] as const;
+
+const flow = ['CSV', 'Map', 'Analyze', 'Export'] as const;
+---
+
+<div class="grid gap-3.5">
+  <div>
+    <p class="text-[12px] font-medium text-ink-soft">Workflows</p>
+    <ul class="module-list mt-2 grid list-none gap-1.5">
+      {
+        modules.map((module) => (
+          <li class="grid grid-cols-[0.125rem_minmax(0,1fr)] items-stretch gap-2.5">
+            {/* A slate spine rather than an icon — the accent already carries
+                enough weight at this size, and three icons would not. */}
+            <span class="bg-slate" aria-hidden="true" />
+            <div class="min-w-0">
+              <p class="text-[12.5px] font-semibold leading-snug text-ink">{module.name}</p>
+              <p class="mt-0.5 text-[11.5px] leading-snug text-ink-mute">{module.does}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="border-t border-rule-soft pt-3">
+    <p class="text-[12px] font-medium text-ink-soft">How a file moves through it</p>
+    <ol class="mt-2.5 flex list-none flex-wrap items-center gap-x-1.5 gap-y-1">
+      {
+        flow.map((step, i) => (
+          <>
+            {i > 0 && (
+              <li aria-hidden="true" class="text-[11.5px] leading-none text-ink-mute">
+                →
+              </li>
+            )}
+            <li class="text-[11.5px] leading-none font-medium text-ink-soft">{step}</li>
+          </>
+        ))
+      }
+    </ol>
+  </div>
+</div>
+
+<style>
+  /* Keyed to the panel's own width, not the viewport, so the same component
+     works whether it sits in the half-width desktop column or full width. */
+  @container (min-width: 30rem) {
+    .module-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+  }
+</style>

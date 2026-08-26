@@ -1,0 +1,81 @@
+---
+/**
+ * Homepage card for a built tool.
+ *
+ * Same family as ProjectPreviewCard — eyebrow, serif title, sans supporting
+ * line, then a bordered `bg-card` panel — but it cannot reuse it. That card
+ * wraps everything in one anchor, and a tool carries its own external links;
+ * an anchor inside an anchor is invalid HTML and browsers recover from it
+ * unpredictably. So the card is a plain container: the title is the only link
+ * to the case study, the external links are their own anchors, and the hover
+ * treatment is driven from the title's own hover rather than the whole card.
+ */
+interface Props {
+  href: string;
+  eyebrow: string;
+  title: string;
+  built: string;
+  live?: string;
+  github?: string;
+}
+const { href, eyebrow, title, built, live, github } = Astro.props;
+---
+
+<div class="tool-card grid h-full gap-x-9 gap-y-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:items-start">
+  <div class="min-w-0">
+    <p class="text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
+
+    <h3 class="mt-2.5 font-display text-xl leading-snug text-ink">
+      <a href={href} class="tool-title no-underline">
+        {title} <span aria-hidden="true" class="text-slate">→</span>
+      </a>
+    </h3>
+    <p class="mt-2 text-[15px] leading-relaxed text-ink-soft">{built}</p>
+
+    {
+      (live || github) && (
+        <p class="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
+          {live && (
+            <a
+              href={live}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-medium text-slate underline underline-offset-4 hover:text-slate-deep"
+            >
+              Live Demo <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {github && (
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-ink-mute no-underline hover:text-slate hover:underline hover:underline-offset-4"
+            >
+              GitHub <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </p>
+      )
+    }
+  </div>
+
+  <div
+    class="tool-panel min-w-0 border border-rule bg-card p-5 transition-colors"
+    style="container-type:inline-size"
+  >
+    <slot />
+  </div>
+</div>
+
+<style>
+  /* The whole-card hover of ProjectPreviewCard comes from `group` on its
+     anchor. Here the anchor is only the title, so the same two effects are
+     wired by hand: the title takes the slate, and the panel border lifts. */
+  .tool-title:hover {
+    color: var(--color-slate);
+  }
+  .tool-card:hover .tool-panel {
+    border-color: var(--color-ink-mute);
+  }
+</style>

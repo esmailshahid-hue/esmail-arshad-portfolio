@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import Base from '@layouts/Base.astro';
 import Section from '@components/Section.astro';
 import ProjectPreviewCard from '@components/ProjectPreviewCard.astro';
+import ToolPreviewCard from '@components/ToolPreviewCard.astro';
+import ToolkitDashboardPreview from '@components/ToolkitDashboardPreview.astro';
 import InventoryDashboardPreview from '@components/InventoryDashboardPreview.astro';
 import FreightDashboardPreview from '@components/FreightDashboardPreview.astro';
 import ExperienceTimeline from '@components/ExperienceTimeline.astro';
@@ -137,7 +139,29 @@ const iconAttrs = {
 
   {/* ---------------------------------------------------------------- Projects */}
   <Section id="projects" heading="Projects" divided>
-    <ul class="grid list-none gap-x-9 gap-y-12 lg:grid-cols-2">
+    {/* Two groups, because the toolkit and the client work are different kinds
+        of evidence — one is a product, the others are analyses. The labels are
+        the same eyebrow used elsewhere on the page, not headings: a second
+        heading level here would cost more vertical space than the split is
+        worth. */}
+    <h3 class="eyebrow">AI-Assisted Tools</h3>
+    <ul class="mt-5 grid list-none">
+      <li class="flex">
+        <ToolPreviewCard
+          href="/work/supply-chain-ai-toolkit/"
+          eyebrow="AI-ASSISTED SUPPLY CHAIN TOOL"
+          title="Supply Chain AI Toolkit"
+          built="Built three browser-based workflows to turn supply-chain CSV data into inventory actions, freight exceptions and supplier performance scores."
+          live="https://esmail-supply-chain-ai-toolkit-blond.vercel.app/"
+          github="https://github.com/esmailshahid-hue/supply-chain-ai-toolkit"
+        >
+          <ToolkitDashboardPreview />
+        </ToolPreviewCard>
+      </li>
+    </ul>
+
+    <h3 class="eyebrow mt-11">Client Analytics</h3>
+    <ul class="mt-5 grid list-none gap-x-9 gap-y-12 lg:grid-cols-2">
       <li class="flex">
         <ProjectPreviewCard
           href="/work/inventory-forecasting-reorder-planning/"
