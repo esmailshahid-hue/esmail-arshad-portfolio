@@ -21,7 +21,7 @@ links:
 atAGlance:
   - label: Workflows
     value: '3'
-    note: inventory, freight and supplier analysis
+    note: inventory · freight · supplier
   - label: Data input
     value: Flexible CSV
     note: automatic + manual column mapping
@@ -29,12 +29,12 @@ atAGlance:
     value: Browser-based
     note: calculations run without a database
 rightsStatus: own-work
-# A screenshot of the running app belongs here once one exists: save it to
-# content/images/ (e.g. supply-chain-ai-toolkit.png) and add an entry with
-# primary: true, a sheet label such as "Inventory Planner", an alt description
-# of what is on screen, and a caption. Left empty deliberately — no placeholder
-# graphic stands in for the live app.
-images: []
+images:
+  - file: supply-chain-ai-toolkit.png
+    sheet: Inventory Planner
+    alt: Supply Chain AI Toolkit showing the Inventory Planner with summary KPIs, inventory status results and navigation to Freight Exceptions and Supplier Scorecard.
+    caption: Inventory Planner view of the live toolkit; Freight Exceptions and Supplier Scorecard are available from the same interface.
+    primary: true
 featured: false
 published: true
 draft: false
@@ -56,11 +56,14 @@ MOQ-rounded order recommendations.
 
 ### Freight Exceptions
 
-Benchmarks cost per mile by lane and flags high-cost, late and critical shipments.
+Benchmarks cost per mile against each lane's own rate, then flags shipments that came in
+high-cost or late. A shipment meeting both conditions is marked Critical.
 
 ### Supplier Scorecard
 
-Scores suppliers across delivery, quality, cost and service using editable weights.
+Scores suppliers across delivery, quality, cost and service, with weights you can change to
+match what a category actually rewards. Suppliers missing data on a dimension are marked as
+incomplete rather than given a score the data does not support.
 
 ## How it works
 
@@ -68,15 +71,15 @@ Upload CSV → map columns → analyze → filter/sort → export results
 
 You do not need exact header names. Common variants of each field are matched automatically,
 so a file that calls a column `Stock On Hand`, `on_hand` or `Quantity On Hand` resolves the
-same way. If any required field isn't confidently matched, a mapping panel lets you confirm or
-correct it before the analysis runs.
+same way. If a required field is left unresolved, the mapping interface lets you pick the right
+column before the analysis runs. Columns the workflow does not use are ignored.
 
 ## Build approach
 
 - **The calculations are deterministic.** The same file and the same settings produce the same
   numbers every time — the arithmetic is written out in code, not generated.
-- **Uploaded CSV processing happens in the browser.** No database is required, and nothing is
-  stored between sessions.
+- **Uploaded CSV processing happens in the browser.** No database is required, and nothing
+  persists once the session ends.
 - **The optional AI Brief writes up results that already exist.** It summarizes the calculated
   output in plain language; it does not perform the calculation and cannot change it.
 - **Raw uploaded CSV files are not sent to the AI endpoint.** Only the calculated results the

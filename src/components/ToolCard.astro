@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+/**
+ * Archive card for a built tool. Same shape as EmployerCard and ClientCard —
+ * thin top rule, small context line, serif title with the travelling arrow —
+ * so the three groups on /work/ read as one set.
+ *
+ * Where those cards end on `headlineOutcome`, a tool has no single result to
+ * report. The proof line is what the tool contains instead, taken from the
+ * entry's own atAGlance so it cannot drift from the detail page.
+ *
+ * External links are deliberately absent: the whole card is one anchor, as in
+ * the sibling cards, and the detail page already carries Live Demo and GitHub.
+ */
+interface Props {
+  entry: CollectionEntry<'work'>;
+  compact?: boolean;
+}
+const { entry, compact = false } = Astro.props;
+const d = entry.data;
+
+const titleBreak = d.title.lastIndexOf(' ');
+const titleLead = titleBreak > 0 ? d.title.slice(0, titleBreak) : '';
+const titleEnd = titleBreak > 0 ? d.title.slice(titleBreak + 1) : d.title;
+
+// The workflow count and its note, stated once in the content entry.
+const workflows = d.atAGlance?.[0];
+---
+
+<a
+  href={`/work/${entry.id}/`}
+  class="group flex h-full flex-col border-t border-rule pt-5 no-underline transition-colors hover:border-slate"
+>
+  <p class="text-sm font-medium text-ink">{d.roleFocus}</p>
+
+  <h3
+    class:list={[
+      'mt-2 font-display leading-snug text-ink transition-colors group-hover:text-slate',
+      compact ? 'text-lg' : 'text-xl',
+    ]}
+  >
+    {titleLead && <>{titleLead}{' '}</>}
+    <span class="whitespace-nowrap">
+      {titleEnd}{' '}<span
+        aria-hidden="true"
+        class="inline-block text-[0.85em] text-slate transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
+    </span>
+  </h3>
+
+  {
+    workflows && (
+      <div class="mt-5">
+        <p class="flex items-baseline gap-2 text-base">
+          <span class="shrink-0 font-display text-lg font-semibold text-ink">
+            {workflows.value}
+          </span>
+          <span class="text-ink-soft">{workflows.label.toLowerCase()}</span>
+        </p>
+        <p class="mt-1 text-sm text-ink-mute">{workflows.note}</p>
+      </div>
+    )
+  }
+</a>

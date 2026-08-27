@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '@layouts/Base.astro';
 import Section from '@components/Section.astro';
 import EmployerCard from '@components/EmployerCard.astro';
+import ToolCard from '@components/ToolCard.astro';
 import ClientCard from '@components/ClientCard.astro';
 import { meta } from '@content/site';
 
@@ -12,22 +13,23 @@ const work = (await getCollection('work'))
   .sort((a, b) => a.data.order - b.data.order);
 
 const employer = work.filter((w) => w.data.type === 'operating-case-study');
+const tools = work.filter((w) => w.data.type === 'tool');
 const client = work.filter((w) => w.data.type === 'client-project');
 ---
 
 <Base
-  title={`Case Studies | ${meta.name}`}
-  description="Selected case studies across supply chain planning, sourcing, logistics, operations and analytics, including sanitized client work."
+  title={`Selected Work | ${meta.name}`}
+  description="Selected work across supply chain planning, sourcing, logistics, operations and analytics — career case studies, sanitized client analysis and practical tools."
   path="/work/"
 >
   <section class="shell pt-10 pb-8 md:pt-14 md:pb-10">
     <a href="/" class="text-sm text-ink-mute no-underline hover:text-slate">
       <span aria-hidden="true">←</span> Home
     </a>
-    <h1 class="mt-7 max-w-3xl font-display text-display text-ink">Case Studies</h1>
+    <h1 class="mt-7 max-w-3xl font-display text-display text-ink">Selected Work</h1>
     <p class="measure mt-4 text-lg leading-relaxed text-ink-soft">
-      Selected case studies from my work in planning, sourcing, logistics and operations, focused
-      on the decisions behind the results.
+      Selected work across planning, sourcing, logistics and operations—from career case studies
+      and client analysis to practical tools.
     </p>
   </section>
 
@@ -42,6 +44,20 @@ const client = work.filter((w) => w.data.type === 'client-project');
       }
     </ul>
   </Section>
+
+  {
+    tools.length > 0 && (
+      <Section heading="AI-Assisted Tools" density="tight" divided>
+        <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 xl:grid-cols-3">
+          {tools.map((entry) => (
+            <li class="flex">
+              <ToolCard entry={entry} compact />
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
 
   <Section heading="Client Projects" density="tight" divided>
     <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2">
