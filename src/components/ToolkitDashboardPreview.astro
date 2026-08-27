@@ -29,6 +29,7 @@ const workflows = [
 
   {/* --------------------------------------------------- Choose one workflow */}
   <p class="choose">Choose workflow</p>
+  <span class="branch" aria-hidden="true"></span>
 
   <ul class="paths">
     {
@@ -44,7 +45,7 @@ const workflows = [
 
   {/* --------------------------------------------------------------- Output */}
   <span class="merge" aria-hidden="true"></span>
-  <p class="step">Decision-ready results</p>
+  <p class="step">Calculated results</p>
 
   <span class="drop" aria-hidden="true"></span>
 
@@ -93,16 +94,35 @@ const workflows = [
     color: var(--color-ink-mute);
   }
 
-  /* The three-way branch. Each path carries its own short tick upward, which
-     together with the row's top border reads as one bracket splitting into
-     three — without drawing an actual bracket that would break when wrapped. */
+  /* The split: one line down from "Choose workflow", then a horizontal rule
+     across the row. Each path drops its own tick from that rule, so the three
+     branches are drawn rather than implied. Deliberately the mirror image of
+     `.merge` below, which closes the branch the same way. */
+  .branch {
+    width: 100%;
+    height: 1px;
+    background: var(--color-rule);
+    margin-top: 18px;
+    position: relative;
+  }
+  .branch::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1px;
+    height: 12px;
+    background: var(--color-rule);
+  }
+
   .paths {
     list-style: none;
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 0.75rem;
     width: 100%;
-    margin-top: 9px;
+    margin-top: 0;
     padding: 0;
   }
 
@@ -112,9 +132,24 @@ const workflows = [
     min-width: 0;
   }
 
+  /* Masks the branch rule outside the first and last drop, so it terminates at
+     the outer branches instead of running to the card edge. */
+  .paths::before,
+  .paths::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    width: calc((100% - 1.5rem) / 6);
+    height: 1px;
+    background: var(--color-card);
+  }
+  .paths::before { left: 0; }
+  .paths::after { right: 0; }
+
+  /* The drop from the branch rule into each workflow. */
   .tick {
     width: 1px;
-    height: 10px;
+    height: 12px;
     background: var(--color-rule);
   }
 
@@ -185,13 +220,30 @@ const workflows = [
   /* On a narrow card three columns would set 11px type on two-word labels.
      The branch becomes a stack, each path keeping its slate rule. */
   @container (max-width: 22rem) {
+    /* Stacked, a horizontal three-way rule has nothing to span: the flow runs
+       straight down instead, one drop between each workflow. */
+    .branch {
+      width: 1px;
+      margin-top: 9px;
+      height: 12px;
+    }
+    .branch::before {
+      display: none;
+    }
     .paths {
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       max-width: 15rem;
     }
+    .paths::before,
+    .paths::after {
+      display: none;
+    }
+    .path:first-child .tick {
+      height: 0;
+    }
     .path:not(:first-child) .tick {
-      height: 8px;
+      height: 9px;
     }
     .name {
       margin-top: 5px;
