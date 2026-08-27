@@ -12,7 +12,8 @@
  */
 interface Props {
   href: string;
-  eyebrow: string;
+  /** Optional: omit where the group label above already supplies the context. */
+  eyebrow?: string;
   title: string;
   built: string;
   live?: string;
@@ -23,9 +24,11 @@ const { href, eyebrow, title, built, live, github } = Astro.props;
 
 <div class="tool-card grid h-full gap-x-9 gap-y-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:items-start">
   <div class="min-w-0">
-    <p class="text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
+    {eyebrow && (
+      <p class="text-xs font-semibold tracking-wide text-ink-mute uppercase">{eyebrow}</p>
+    )}
 
-    <h3 class="mt-2.5 font-display text-xl leading-snug text-ink">
+    <h3 class:list={['font-display text-xl leading-snug text-ink', eyebrow && 'mt-2.5']}>
       <a href={href} class="tool-title no-underline">
         {title} <span aria-hidden="true" class="text-slate">→</span>
       </a>
@@ -50,7 +53,7 @@ const { href, eyebrow, title, built, live, github } = Astro.props;
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-ink-mute no-underline hover:text-slate hover:underline hover:underline-offset-4"
+              class="text-slate underline underline-offset-4 hover:text-slate-deep"
             >
               GitHub <span aria-hidden="true">↗</span>
             </a>
