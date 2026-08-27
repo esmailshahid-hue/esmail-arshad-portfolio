@@ -24,7 +24,7 @@ export const hero = {
   eyebrow: 'SUPPLY CHAIN · OPERATIONS · ANALYTICS',
   headline: 'I improve how products are planned, sourced, moved and measured.',
   paragraph:
-    'Supply chain and operations professional with 4+ years across Tesla, Amazon, Schneider Electric and Formlabs, spanning planning, sourcing, logistics, inventory and operational analytics. Today I run factory operations in Lahore.',
+    'Supply chain and operations professional with 4+ years across Tesla, Amazon, Schneider Electric and Formlabs. My experience spans planning, sourcing, logistics, inventory and analytics; today I run factory operations in Lahore.',
   capabilities: [
     'Supply Chain Planning',
     'Procurement & Sourcing',
@@ -205,5 +205,5 @@ export const confidentialityNote =
 export const contactSection = {
   heading: 'Get in touch',
   supporting:
-    'Open to conversations around supply chain, planning, logistics and operations opportunities.',
+    'Open to roles across supply chain planning, sourcing, logistics and operations.',
 } as const;

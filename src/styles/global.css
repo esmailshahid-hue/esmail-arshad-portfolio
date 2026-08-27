@@ -22,11 +22,14 @@
   /* One continuous scale. The homepage previously ran 72 -> 30 with nothing
      between, so it read as one large thing followed by many small ones.
      --text-section adds the missing rung and strengthens the section headings.
-     Desktop: 68 / 44 / 36 / 32 / 24 / 20 / 17 / 16 / 14 / 12 / 11. */
-  --text-hero: clamp(2.25rem, 4.4vw, 3.25rem);
+     --text-hero and --text-lede are used by the homepage hero alone; both were
+     pulled back so the headline carries less dominance and the paragraph under
+     it reads clearly as secondary.
+     Desktop: 48 / 44 / 36 / 20 / 17 / 16 / 14 / 12 / 11. */
+  --text-hero: clamp(2.125rem, 4vw, 3rem);
   --text-display: clamp(2rem, 3.6vw, 2.75rem);
   --text-section: clamp(1.75rem, 2.6vw, 2.25rem);
-  --text-lede: clamp(1.25rem, 1.6vw, 1.5rem);
+  --text-lede: clamp(1.0625rem, 1.35vw, 1.25rem);
 }
 
 /*
