@@ -43,10 +43,9 @@ order: 8
 
 ## What I built
 
-The same three analyses kept recurring across planning, freight and sourcing work, and each
-time they were rebuilt by hand in a spreadsheet against whatever export was available. This
-toolkit turns them into reusable browser workflows: load the CSV you already have, map the
-columns once, and get the calculation back in a form you can filter, sort and export.
+I built this toolkit to turn three common supply-chain analyses into reusable browser
+workflows. Load the CSV you already have, map the columns where needed, and get results you
+can filter, sort and export.
 
 ## Three workflows
 
@@ -68,9 +67,9 @@ Scores suppliers across delivery, quality, cost and service using editable weigh
 Upload CSV → map columns → analyze → filter/sort → export results
 
 You do not need exact header names. Common variants of each field are matched automatically,
-so a file that calls a column `On Hand`, `on_hand` or `Qty Available` resolves the same way.
-Anything left unresolved is mapped by hand before the analysis runs, and the mapping is shown
-so you can see what was matched to what.
+so a file that calls a column `Stock On Hand`, `on_hand` or `Quantity On Hand` resolves the
+same way. If any required field isn't confidently matched, a mapping panel lets you confirm or
+correct it before the analysis runs.
 
 ## Build approach
 
