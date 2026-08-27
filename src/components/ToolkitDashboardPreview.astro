@@ -1,6 +1,6 @@
 ---
 /**
- * Homepage preview for the Supply Chain AI Toolkit.
+ * Homepage preview for the Supply Chain Workbench.
  *
  * A workflow rather than a feature list: the earlier version was three text
  * columns and a flow line underneath, which showed what the toolkit contains
@@ -51,7 +51,7 @@ const workflows = [
 
   <div class="out">
     <p class="primary">Export CSV</p>
-    <p class="secondary">Optional AI Brief</p>
+    <p class="secondary">Action Summary</p>
   </div>
 </div>
 
@@ -204,8 +204,9 @@ const workflows = [
     gap: 0.35rem 1.1rem;
   }
 
-  /* Export is the deterministic output and reads first; the brief is optional
-     and sits quieter, which is also the order they occur in the product. */
+  /* Export is the deterministic output and reads first; the summary is
+     user-triggered and sits quieter, which is also the order they occur in
+     the product. */
   .primary {
     font-size: 12px;
     font-weight: 600;
