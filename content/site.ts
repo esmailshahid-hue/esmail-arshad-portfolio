@@ -64,7 +64,7 @@ export const experience = [
   },
   {
     company: 'Schneider Electric',
-    displayTitle: 'Supply Chain Planning Intern',
+    displayTitle: 'Supply Chain Planning Co-op',
     dates: 'Feb 2025 – Dec 2025',
     location: 'Foxborough, Massachusetts',
     start: '2025-02-01',
