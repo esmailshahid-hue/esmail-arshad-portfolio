@@ -13,7 +13,7 @@ export const meta = {
   description:
     'Supply chain and operations professional spanning planning, procurement, logistics and analytics, with experience across industrial, technology and consumer operations.',
   resumePath: '/esmail-arshad-resume.pdf',
-  ogImage: '/og.png',
+  ogImage: '/og-v2.png',
 } as const;
 
 /**
