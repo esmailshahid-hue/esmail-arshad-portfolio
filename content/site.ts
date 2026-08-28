@@ -7,9 +7,9 @@
 
 export const meta = {
   name: 'Esmail Arshad',
-  positioning: 'Supply Chain, Operations & Analytics',
+  positioning: 'Supply Chain, Logistics & Operations',
   proposition: 'I improve how products are planned, sourced, moved and measured.',
-  title: 'Esmail Arshad | Supply Chain, Operations & Analytics',
+  title: 'Esmail Arshad | Supply Chain, Logistics & Operations',
   description:
     'Supply chain and operations professional spanning planning, procurement, logistics and analytics, with experience across industrial, technology and consumer operations.',
   resumePath: '/esmail-arshad-resume.pdf',
@@ -21,7 +21,7 @@ export const meta = {
  * carries the reason it is named. Do not repeat the same list elsewhere.
  */
 export const hero = {
-  eyebrow: 'SUPPLY CHAIN · OPERATIONS · ANALYTICS',
+  eyebrow: 'SUPPLY CHAIN · LOGISTICS · OPERATIONS',
   headline: 'I improve how products are planned, sourced, moved and measured.',
   paragraph:
     'Supply chain and operations professional with 4+ years across Tesla, Amazon, Schneider Electric and Formlabs. My experience spans planning, sourcing, logistics, inventory and analytics; today I run factory operations in Lahore.',
