@@ -4,6 +4,7 @@ import Base from '@layouts/Base.astro';
 import Section from '@components/Section.astro';
 import ProjectPreviewCard from '@components/ProjectPreviewCard.astro';
 import ToolPreviewCard from '@components/ToolPreviewCard.astro';
+import FreightFulfillmentPreview from '@components/FreightFulfillmentPreview.astro';
 import ToolkitDashboardPreview from '@components/ToolkitDashboardPreview.astro';
 import InventoryDashboardPreview from '@components/InventoryDashboardPreview.astro';
 import FreightDashboardPreview from '@components/FreightDashboardPreview.astro';
@@ -143,10 +144,21 @@ const iconAttrs = {
         of evidence — one is a product, the others are analyses. The labels are
         the same eyebrow used elsewhere on the page, not headings: a second
         heading level here would cost more vertical space than the split is
-        worth. The group label is also why the toolkit card carries no eyebrow
-        of its own — it would repeat what this line already says. */}
+        worth. The group label is also why the tool cards carry no eyebrow of
+        their own — it would repeat what this line already says. */}
     <p class="eyebrow">Independent Projects</p>
-    <ul class="mt-5 grid list-none">
+    <ul class="mt-5 grid list-none gap-y-12">
+      <li class="flex">
+        <ToolPreviewCard
+          href="/work/freight-fulfillment-intelligence/"
+          title="Freight Fulfillment Intelligence"
+          built="Flags upcoming fulfillment risk by combining demand, usable carrier capacity, reliability, pricing and commercial economics."
+          live="https://freight.esmailarshad.com/"
+          github="https://github.com/esmailshahid-hue/freight-marketplace-fulfillment-intelligence"
+        >
+          <FreightFulfillmentPreview />
+        </ToolPreviewCard>
+      </li>
       <li class="flex">
         <ToolPreviewCard
           href="/work/supply-chain-workbench/"

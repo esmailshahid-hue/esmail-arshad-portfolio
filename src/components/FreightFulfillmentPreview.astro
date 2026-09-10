@@ -1,0 +1,153 @@
+---
+/**
+ * Homepage preview for Freight Fulfillment Intelligence.
+ *
+ * The sibling toolkit preview is a workflow: a file moving in, mapped, down one
+ * of three paths, out. This one is deliberately not a flow. The product's
+ * defining screen is a queue — lanes ranked by fulfillment risk, each with the
+ * cause that explains it and the action it calls for — so the preview is that
+ * screen in miniature: three rows of problem → root cause → operator action,
+ * closing on the two things you can do with a row.
+ *
+ * Native type and rules, no imported table or chart library: it inherits the
+ * page's fonts and both themes, and stays selectable and translatable.
+ *
+ * The lanes, causes and actions are the application's own synthetic sample —
+ * not invented. It carries no figures: the demo runs on synthetic data, so a
+ * risk score or exposure number here would be a portfolio claim, not a result.
+ */
+const rows = [
+  { lane: 'Jeddah → Riyadh', issue: 'Pricing', action: 'Raise buy rate' },
+  { lane: 'Jubail → Tabuk', issue: 'Supply', action: 'Secure capacity' },
+  { lane: 'Dammam → Riyadh', issue: 'Commercial', action: 'Review trade-off' },
+] as const;
+---
+
+<div class="queue">
+  <p class="heading">Operations Queue</p>
+
+  <div class="table" role="table" aria-label="Operations Queue sample: three lanes with their root cause and recommended action">
+    <div class="row head" role="row">
+      <span role="columnheader">Lane</span>
+      <span role="columnheader">Root cause</span>
+      <span role="columnheader">Recommended action</span>
+    </div>
+    {
+      rows.map((r) => (
+        <div class="row" role="row">
+          <span class="lane" role="cell">{r.lane}</span>
+          <span class="issue" role="cell">{r.issue}</span>
+          <span class="action" role="cell">{r.action}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <p class="foot">Review risk drivers <span aria-hidden="true">→</span> Test scenarios</p>
+</div>
+
+<style>
+  /* A decision table, not a diagram: left-aligned rows, 1px rules between them,
+     every colour a page token so both themes come for free. Rule weight, the
+     slate accent and the type scale match the sibling preview; the composition
+     — a ranked list rather than a branching flow — is what sets it apart. */
+  .queue {
+    display: grid;
+    gap: 0;
+  }
+
+  /* The one slate accent, the same role the sibling preview's slate underline
+     plays: it marks where the product's work begins. */
+  .heading {
+    margin: 0 0 9px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--color-slate);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+
+  .table {
+    display: grid;
+    gap: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: 0 0.75rem;
+    align-items: baseline;
+    padding: 7px 0;
+    border-top: 1px solid var(--color-rule);
+  }
+  .row:last-child { border-bottom: 1px solid var(--color-rule); }
+
+  /* The header row sits quieter than the data — it labels, it is not the
+     content — and its top rule is the soft token so the slate heading above
+     stays the strongest line. */
+  .row.head {
+    padding: 0 0 6px;
+    border-top: 0;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  .lane {
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .issue {
+    min-width: 0;
+    font-size: 11.5px;
+    line-height: 1.25;
+    color: var(--color-ink-mute);
+  }
+
+  /* The action is the point of the row, so it holds a readable ink rather than
+     dropping to the muted issue tone. */
+  .action {
+    min-width: 0;
+    font-size: 11.5px;
+    line-height: 1.25;
+    color: var(--color-ink-soft);
+  }
+
+  .foot {
+    margin: 9px 0 0;
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--color-ink-mute);
+  }
+
+  /* Narrow container: three columns would crush the lane names, so each row
+     becomes a small stacked record — lane on its own line, then issue and
+     action as a labelled pair. The lane/issue/action relationship stays
+     explicit; nothing shrinks below 11px. */
+  @container (max-width: 22rem) {
+    .row.head { display: none; }
+
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 3px 0;
+      padding: 8px 0;
+    }
+
+    .issue::before {
+      content: "Root cause ";
+      color: var(--color-ink-mute);
+    }
+    .action::before {
+      content: "Recommended action ";
+      color: var(--color-ink-mute);
+    }
+    .issue,
+    .action { font-size: 11.5px; }
+  }
+</style>
