@@ -158,6 +158,13 @@ const work = defineCollection({
 
     rightsStatus: z.enum(['own-work', 'sanitized-recreation']).default('own-work'),
 
+    /**
+     * Root-relative path to a page-specific social-share image in /public,
+     * e.g. "/og-thing.png". When set it overrides the site-wide default for
+     * this entry's detail page only; entries without it keep the default.
+     */
+    ogImage: z.string().optional(),
+
     /** Client-project artefacts. `downloadable` is never true — see §0.3. */
     images: z
       .array(

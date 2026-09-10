@@ -10,6 +10,9 @@ interface Props {
   path?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
+  /** Root-relative path to a page-specific social image, e.g. "/og-thing.png".
+   *  Falls back to the site-wide default when omitted. */
+  image?: string;
 }
 
 const {
@@ -18,10 +21,11 @@ const {
   path = '/',
   type = 'website',
   noindex = false,
+  image,
 } = Astro.props;
 
 const canonical = new URL(path, Astro.site).href;
-const ogImage = new URL(meta.ogImage, Astro.site).href;
+const ogImage = new URL(image ?? meta.ogImage, Astro.site).href;
 /**
  * The homepage folds its footer row into Get in touch. Interior pages render
  * the same compact utilities below their content.
