@@ -1,0 +1,138 @@
+---
+/**
+ * Homepage preview for Demand & Supply Planning Intelligence.
+ *
+ * The two sibling previews take the two obvious shapes already: the toolkit is
+ * a branching flow, the freight tool is a ranked queue. This product is neither
+ * — it is three screens a planner moves through in order, each answering the
+ * question the previous one leaves open. So the preview is that sequence: three
+ * numbered stages, each with the decision it settles, read top to bottom.
+ *
+ * Native type and rules, no imported diagram library: it inherits the page's
+ * fonts and both themes, and stays selectable and translatable.
+ *
+ * The stage names are the application's own navigation. It carries no figures:
+ * the demo runs on synthetic data, so a fill rate or a purchase value here would
+ * be a portfolio claim rather than a result. The footer says which data the
+ * sample uses, which is the one fact a reader needs before opening the demo.
+ */
+const stages = [
+  { name: 'Demand Review', decision: 'Which forecast method, and how wrong has it been' },
+  { name: 'Plan Review', decision: 'What to buy, where stock moves, what stays uncovered' },
+  { name: 'Scenarios', decision: 'Same actions or replanned, under changed assumptions' },
+] as const;
+---
+
+<div class="flow">
+  <p class="heading">Planning workspace</p>
+
+  <ol class="stages">
+    {
+      stages.map((s, i) => (
+        <li class="stage">
+          <span class="num" aria-hidden="true">0{i + 1}</span>
+          <div class="body">
+            <p class="name">{s.name}</p>
+            <p class="decision">{s.decision}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="foot">
+    Synthetic sample <span aria-hidden="true">·</span> suggested actions, no orders placed
+  </p>
+</div>
+
+<style>
+  /* A stepped list, not a branching diagram: the three screens are visited in
+     order and each one narrows the decision. Rule weight, the slate accent and
+     the type scale match both sibling previews; the numbered progression is
+     what sets it apart. */
+  .flow {
+    display: grid;
+    gap: 0;
+  }
+
+  /* The one slate accent, the same role it plays in both sibling previews: it
+     marks where the product's work begins. */
+  .heading {
+    margin: 0 0 9px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--color-slate);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+
+  .stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 0.6rem;
+    align-items: baseline;
+    padding: 8px 0;
+    border-top: 1px solid var(--color-rule);
+  }
+  .stage:first-child { border-top: 0; padding-top: 2px; }
+  .stage:last-child { border-bottom: 1px solid var(--color-rule); }
+
+  /* The step number sits quieter than the stage it labels — it carries the
+     order, not the content. Tabular figures keep the three aligned. */
+  .num {
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-mute);
+  }
+
+  .body {
+    min-width: 0;
+  }
+
+  .name {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  /* The decision is the point of the stage, so it holds a readable ink rather
+     than dropping to the muted tone the step number uses. */
+  .decision {
+    margin: 2px 0 0;
+    font-size: 11.5px;
+    line-height: 1.3;
+    color: var(--color-ink-soft);
+  }
+
+  .foot {
+    margin: 9px 0 0;
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--color-ink-mute);
+  }
+
+  /* Narrow container: the decision lines are full sentences, so the step number
+     moves above the stage rather than stealing a column from them. Nothing
+     shrinks below 11px. */
+  @container (max-width: 22rem) {
+    .stage {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px 0;
+    }
+    .num {
+      display: block;
+    }
+  }
+</style>

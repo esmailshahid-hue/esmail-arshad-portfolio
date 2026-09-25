@@ -48,7 +48,10 @@ const client = work.filter((w) => w.data.type === 'client-project');
   {
     tools.length > 0 && (
       <Section heading="Independent Projects" density="tight" divided>
-        <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2">
+        {/* Three tools fill two rows at `sm`, leaving the third stranded beside
+            empty space. From `lg` they sit in one row instead — the same
+            three-across shape Career Highlights already uses. */}
+        <ul class="grid list-none gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((entry) => (
             <li class="flex">
               <ToolCard entry={entry} compact />

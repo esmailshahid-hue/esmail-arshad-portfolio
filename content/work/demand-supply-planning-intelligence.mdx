@@ -1,0 +1,146 @@
+---
+type: tool
+title: Demand & Supply Planning Intelligence
+organization: Independent Project
+roleFocus: Demand & Supply Planning
+timeframe: '2026'
+summary: Built a retail planning tool that evaluates demand forecasts, suggests purchases and stock transfers within operational and funding limits, and compares plans under changing conditions.
+capabilities:
+  - Demand Forecasting
+  - Purchase & Allocation Planning
+  - Scenario Analysis
+tools:
+  - Python
+  - FastAPI
+  - SciPy
+  - React
+  - TypeScript
+links:
+  live: https://demand-supply-planning-intelligence.vercel.app/
+  github: https://github.com/esmailshahid-hue/demand-supply-planning-intelligence
+atAGlance:
+  - label: Decision views
+    value: '3'
+    note: demand review · plan review · scenarios
+  - label: Sample network
+    value: 240 series
+    note: 60 SKUs across 4 stores · synthetic Riyadh retail data
+  - label: Review window
+    value: 28 days
+    note: visible forecast · days 29–56 provisional
+rightsStatus: own-work
+ogImage: /og-demand-supply-planning-intelligence.png
+images:
+  - file: demand-supply-planning-intelligence.png
+    sheet: Plan Review
+    alt: Plan Review screen showing a validated constrained plan, summary figures for purchase commitment, payments due, projected unit fill and uncovered demand, and a table comparing the plan with taking no new actions.
+    caption: Synthetic Riyadh retail data showing the constrained plan, its funding and coverage figures, and the comparison against taking no new actions.
+    primary: true
+featured: true
+published: true
+draft: false
+order: 7.25
+---
+
+## What I built
+
+Demand & Supply Planning Intelligence is a retail planning tool. It evaluates demand
+forecast methods against their own history, suggests what to buy and where to move stock
+inside real operating limits, and shows what happens to those decisions when assumptions
+change.
+
+Planning fails in the gap between the forecast and what is actually possible. A forecast
+says how much a store will sell; it does not say whether the supplier can dispatch in time,
+whether the distribution centre can receive it, whether the calendar allows it, or whether
+the money is available in the week the payment falls due. The tool keeps those questions in
+one place, so a suggested order is one that could actually be placed.
+
+Data and results are synthetic and modeled throughout — a Riyadh retail network built for
+this project. Nothing here represents a company's operations, and no figure is an observed
+result. It builds on my experience in demand planning, purchasing and inventory management.
+
+## Demand Review
+
+Three weekday-aware forecast methods — seasonal naive, a four-week weekday mean and a
+recency-weighted weekday mean — are scored against withheld history in time order, so a
+method is chosen on how it performed before the day it is used, not on the data it was
+fitted to.
+
+The screen reports the selected method and why it was selected, its quantity error against
+the seasonal-naive baseline, pooled signed bias separating over- from under-forecasting, and
+how many daily observations were actually scored. Dated fallbacks and data-quality warnings
+stay visible rather than being smoothed away.
+
+The forecast runs 56 days. The first 28 are the visible review window; days 29–56 are shown
+as provisional and labelled that way wherever they appear. Expected demand is a model
+estimate, not a service guarantee.
+
+## Plan Review
+
+The plan answers three questions: what to buy, where stock goes, and which demand remains
+uncovered.
+
+Purchases carry their supplier, order date, dispatch date, distribution-centre receipt date
+and value. Orders inside the next seven days are marked release candidates; later orders
+stay planned. Transfers move stock between locations, with the donor's own forecast demand
+and buffer protected before any units leave it. Remaining shortages are listed per SKU and
+store with the reason they could not be covered, separated into visible and provisional-tail
+unmet demand.
+
+Funding is dated, not a single budget line. Each week has a limit on new purchase
+commitments and a ceiling on cash due, and existing obligations count against that ceiling
+before anything new does. The screen shows commitments, payments, headroom and movement-fee
+allowance week by week.
+
+Every plan is compared against taking no new actions, on the same demand and the same
+limits, so the plan's coverage is readable against the alternative of doing nothing.
+
+## Scenarios
+
+A scenario changes the assumptions — a promotion, a supplier receipt delay, reduced supplier
+availability, tighter weekly funding — and produces three outcomes side by side:
+
+- **Original** — the starting plan under the original assumptions.
+- **Same actions** — those exact actions carried into the changed world, which is how a
+  plan fails in practice: nobody replans the moment conditions move.
+- **Replanned** — new actions calculated under the changed assumptions.
+
+Separating the three keeps two different effects apart: what the change itself cost, and
+what replanning recovered. Where the original actions become infeasible under the change,
+the plan is shown as invalid with the dated constraint that broke it, rather than reported
+as a worse number. Comparisons are estimates, not guaranteed savings.
+
+## How it works
+
+Synthetic dataset → forecast evaluation → constrained plan → independent replay → scenario
+comparison
+
+Planning is a mixed-integer program solved with SciPy's HiGHS backend over the full 56-day
+horizon. Purchases and transfers are integer cases and packs, and the objectives run in
+sequence rather than as one weighted score: service shortfall by store priority first, then
+stock buffers, then cost. Each stage's result is held fixed before the next one runs, so
+cost reduction cannot quietly trade away coverage. The model respects opening stock,
+supplier capacity and lead times, case and pack sizes, receiving-calendar and volume limits,
+and the dated funding limits above.
+
+The resulting plan is then replayed independently against the same constraints, day by day,
+to confirm it is actually executable. A plan that passes is reported as `feasible_fallback`:
+it satisfies every constraint and has been checked, but it makes no claim of global
+optimality, and shortages stay visible rather than being absorbed. The tool suggests; it
+does not place orders.
+
+## Build approach
+
+- **Calculation in code.** Forecast scoring, constraints, the solver and the replay check
+  are defined in code. No language model is involved in producing a number, a suggestion or
+  a comparison.
+- **Independent verification.** The plan is validated by a separate replay rather than by
+  trusting the solver's own answer, so an infeasible plan surfaces as a failure instead of a
+  recommendation.
+- **Public demo runs on sample data.** Two bundled synthetic datasets are available: a
+  10-SKU sample and a 60-SKU full sample of 240 SKU-store series. Workbook upload, review,
+  acceptance and export are built and work locally or in Docker, but they depend on private
+  storage that is intentionally unavailable on the public host.
+- **Development.** I used Claude and Codex for implementation and QA, while defining the
+  planning rules, constraints and expected outputs explicitly and validating results against
+  the replay check and an automated test suite.

@@ -4,6 +4,7 @@ import Base from '@layouts/Base.astro';
 import Section from '@components/Section.astro';
 import ProjectPreviewCard from '@components/ProjectPreviewCard.astro';
 import ToolPreviewCard from '@components/ToolPreviewCard.astro';
+import PlanningDecisionPreview from '@components/PlanningDecisionPreview.astro';
 import FreightFulfillmentPreview from '@components/FreightFulfillmentPreview.astro';
 import ToolkitDashboardPreview from '@components/ToolkitDashboardPreview.astro';
 import InventoryDashboardPreview from '@components/InventoryDashboardPreview.astro';
@@ -148,6 +149,17 @@ const iconAttrs = {
         their own — it would repeat what this line already says. */}
     <p class="eyebrow">Independent Projects</p>
     <ul class="mt-5 grid list-none gap-y-12">
+      <li class="flex">
+        <ToolPreviewCard
+          href="/work/demand-supply-planning-intelligence/"
+          title="Demand & Supply Planning Intelligence"
+          built="Evaluates demand forecasts, suggests purchases and stock transfers within operational and funding limits, and compares plans under changing conditions."
+          live="https://demand-supply-planning-intelligence.vercel.app/"
+          github="https://github.com/esmailshahid-hue/demand-supply-planning-intelligence"
+        >
+          <PlanningDecisionPreview />
+        </ToolPreviewCard>
+      </li>
       <li class="flex">
         <ToolPreviewCard
           href="/work/freight-fulfillment-intelligence/"
