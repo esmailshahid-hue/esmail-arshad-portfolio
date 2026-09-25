@@ -22,7 +22,7 @@ atAGlance:
   - label: Decision views
     value: '3'
     note: demand review · plan review · scenarios
-  - label: Sample network
+  - label: Full sample
     value: 240 series
     note: 60 SKUs across 4 stores · synthetic Riyadh retail data
   - label: Review window
@@ -44,16 +44,13 @@ order: 7.25
 
 ## What I built
 
-Demand & Supply Planning Intelligence is a retail planning tool. It evaluates demand
-forecast methods against their own history, suggests what to buy and where to move stock
-inside real operating limits, and shows what happens to those decisions when assumptions
-change.
+Demand & Supply Planning Intelligence evaluates forecast methods against past demand,
+suggests purchases and stock transfers within modeled supplier, stock, receiving and funding
+limits, and compares plans when assumptions change.
 
-Planning fails in the gap between the forecast and what is actually possible. A forecast
-says how much a store will sell; it does not say whether the supplier can dispatch in time,
-whether the distribution centre can receive it, whether the calendar allows it, or whether
-the money is available in the week the payment falls due. The tool keeps those questions in
-one place, so a suggested order is one that could actually be placed.
+A forecast estimates demand. It does not establish whether stock is available, a supplier can
+deliver in time, a distribution centre can receive it, or weekly funding can cover the
+payment. The tool checks these modeled limits before proposing actions.
 
 Data and results are synthetic and modeled throughout — a Riyadh retail network built for
 this project. Nothing here represents a company's operations, and no figure is an observed
@@ -101,14 +98,14 @@ A scenario changes the assumptions — a promotion, a supplier receipt delay, re
 availability, tighter weekly funding — and produces three outcomes side by side:
 
 - **Original** — the starting plan under the original assumptions.
-- **Same actions** — those exact actions carried into the changed world, which is how a
-  plan fails in practice: nobody replans the moment conditions move.
+- **Same actions** — the original purchases and transfers evaluated under changed
+  assumptions, without replanning.
 - **Replanned** — new actions calculated under the changed assumptions.
 
-Separating the three keeps two different effects apart: what the change itself cost, and
-what replanning recovered. Where the original actions become infeasible under the change,
-the plan is shown as invalid with the dated constraint that broke it, rather than reported
-as a worse number. Comparisons are estimates, not guaranteed savings.
+The comparison separates the effect of the changed assumptions from the effect of
+replanning. Where the original actions become infeasible under the change, the plan is shown
+as invalid with the dated constraint that broke it, rather than reported as a worse number.
+Comparisons are estimates, not guaranteed savings.
 
 ## How it works
 

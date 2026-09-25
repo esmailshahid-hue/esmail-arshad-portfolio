@@ -4,21 +4,22 @@
  *
  * The two sibling previews take the two obvious shapes already: the toolkit is
  * a branching flow, the freight tool is a ranked queue. This product is neither
- * — it is three screens a planner moves through in order, each answering the
- * question the previous one leaves open. So the preview is that sequence: three
- * numbered stages, each with the decision it settles, read top to bottom.
+ * — it is three screens, each settling a different question, and a planner can
+ * open any of them. So the preview is that list: three numbered screens, each
+ * with the decision it settles.
  *
  * Native type and rules, no imported diagram library: it inherits the page's
  * fonts and both themes, and stays selectable and translatable.
  *
- * The stage names are the application's own navigation. It carries no figures:
- * the demo runs on synthetic data, so a fill rate or a purchase value here would
- * be a portfolio claim rather than a result. The footer says which data the
- * sample uses, which is the one fact a reader needs before opening the demo.
+ * The screen names and their order are the application's own navigation. It
+ * carries no figures: the demo runs on synthetic data, so a fill rate or a
+ * purchase value here would be a portfolio claim rather than a result. The
+ * footer says which data the sample uses, which is the one fact a reader needs
+ * before opening the demo.
  */
 const stages = [
-  { name: 'Demand Review', decision: 'Which forecast method, and how wrong has it been' },
   { name: 'Plan Review', decision: 'What to buy, where stock moves, what stays uncovered' },
+  { name: 'Demand Review', decision: 'Which forecast method, and how wrong it has been' },
   { name: 'Scenarios', decision: 'Same actions or replanned, under changed assumptions' },
 ] as const;
 ---
@@ -46,10 +47,10 @@ const stages = [
 </div>
 
 <style>
-  /* A stepped list, not a branching diagram: the three screens are visited in
-     order and each one narrows the decision. Rule weight, the slate accent and
-     the type scale match both sibling previews; the numbered progression is
-     what sets it apart. */
+  /* A numbered list, not a branching diagram: three screens, each settling its
+     own decision, listed in the application's navigation order. Rule weight,
+     the slate accent and the type scale match both sibling previews; the
+     numbering is what sets it apart. */
   .flow {
     display: grid;
     gap: 0;
@@ -86,8 +87,9 @@ const stages = [
   .stage:first-child { border-top: 0; padding-top: 2px; }
   .stage:last-child { border-bottom: 1px solid var(--color-rule); }
 
-  /* The step number sits quieter than the stage it labels — it carries the
-     order, not the content. Tabular figures keep the three aligned. */
+  /* The number sits quieter than the screen it labels — it carries the
+     position in the navigation, not the content. Tabular figures keep the three
+     aligned. */
   .num {
     font-size: 10.5px;
     font-variant-numeric: tabular-nums;
@@ -107,8 +109,8 @@ const stages = [
     color: var(--color-ink);
   }
 
-  /* The decision is the point of the stage, so it holds a readable ink rather
-     than dropping to the muted tone the step number uses. */
+  /* The decision is the point of the row, so it holds a readable ink rather
+     than dropping to the muted tone the number uses. */
   .decision {
     margin: 2px 0 0;
     font-size: 11.5px;
@@ -123,8 +125,8 @@ const stages = [
     color: var(--color-ink-mute);
   }
 
-  /* Narrow container: the decision lines are full sentences, so the step number
-     moves above the stage rather than stealing a column from them. Nothing
+  /* Narrow container: the decision lines are full sentences, so the number
+     moves above the row rather than stealing a column from them. Nothing
      shrinks below 11px. */
   @container (max-width: 22rem) {
     .stage {
