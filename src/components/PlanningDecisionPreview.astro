@@ -2,56 +2,67 @@
 /**
  * Homepage preview for Demand & Supply Planning Intelligence.
  *
- * The two sibling previews take the two obvious shapes already: the toolkit is
- * a branching flow, the freight tool is a ranked queue. This product is neither
- * — it is three screens, each settling a different question, and a planner can
- * open any of them. So the preview is that list: three numbered screens, each
- * with the decision it settles.
+ * The first version of this preview was a heading over three ruled rows, which
+ * read as the same object as the freight preview's queue. The three cards sit
+ * together on the homepage, so the shapes have to differ: the toolkit is a
+ * branching flow, the freight tool a ranked table, and this one a measured
+ * comparison — the single figure the plan screen exists to move, shown for the
+ * plan and for doing nothing.
  *
- * Native type and rules, no imported diagram library: it inherits the page's
+ * Native type and rules, no imported chart library: it inherits the page's
  * fonts and both themes, and stays selectable and translatable.
  *
- * The screen names and their order are the application's own navigation. It
- * carries no figures: the demo runs on synthetic data, so a fill rate or a
- * purchase value here would be a portfolio claim rather than a result. The
- * footer says which data the sample uses, which is the one fact a reader needs
- * before opening the demo.
+ * The two figures are the application's own 10-SKU synthetic sample, read from
+ * the live API's /api/plan/sample (size: fixture) — `replay.summary.fill_pct`
+ * for the proposed plan and for no_action, over the 28-day visible window. The
+ * scenario labels are that response's own `name` fields. Both are modeled
+ * estimates on invented data: the gap is what the model computes on this
+ * fixture, not an observed improvement, so the footer says so and no copy here
+ * frames it as a saving or a service level.
  */
-const stages = [
-  { name: 'Plan Review', decision: 'What to buy, where stock moves, what stays uncovered' },
-  { name: 'Demand Review', decision: 'Which forecast method, and how wrong it has been' },
-  { name: 'Scenarios', decision: 'Same actions or replanned, under changed assumptions' },
+const VISIBLE_DAYS = 28;
+
+const bars = [
+  { label: 'Validated constrained plan', value: 52.7 },
+  { label: 'No new actions', value: 21.6 },
 ] as const;
 ---
 
-<div class="flow">
-  <p class="heading">Planning workspace</p>
+<div class="fill">
+  <p class="heading">
+    Projected unit fill <span aria-hidden="true">·</span> {VISIBLE_DAYS} days
+  </p>
 
-  <ol class="stages">
+  <dl class="bars">
     {
-      stages.map((s, i) => (
-        <li class="stage">
-          <span class="num" aria-hidden="true">0{i + 1}</span>
-          <div class="body">
-            <p class="name">{s.name}</p>
-            <p class="decision">{s.decision}</p>
-          </div>
-        </li>
+      bars.map((b, i) => (
+        <div class="bar">
+          <dt class="label">{b.label}</dt>
+          <dd class="value">
+            <span class="track" aria-hidden="true">
+              <span
+                class:list={['meter', i === 0 && 'lead']}
+                style={`width:${b.value}%`}
+              />
+            </span>
+            <span class="num">{b.value.toFixed(1)}%</span>
+          </dd>
+        </div>
       ))
     }
-  </ol>
+  </dl>
 
   <p class="foot">
-    Synthetic sample <span aria-hidden="true">·</span> suggested actions, no orders placed
+    Synthetic 10-SKU sample <span aria-hidden="true">·</span> modeled estimate
   </p>
 </div>
 
 <style>
-  /* A numbered list, not a branching diagram: three screens, each settling its
-     own decision, listed in the application's navigation order. Rule weight,
+  /* A measured comparison, not a table or a flow: two bars on one 0–100% scale,
+     so the difference is read as length rather than arithmetic. Rule weight,
      the slate accent and the type scale match both sibling previews; the
-     numbering is what sets it apart. */
-  .flow {
+     composition is what sets it apart. */
+  .fill {
     display: grid;
     gap: 0;
   }
@@ -59,7 +70,7 @@ const stages = [
   /* The one slate accent, the same role it plays in both sibling previews: it
      marks where the product's work begins. */
   .heading {
-    margin: 0 0 9px;
+    margin: 0 0 11px;
     padding-bottom: 7px;
     border-bottom: 1px solid var(--color-slate);
     font-size: 12.5px;
@@ -68,40 +79,23 @@ const stages = [
     color: var(--color-ink);
   }
 
-  .stages {
-    list-style: none;
+  /* The scale is capped rather than filling the panel: at full card width a
+     7px bar stretched past 1000px reads as a rule, not a measurement. Both
+     bars share the cap, so they stay comparable. */
+  .bars {
     margin: 0;
-    padding: 0;
     display: grid;
-    gap: 0;
+    gap: 13px;
+    max-width: 30rem;
   }
 
-  .stage {
+  .bar {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0 0.6rem;
-    align-items: baseline;
-    padding: 8px 0;
-    border-top: 1px solid var(--color-rule);
-  }
-  .stage:first-child { border-top: 0; padding-top: 2px; }
-  .stage:last-child { border-bottom: 1px solid var(--color-rule); }
-
-  /* The number sits quieter than the screen it labels — it carries the
-     position in the navigation, not the content. Tabular figures keep the three
-     aligned. */
-  .num {
-    font-size: 10.5px;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.06em;
-    color: var(--color-ink-mute);
-  }
-
-  .body {
+    gap: 4px 0;
     min-width: 0;
   }
 
-  .name {
+  .label {
     margin: 0;
     font-size: 12px;
     font-weight: 600;
@@ -109,32 +103,77 @@ const stages = [
     color: var(--color-ink);
   }
 
-  /* The decision is the point of the row, so it holds a readable ink rather
-     than dropping to the muted tone the number uses. */
-  .decision {
-    margin: 2px 0 0;
-    font-size: 11.5px;
-    line-height: 1.3;
-    color: var(--color-ink-soft);
+  /* The label belongs to the bar under it, so the pair sits closer together
+     than the two pairs sit to each other. */
+  .bar + .bar {
+    margin-top: 1px;
+  }
+
+  /* Bar and figure share a baseline row: the number is part of the measurement,
+     not a caption under it. */
+  .value {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0 0.6rem;
+  }
+
+  /* The track is the full 0–100% scale and stays visible, so a bar is read
+     against the range rather than against the other bar alone. */
+  .track {
+    display: block;
+    min-width: 0;
+    height: 9px;
+    background: var(--color-rule-soft);
+    border: 1px solid var(--color-rule);
+  }
+
+  .meter {
+    display: block;
+    height: 100%;
+    background: var(--color-ink-mute);
+  }
+
+  /* The plan is the subject of the comparison, so it takes the slate; the
+     no-action bar stays a muted reference. The distinction is never carried by
+     colour alone — each bar is labelled and its figure printed. */
+  .meter.lead {
+    background: var(--color-slate);
+  }
+
+  /* Tabular figures keep the two percentages aligned under each other. */
+  .num {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    color: var(--color-ink);
   }
 
   .foot {
-    margin: 9px 0 0;
+    margin: 11px 0 0;
     font-size: 11px;
     line-height: 1.3;
     color: var(--color-ink-mute);
   }
 
-  /* Narrow container: the decision lines are full sentences, so the number
-     moves above the row rather than stealing a column from them. Nothing
-     shrinks below 11px. */
+  /* Narrow container: the bars already stack, so only the label needs room to
+     wrap to a second line. Nothing shrinks below 11px. */
   @container (max-width: 22rem) {
-    .stage {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 2px 0;
+    .bars {
+      gap: 10px;
     }
-    .num {
-      display: block;
+    .label {
+      font-size: 11.5px;
+    }
+  }
+
+  /* The bars are a static comparison, so nothing animates; kept explicit so a
+     future transition cannot slip past a reduced-motion preference. */
+  @media (prefers-reduced-motion: reduce) {
+    .meter {
+      transition: none;
     }
   }
 </style>
